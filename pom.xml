@@ -10,7 +10,7 @@
   <description>Hippo OAI-PMH provider</description>
   <groupId>org.onehippo.forge</groupId>
   <artifactId>oai-pmh-provider</artifactId>
-  <version>1.01.01-SNAPSHOT</version>
+  <version>1.01.01</version>
   <packaging>jar</packaging>
 
   <properties>
@@ -24,9 +24,9 @@
   </properties>
 
   <scm>
-    <connection>scm:svn:https://forge.onehippo.org/svn/oaipmh/trunk/</connection>
-    <developerConnection>scm:svn:https://forge.onehippo.org/svn/oaipmh/trunk/</developerConnection>
-    <url>https://forge.onehippo.org/svn/oaipmh/trunk/</url>
+    <connection>scm:svn:https://forge.onehippo.org/svn/oaipmh/tags/oai-pmh-provider-1.01.01</connection>
+    <developerConnection>scm:svn:https://forge.onehippo.org/svn/oaipmh/tags/oai-pmh-provider-1.01.01</developerConnection>
+    <url>https://forge.onehippo.org/svn/oaipmh/tags/oai-pmh-provider-1.01.01</url>
   </scm>
 
   <distributionManagement>
@@ -105,7 +105,7 @@
       <id>hippo-maven2</id>
       <name>Hippo maven 2 repository.</name>
       <url>http://maven.onehippo.com/maven2/</url>
-      <snapshots/>
+      <snapshots />
       <releases>
         <updatePolicy>never</updatePolicy>
       </releases>
