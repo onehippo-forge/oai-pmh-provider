@@ -60,6 +60,7 @@
         </ol>
       </subsection>
       <subsection name="Configure your content beans">
+        <p>first implement from OAIBean</p>
         <p>There are 3 types of annotations you should use in your content beans:</p>
         <ol>
           <li>OAI: for setting the setName</li>
