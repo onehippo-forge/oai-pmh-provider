@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC
+  "-//Apache Software Foundation//DTD XDOC 1.0//EN"
+  "http://maven.apache.org/dtd/xdoc_1_0.dtd">
+<!--
+    Copyright 2009-2012 Hippo
+    
+    Licensed under the Apache License, Version 2.0 (the  "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS"
+    BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+  <properties>
+    <title>Usage Instructions</title>
+  </properties>
+  <body>
+    <section name="Usage">
+      <subsection name="Prerequisites">
+        <p>
+          These instructions assume that you have a Hippo project based on the Hippo project archetype, i.e.
+          a Maven multiproject consisting of three submodules: cms, site and content.
+
+        </p>
+        <p>
+          You should know on how to use the
+          <a href="http://www.onehippo.org/7_7/library/concepts/rest/restful-jax-rs-component-support-in-hst-2.html">HST jax-rs API</a>
+        </p>
+        <p>
+          You should know how the OAI-PMH protocol works;
+          <a href="http://www.openarchives.org/OAI/openarchivesprotocol.html">offical website</a>
+        </p>
+      </subsection>
+
+      <subsection name="Installation">
+        <ol>
+
+          <li>
+            <p>Add to the pom.xml of your
+              <i>site</i>
+              module:
+            </p>
+            <source>
+              <![CDATA[
+<dependency>
+ <groupId>org.onehippo.forge</groupId>
+ <artifactId>oai-pmh-provider</artifactId>
+</dependency>
+                        ]]>
+            </source>
+          </li>
+
+        </ol>
+      </subsection>
+      <subsection name="Configure your content beans">
+        <p>There are 3 types of annotations you should use in your content beans:</p>
+        <ol>
+          <li>OAI: for setting the setName</li>
+          <li>OAIDelegate: for delegating different metadata prefixes ("dc" etc)</li>
+          <li>OAIIdentifier: for generating the record identifier</li>
+
+
+        </ol>
+      </subsection>
+      <subsection name="Extending the org.onehippo.forge.oaipmh.provider.api.BaseOAIResource">
+        <p>Extend the org.onehippo.forge.oaipmh.provider.api.BaseOAIResource and implement the abstract methods accordingly as required by the
+          <a href="http://www.openarchives.org/OAI/openarchivesprotocol.html">oai protocol</a>
+        </p>
+        <p>* Note that you are responsible for you own resumption token parsing and usage</p>
+        <p>* Note that you are also responsible for handling the correct Jaxb context (for different namespaces; you might need to create your own jaxb context)</p>
+      </subsection>
+      <subsection name="Add the resource to the Custom Jaxrs Plain resource Pipeline (or to custom pipeline)">
+        <li>
+          <p>example:</p>
+          <source>
+            <![CDATA[
+              <bean id="jaxrsTestOAIPMHervice" class="org.onehippo.forge.oaipmh.provider.TestResource"/>
+
+              <!-- Custom JAX-RS REST Plain Resource Providers to be overriden.-->
+              <bean id="customRestPlainResourceProviders" class="org.springframework.beans.factory.config.ListFactoryBean">
+                <property name="sourceList">
+                  <list>
+                    <bean class="org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider">
+                      <constructor-arg ref="jaxrsTestOAIPMHervice"/>
+                    </bean>
+
+                  </list>
+                </property>
+              </bean>
+              ]]>
+          </source>
+
+        </li>
+        <li>
+          <p>Configure you hst mount configuration to display the correct mount on the URL. e.g. http://localhost:8080/site/jaxrs</p>
+          <p>try out the identify verb e.g. http://localhost:8080/site/jaxrs/oai?verb=Identify</p>
+        </li>
+
+
+      </subsection>
+      <subsection name="Check the test modules for a general idea on implementing your beans or resource">
+      </subsection>
+
+
+    </section>
+  </body>
+</document>
