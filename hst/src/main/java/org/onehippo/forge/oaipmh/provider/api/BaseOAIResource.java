@@ -61,7 +61,7 @@ import org.onehippo.forge.oaipmh.provider.model.oai.VerbType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
+/** The Open Archives Initiative Protocol for Metadata Harvesting (referred to as the OAI-PMH in the remainder of this document) provides an application-independent interoperability framework based on metadata harvesting
  * @version "$Id$"
  */
 @Produces({MediaType.APPLICATION_XML})
@@ -110,6 +110,20 @@ public abstract class BaseOAIResource extends AbstractResource {
     protected static final String THE_REQUEST_INCLUDES_ILLEGAL_ARGUMENTS_IS_MISSING_REQUIRED_ARGUMENTS_INCLUDES_A_REPEATED_ARGUMENT_OR_VALUES_FOR_ARGUMENTS_HAVE_AN_ILLEGAL_SYNTAX_FROM_ARGUMENT_MUST_BE_SMALLER_THAN_UNTIL_ARGUMENT = "The request includes illegal arguments, is missing required arguments, includes a repeated argument, or values for arguments have an illegal syntax. From argument must be smaller than until argument.";
     protected static final String SLASH = "/";
 
+    /**
+     * Responsible for delegating the verb into several actions
+     * @param request
+     * @param response
+     * @param uriInfo
+     * @param verb
+     * @param metaPrefix
+     * @param identifier
+     * @param resumptionToken
+     * @param set
+     * @param from
+     * @param until
+     * @return
+     */
     @GET
     @Path("/")
     public OAIPMHtype oaiDelegate(@Context HttpServletRequest request, @Context HttpServletResponse response, @Context UriInfo uriInfo,
@@ -163,6 +177,13 @@ public abstract class BaseOAIResource extends AbstractResource {
             .add("identifier")
             .build();
 
+    /***
+     * This verb is used to retrieve the metadata formats available from a repository. An optional argument restricts the request to the formats available for a specific item.
+     * @param context
+     * @param oaipmHtype
+     * @param identifier
+     * @throws OAIException
+     */
     private void listMetadataFormats(final RestContext context, final OAIPMHtype oaipmHtype, final String identifier) throws OAIException {
         processBase(context, METADATAFORMATS_ALLOWED);
         if (StringUtils.isNotEmpty(identifier)) {
@@ -186,6 +207,14 @@ public abstract class BaseOAIResource extends AbstractResource {
             .add("identifier")
             .build();
 
+    /***
+     * This verb is used to retrieve an individual metadata record from a repository. Required arguments specify the identifier of the item from which the record is requested and the format of the metadata that should be included in the record. Depending on the level at which a repository tracks deletions, a header with a "deleted" value for the status attribute may be returned, in case the metadata format specified by the metadataPrefix is no longer available from the repository or from the specified item.
+     * @param context
+     * @param oaipmHtype
+     * @param metaPrefix
+     * @param identifier
+     * @throws OAIException
+     */
     private void getRecord(final RestContext context, final OAIPMHtype oaipmHtype, final String metaPrefix, final String identifier) throws OAIException, QueryException {
         processBase(context, GETRECORD_ALLOWED);
         if (Strings.isNullOrEmpty(metaPrefix) || Strings.isNullOrEmpty(identifier)) {
@@ -287,10 +316,34 @@ public abstract class BaseOAIResource extends AbstractResource {
             .add("set")
             .build();
 
+    /***
+     * This verb is used to harvest records from a repository. Optional arguments permit selective harvesting of records based on set membership and/or datestamp. Depending on the repository's support for deletions, a returned header may have a status attribute of "deleted" if a record matching the arguments specified in the request has been deleted. No metadata will be present for records with deleted status.
+     * @param context
+     * @param oaipmHtype
+     * @param metaPrefix
+     * @param resumptionToken
+     * @param set
+     * @param from
+     * @param until
+     * @throws OAIException
+     * @throws QueryException
+     */
     private void listRecords(final RestContext context, final OAIPMHtype oaipmHtype, String metaPrefix, final String resumptionToken, final String set, final String from, final String until) throws OAIException, QueryException {
         listRecordsOrIdentifiers(context, oaipmHtype, metaPrefix, resumptionToken, set, from, until, false);
     }
 
+    /***
+     * This verb is an abbreviated form of ListRecords, retrieving only headers rather than records. Optional arguments permit selective harvesting of headers based on set membership and/or datestamp. Depending on the repository's support for deletions, a returned header may have a status attribute of "deleted" if a record matching the arguments specified in the request has been deleted.
+     * @param context
+     * @param oaipmHtype
+     * @param metaPrefix
+     * @param resumptionToken
+     * @param set
+     * @param from
+     * @param until
+     * @throws OAIException
+     * @throws QueryException
+     */
     private void listIdentifiers(final RestContext context, final OAIPMHtype oaipmHtype, final String metaPrefix, final String resumptionToken, final String set, final String from, final String until) throws OAIException, QueryException {
         listRecordsOrIdentifiers(context, oaipmHtype, metaPrefix, resumptionToken, set, from, until, true);
     }
@@ -488,6 +541,12 @@ public abstract class BaseOAIResource extends AbstractResource {
             .add("verb")
             .build();
 
+    /***
+     *  This verb is used to retrieve information about a repository. Some of the information returned is required as part of the OAI-PMH. Repositories may also employ the Identify verb to return additional descriptive information.
+     * @param context
+     * @param root
+     * @throws OAIException
+     */
     private void identify(final RestContext context, final OAIPMHtype root) throws OAIException {
         processBase(context, IDENTIFY_ALLOWED);
         root.setIdentify(getIdentifyType(context));
@@ -604,7 +663,7 @@ public abstract class BaseOAIResource extends AbstractResource {
     }
 
     /**
-     * Validates requests: if action type is not supported, exception {@code Response.Status.UNSUPPORTED_MEDIA_TYPE}
+     * Validates requests: if action type is not supported, exception
      * will be thrown
      *
      * @param verb
