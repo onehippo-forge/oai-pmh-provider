@@ -3,6 +3,7 @@ package org.onehippo.forge.oaipmh.provider;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -105,7 +106,8 @@ public class TestResource extends BaseOAIResource {
         return OAIUtil.getInstance().delegate(bean, metaPrefix, context);
     }
 
-    protected static final Pattern TOKEN_PATTERN = Pattern.compile("tx([0-9]+)xmx([a-z[0-9]]+)xpx(.*)");
+    protected static final Pattern TOKEN_PATTERN = Pattern.compile("tx([0-9]+)xmx([a-z[0-9]]+)xpx(.*)frm(.*)utl(.*)");
+
 
     @Override
     public boolean validResumptionToken(final String resumptionToken) {
@@ -122,6 +124,30 @@ public class TestResource extends BaseOAIResource {
         final Calendar calendarFromResumptionToken = getCalendarFromResumptionToken(resumptionToken);
         final Filter filter = getFilter(query);
         try {
+            final String from = getFromResumptionTokenOrUseDefaultNull(resumptionToken, 4, null);
+            final String until = getFromResumptionTokenOrUseDefaultNull(resumptionToken, 5, null);
+
+            Calendar fromCalendar;
+            Calendar untilCalendar;
+            try {
+                fromCalendar = getSimpleDate(from);
+                untilCalendar = getSimpleDate(until);
+            } catch (ParseException e) {
+                throw new OAIException(OAIPMHerrorcodeType.BAD_ARGUMENT, THE_REQUEST_INCLUDES_ILLEGAL_ARGUMENTS_IS_MISSING_REQUIRED_ARGUMENTS_INCLUDES_A_REPEATED_ARGUMENT_OR_VALUES_FOR_ARGUMENTS_HAVE_AN_ILLEGAL_SYNTAX_FROM_ARGUMENT_MUST_BE_SMALLER_THAN_UNTIL_ARGUMENT);
+            }
+            if (fromCalendar != null && untilCalendar != null) {
+                if (fromCalendar.getTimeInMillis() > untilCalendar.getTimeInMillis()) {
+                    throw new OAIException(OAIPMHerrorcodeType.BAD_ARGUMENT, THE_REQUEST_INCLUDES_ILLEGAL_ARGUMENTS_IS_MISSING_REQUIRED_ARGUMENTS_INCLUDES_A_REPEATED_ARGUMENT_OR_VALUES_FOR_ARGUMENTS_HAVE_AN_ILLEGAL_SYNTAX_FROM_ARGUMENT_MUST_BE_SMALLER_THAN_UNTIL_ARGUMENT);
+                }
+            }
+            if (fromCalendar != null) {
+                filter.addGreaterOrEqualThan(HIPPOSTDPUBWF_PUBLICATION_DATE, fromCalendar);
+                query.setFilter(filter);
+            }
+            if (untilCalendar != null) {
+                filter.addLessOrEqualThan(HIPPOSTDPUBWF_PUBLICATION_DATE, untilCalendar);
+                query.setFilter(filter);
+            }
             filter.addGreaterThan(HIPPOSTDPUBWF_PUBLICATION_DATE, calendarFromResumptionToken);
         } catch (FilterException e) {
             throw new OAIException(OAIPMHerrorcodeType.BAD_RESUMPTION_TOKEN, "The value of the resumptionToken argument is invalid or expired.");
@@ -141,42 +167,39 @@ public class TestResource extends BaseOAIResource {
         query.setFilter(filter);
     }
 
+    private static final String RESUMPTION_TOKEN_FORMAT = "tx%sxmx%sxpx%sfrm%sutl%s";
 
     @Override
-    protected void processResumptionToken(final RestContext context, final ListType listType, final String resumptionToken, final Calendar lastKnownPublicationDate, final String metaPrefix, final String set) throws OAIException {
-        try {
-            final ResumptionTokenType resumptionTokenType = new ResumptionTokenType();
-            // check if we already have one:
-            final long time = lastKnownPublicationDate.getTimeInMillis();
-            resumptionTokenType.setCursor(BigInteger.ONE);
-            if (Strings.isNullOrEmpty(resumptionToken) && StringUtils.isNotEmpty(metaPrefix)) {
-                String defset = "";
-                if (StringUtils.isNotEmpty(set)) {
-                    defset = URLEncoder.encode(set, "UTF-8");
-                }
-                //no previous token,  create one:
-                final String firstTokenPart = "tx" + time + "xmx" + metaPrefix + "xpx" + defset;
-                resumptionTokenType.setValue(firstTokenPart);
-            } else {
-                // parse cursor:
-                final Matcher matcher = TOKEN_PATTERN.matcher(resumptionToken);
-                if (matcher.matches()) {
-                    final String metaDataPrefixFromResumptionToken = matcher.group(2);
-                    String defset = "";
-                    if (StringUtils.isNotEmpty(set)) {
-                        defset = URLEncoder.encode(set, "UTF-8");
-                    }
-                    resumptionTokenType.setValue("tx" + time + "xmx" + metaDataPrefixFromResumptionToken + "xpx" + defset);
-                } else {
-                    throw new OAIException(OAIPMHerrorcodeType.BAD_RESUMPTION_TOKEN, "The value of the resumptionToken argument is invalid or expired.");
-                }
-            }
-            listType.setResumptionToken(resumptionTokenType);
-        } catch (UnsupportedEncodingException e) {
-            log.error("", e);
-            throw new OAIException(OAIPMHerrorcodeType.BAD_RESUMPTION_TOKEN, "The value of the resumptionToken argument is invalid or expired.");
-        }
+    protected void processResumptionToken(final RestContext context, final ListType listType, final String resumptionToken, final Calendar lastKnownPublicationDate, final String metaPrefix, final String set, String from, String until) throws OAIException {
+        final ResumptionTokenType resumptionTokenType = new ResumptionTokenType();
+        final long time = lastKnownPublicationDate.getTimeInMillis();
+
+        String resToken = String.format(RESUMPTION_TOKEN_FORMAT, time, getFromResumptionTokenOrUseDefault(resumptionToken, 2, metaPrefix), getFromResumptionTokenOrUseDefault(resumptionToken, 3, set), getFromResumptionTokenOrUseDefault(resumptionToken, 4, from), getFromResumptionTokenOrUseDefault(resumptionToken, 5, until));
+        resumptionTokenType.setValue(resToken);
+
+        listType.setResumptionToken(resumptionTokenType);
     }
+
+    public String getFromResumptionTokenOrUseDefault(String resumptionToken, int group, String defaultString) {
+        if (StringUtils.isNotEmpty(resumptionToken)) {
+            final Matcher matcher = TOKEN_PATTERN.matcher(resumptionToken);
+            if (matcher.matches()) {
+                return matcher.group(group);
+            }
+        }
+        return defaultString == null ? "" : defaultString;
+    }
+
+    public String getFromResumptionTokenOrUseDefaultNull(String resumptionToken, int group, String defaultString) {
+        if (StringUtils.isNotEmpty(resumptionToken)) {
+            final Matcher matcher = TOKEN_PATTERN.matcher(resumptionToken);
+            if (matcher.matches()) {
+                return StringUtils.isEmpty(matcher.group(group)) ? defaultString : matcher.group(group);
+            }
+        }
+        return defaultString;
+    }
+
 
     @Override
     protected void applyGetRecordFilter(final HstQuery query, final String identifier, final String metaPrefix) throws OAIException {

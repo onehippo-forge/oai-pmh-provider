@@ -2,8 +2,11 @@ package org.onehippo.forge.oaipmh.provider.api;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,12 +75,18 @@ public abstract class BaseOAIResource extends AbstractResource {
     protected static final String PARAM_IDENTIFIER = "identifier";
     protected static final String PARAM_RESUMPTION_TOKEN = "resumptionToken";
     protected static final String PARAM_SET = "set";
+    protected static final String PARAM_FROM = "from";
+    protected static final String PARAM_UNTIL = "until";
 
     protected static final String HIPPOSTDPUBWF_PUBLICATION_DATE = "hippostdpubwf:publicationDate";
 
     private static final String BAD_VERB_NO_VERB = "The request includes illegal arguments, is missing required arguments, includes a repeated argument, or values for arguments have an illegal syntax. No \"verb\" argument found.";
     private static final String BAD_VERB_NOT_LEGAL = "Value of the verb argument is not a legal OAI-PMH verb, the verb argument is missing, or the verb argument is repeated.";
 
+    protected static final String DATEFORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    protected static final String SIMPLEFORMAT = "yyyy-MM-dd";
+    protected static final SimpleDateFormat SIMPLEFORMATTER = new SimpleDateFormat(SIMPLEFORMAT);
+    protected static final SimpleDateFormat FORMATTER = new SimpleDateFormat(DATEFORMAT);
 
     protected static final Set<String> VERB_VALUES = new ImmutableSet.Builder<String>()
             .add("Identify")
@@ -98,6 +107,7 @@ public abstract class BaseOAIResource extends AbstractResource {
     protected static final String THE_REQUEST_INCLUDES_ILLEGAL_ARGUMENTS_IS_MISSING_REQUIRED_ARGUMENTS_INCLUDES_A_REPEATED_ARGUMENT_OR_VALUES_FOR_ARGUMENTS_HAVE_AN_ILLEGAL_SYNTAX_MISSING_ARGUMENT_S_IDENTIFIER_AND_OR_METADATAPREFIX = "The request includes illegal arguments, is missing required arguments, includes a repeated argument, or values for arguments have an illegal syntax. Missing argument(s) \"identifier\" and or \"metadataprefix\" .";
     protected static final String THE_VALUE_OF_THE_IDENTIFIER_ARGUMENT_IS_UNKNOWN_OR_ILLEGAL_IN_THIS_REPOSITORY = "The value of the identifier argument is unknown or illegal in this repository.";
     protected static final String THE_REQUEST_INCLUDES_ILLEGAL_ARGUMENTS_IS_MISSING_REQUIRED_ARGUMENTS_INCLUDES_A_REPEATED_ARGUMENT_OR_VALUES_FOR_ARGUMENTS_HAVE_AN_ILLEGAL_SYNTAX = "The request includes illegal arguments, is missing required arguments, includes a repeated argument, or values for arguments have an illegal syntax.";
+    protected static final String THE_REQUEST_INCLUDES_ILLEGAL_ARGUMENTS_IS_MISSING_REQUIRED_ARGUMENTS_INCLUDES_A_REPEATED_ARGUMENT_OR_VALUES_FOR_ARGUMENTS_HAVE_AN_ILLEGAL_SYNTAX_FROM_ARGUMENT_MUST_BE_SMALLER_THAN_UNTIL_ARGUMENT = "The request includes illegal arguments, is missing required arguments, includes a repeated argument, or values for arguments have an illegal syntax. From argument must be smaller than until argument.";
     protected static final String SLASH = "/";
 
     @GET
@@ -107,7 +117,9 @@ public abstract class BaseOAIResource extends AbstractResource {
                                   @QueryParam(PARAM_META_PREFIX) String metaPrefix,
                                   @QueryParam(PARAM_IDENTIFIER) String identifier,
                                   @QueryParam(PARAM_RESUMPTION_TOKEN) String resumptionToken,
-                                  @QueryParam(PARAM_SET) String set
+                                  @QueryParam(PARAM_SET) String set,
+                                  @QueryParam(PARAM_FROM) String from,
+                                  @QueryParam(PARAM_UNTIL) String until
     ) {
         OAIPMHtype oaipmHtype = new OAIPMHtype();
         RestContext context = new RestContext(this, request, response, uriInfo);
@@ -121,10 +133,10 @@ public abstract class BaseOAIResource extends AbstractResource {
                     identify(context, oaipmHtype);
                     break;
                 case LIST_RECORDS:
-                    listRecords(context, oaipmHtype, metaPrefix, resumptionToken, set);
+                    listRecords(context, oaipmHtype, metaPrefix, resumptionToken, set, from, until);
                     break;
                 case LIST_IDENTIFIERS:
-                    listIdentifiers(context, oaipmHtype, metaPrefix, resumptionToken, set);
+                    listIdentifiers(context, oaipmHtype, metaPrefix, resumptionToken, set, from, until);
                     break;
                 case GET_RECORD:
                     getRecord(context, oaipmHtype, metaPrefix, identifier);
@@ -270,20 +282,20 @@ public abstract class BaseOAIResource extends AbstractResource {
             .add("verb")
             .add("metadataPrefix")
             .add("resumptionToken")
-                    //.add("until")
-                    // .add("from")
+            .add("until")
+            .add("from")
             .add("set")
             .build();
 
-    private void listRecords(final RestContext context, final OAIPMHtype oaipmHtype, String metaPrefix, final String resumptionToken, final String set) throws OAIException, QueryException {
-        listRecordsOrIdentifiers(context, oaipmHtype, metaPrefix, resumptionToken, set, false);
+    private void listRecords(final RestContext context, final OAIPMHtype oaipmHtype, String metaPrefix, final String resumptionToken, final String set, final String from, final String until) throws OAIException, QueryException {
+        listRecordsOrIdentifiers(context, oaipmHtype, metaPrefix, resumptionToken, set, from, until, false);
     }
 
-    private void listIdentifiers(final RestContext context, final OAIPMHtype oaipmHtype, final String metaPrefix, final String resumptionToken, final String set) throws OAIException, QueryException {
-        listRecordsOrIdentifiers(context, oaipmHtype, metaPrefix, resumptionToken, set, true);
+    private void listIdentifiers(final RestContext context, final OAIPMHtype oaipmHtype, final String metaPrefix, final String resumptionToken, final String set, final String from, final String until) throws OAIException, QueryException {
+        listRecordsOrIdentifiers(context, oaipmHtype, metaPrefix, resumptionToken, set, from, until, true);
     }
 
-    protected void listRecordsOrIdentifiers(final RestContext context, final OAIPMHtype oaipmHtype, String metaPrefix, final String resumptionToken, final String set, final boolean identfiersOnly) throws OAIException, QueryException {
+    private void listRecordsOrIdentifiers(final RestContext context, final OAIPMHtype oaipmHtype, String metaPrefix, final String resumptionToken, final String set, String from, String until, final boolean identfiersOnly) throws OAIException, QueryException {
         processBase(context, LISTRECORDIDENTIFIER_ALLOWED);
         boolean useResumptionToken = false;
         if (StringUtils.isNotEmpty(resumptionToken)) {
@@ -300,6 +312,19 @@ public abstract class BaseOAIResource extends AbstractResource {
         }
         validateMetaDataPrefix(metaPrefix);
 
+        Calendar fromCalendar;
+        Calendar untilCalendar;
+        try {
+            fromCalendar = getSimpleDate(from);
+            untilCalendar = getSimpleDate(until);
+        } catch (ParseException e) {
+            throw new OAIException(OAIPMHerrorcodeType.BAD_ARGUMENT, THE_REQUEST_INCLUDES_ILLEGAL_ARGUMENTS_IS_MISSING_REQUIRED_ARGUMENTS_INCLUDES_A_REPEATED_ARGUMENT_OR_VALUES_FOR_ARGUMENTS_HAVE_AN_ILLEGAL_SYNTAX_FROM_ARGUMENT_MUST_BE_SMALLER_THAN_UNTIL_ARGUMENT);
+        }
+        if (fromCalendar != null && untilCalendar != null) {
+            if (fromCalendar.getTimeInMillis() > untilCalendar.getTimeInMillis()) {
+                throw new OAIException(OAIPMHerrorcodeType.BAD_ARGUMENT, THE_REQUEST_INCLUDES_ILLEGAL_ARGUMENTS_IS_MISSING_REQUIRED_ARGUMENTS_INCLUDES_A_REPEATED_ARGUMENT_OR_VALUES_FOR_ARGUMENTS_HAVE_AN_ILLEGAL_SYNTAX_FROM_ARGUMENT_MUST_BE_SMALLER_THAN_UNTIL_ARGUMENT);
+            }
+        }
         final HstQuery query;
         if (SETMAP.isEmpty()) {
             loadListSets(context);
@@ -313,6 +338,16 @@ public abstract class BaseOAIResource extends AbstractResource {
         } else {
             query = generateHstQuery(context, OAIBean.class, true);
         }
+        if (fromCalendar != null) {
+            final Filter filter = getFilter(query);
+            filter.addGreaterOrEqualThan(HIPPOSTDPUBWF_PUBLICATION_DATE, fromCalendar);
+            query.setFilter(filter);
+        }
+        if (untilCalendar != null) {
+            final Filter filter = getFilter(query);
+            filter.addLessOrEqualThan(HIPPOSTDPUBWF_PUBLICATION_DATE, untilCalendar);
+            query.setFilter(filter);
+        }
         if (useResumptionToken) {
             processQueryBasedOnResumptionToken(query, resumptionToken);
         }
@@ -324,14 +359,29 @@ public abstract class BaseOAIResource extends AbstractResource {
             throw new OAIException(OAIPMHerrorcodeType.NO_RECORDS_MATCH, THE_COMBINATION_OF_THE_VALUES_OF_THE_FROM_UNTIL_SET_AND_METADATA_PREFIX_ARGUMENTS_RESULTS_IN_AN_EMPTY_LIST);
         }
         if (identfiersOnly) {
-            populateListIdentifiers(context, queryResult, oaipmHtype, metaPrefix, resumptionToken, set);
+            populateListIdentifiers(context, queryResult, oaipmHtype, metaPrefix, resumptionToken, set, from, until);
         } else {
-            populateListRecords(context, queryResult, oaipmHtype, metaPrefix, resumptionToken, set);
+            populateListRecords(context, queryResult, oaipmHtype, metaPrefix, resumptionToken, set, from, until);
         }
     }
 
 
-    protected void populateListIdentifiers(final RestContext context, final HstQueryResult queryResult, final OAIPMHtype oaipmHtype, final String metaPrefix, final String resumptionToken, final String set) throws OAIException {
+    public static Calendar getSimpleDate(String input) throws ParseException {
+        final Calendar instance = Calendar.getInstance();
+        Date parse;
+        try {
+            parse = FORMATTER.parse(input);
+        } catch (ParseException e) {
+            parse = SIMPLEFORMATTER.parse(input);
+        } catch (Exception e) {
+            return null;
+        }
+        instance.setTime(parse);
+        return instance;
+    }
+
+
+    private void populateListIdentifiers(final RestContext context, final HstQueryResult queryResult, final OAIPMHtype oaipmHtype, final String metaPrefix, final String resumptionToken, final String set, final String from, final String until) throws OAIException {
         final ListIdentifiersType listIdentifiersType = new ListIdentifiersType();
         final List<HeaderType> headers = listIdentifiersType.getHeader();
 
@@ -360,11 +410,11 @@ public abstract class BaseOAIResource extends AbstractResource {
 
         final int totalSize = queryResult.getTotalSize();
         if (totalSize > getPageSize()) {
-            processResumptionToken(context, listIdentifiersType, resumptionToken, lastKnownPublicationDate, metaPrefix, set);
+            processResumptionToken(context, listIdentifiersType, resumptionToken, lastKnownPublicationDate, metaPrefix, set, from, until);
         }
     }
 
-    protected void populateListRecords(final RestContext context, final HstQueryResult queryResult, final OAIPMHtype oaipmHtype, final String metaPrefix, final String resumptionToken, final String set) throws OAIException {
+    private void populateListRecords(final RestContext context, final HstQueryResult queryResult, final OAIPMHtype oaipmHtype, final String metaPrefix, final String resumptionToken, final String set, final String from, final String until) throws OAIException {
         final ListRecordsType listRecordType = new ListRecordsType();
         final List<RecordType> records = listRecordType.getRecord();
 
@@ -407,7 +457,7 @@ public abstract class BaseOAIResource extends AbstractResource {
 
         final int totalSize = queryResult.getTotalSize();
         if (totalSize > getPageSize()) {
-            processResumptionToken(context, listRecordType, resumptionToken, lastKnownPublicationDate, metaPrefix, set);
+            processResumptionToken(context, listRecordType, resumptionToken, lastKnownPublicationDate, metaPrefix, set, from, until);
         }
     }
 
@@ -458,7 +508,7 @@ public abstract class BaseOAIResource extends AbstractResource {
 
     protected abstract void processQueryBasedOnResumptionToken(final HstQuery query, final String resumptionToken) throws OAIException;
 
-    protected abstract void processResumptionToken(final RestContext context, final ListType listType, String resumptionToken, final Calendar lastKnownPublicationDate, final String metaPrefix, final String set) throws OAIException;
+    protected abstract void processResumptionToken(final RestContext context, final ListType listType, String resumptionToken, final Calendar lastKnownPublicationDate, final String metaPrefix, final String set, final String from, final String until) throws OAIException;
 
     protected abstract void applyGetRecordFilter(final HstQuery query, final String identifier, final String metaPrefix) throws OAIException;
 
@@ -575,7 +625,6 @@ public abstract class BaseOAIResource extends AbstractResource {
         root.setResponseDate(createToday());
     }
 
-    private static final String DATEFORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     protected static String getDate(Calendar calendar) {
         return FastDateFormat.getInstance(DATEFORMAT).format(calendar);
