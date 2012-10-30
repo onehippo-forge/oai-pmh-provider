@@ -1,2 +1,5 @@
 * text=auto !eol
 hst/src/test/java/org/onehippo/forge/oaipmh/provider/DefaultOAIPMResource.java -text
+repository/pom.xml -text
+repository/src/main/resources/deriveddata.xml -text
+repository/src/main/resources/oai.cnd -text
