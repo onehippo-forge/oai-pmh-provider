@@ -1,4 +1,5 @@
 <'nt'='http://www.jcp.org/jcr/nt/1.0'>
+<'oai'='http://www.hippoecm.org/hst/nt/oai/1.0'>
 
 [oai:document] > nt:base
 - oai:identifier  (string)
