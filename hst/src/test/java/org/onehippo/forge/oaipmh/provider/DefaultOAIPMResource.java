@@ -81,7 +81,7 @@ public class DefaultOAIPMResource extends BaseOAIResource {
 
     @Override
     public int getPageSize() {
-        return 10;
+        return 100;
     }
 
     @Override
