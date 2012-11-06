@@ -85,8 +85,8 @@ public abstract class BaseOAIResource extends AbstractResource {
 
     protected static final String DATEFORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     protected static final String SIMPLEFORMAT = "yyyy-MM-dd";
-    protected static final SimpleDateFormat SIMPLEFORMATTER = new SimpleDateFormat(SIMPLEFORMAT);
-    protected static final SimpleDateFormat FORMATTER = new SimpleDateFormat(DATEFORMAT);
+    protected final SimpleDateFormat SIMPLEFORMATTER = new SimpleDateFormat(SIMPLEFORMAT);
+    protected final SimpleDateFormat FORMATTER = new SimpleDateFormat(DATEFORMAT);
 
     protected static final Set<String> VERB_VALUES = new ImmutableSet.Builder<String>()
             .add("Identify")
@@ -419,7 +419,7 @@ public abstract class BaseOAIResource extends AbstractResource {
     }
 
 
-    public static Calendar getSimpleDate(String input) throws ParseException {
+    public Calendar getSimpleDate(String input) throws ParseException {
         final Calendar instance = Calendar.getInstance();
         Date parse;
         try {
