@@ -184,12 +184,49 @@
       <subsection name="Configure HST mount">
         <li>
           <p>Configure you hst mount configuration to display the correct mount on the URL. e.g.
-            <a href="http://localhost:8080/site/pmh">http://localhost:8080/site/pmh</a></p>
+            <a href="http://localhost:8080/site/pmh">http://localhost:8080/site/pmh</a>
+          </p>
           <p>Automatically the oai-pmh project will set pmh mount on the hst:root mount</p>
-          <p>try out the identify verb e.g. <a href="http://localhost:8080/site/pmh/oai?verb=Identify">http://localhost:8080/site/pmh/oai?verb=Identify</a></p>
+          <p>try out the identify verb e.g.
+            <a href="http://localhost:8080/site/pmh/oai?verb=Identify">http://localhost:8080/site/pmh/oai?verb=Identify</a>
+          </p>
           <p>You can configure metadata from the Identify by looking at the mount for the identify.path property. Which points to an Identify document</p>
         </li>
       </subsection>
+      <subsection name="Test">
+        <li>
+          <a href="http://localhost:8080/site/pmh/oai?verb=Identify">Identify</a>
+        </li>
+        <li>
+          <a href="http://localhost:8080/site/pmh/oai?verb=ListRecords&amp;metadataPrefix=oai_dc">List Records (oai_dc)</a>
+        </li>
+        <li>
+          <a href="http://localhost:8080/site/pmh/oai?verb=ListRecords&amp;metadataPrefix=lom">List Records (lom : edurep)</a>
+        </li>
+        <li>
+          <a href="http://localhost:8080/site/pmh/oai?verb=ListIdentifiers&amp;metadataPrefix=lom">List identifiers (lom : edurep)</a>
+        </li>
+        <li>
+          <a href="http://localhost:8080/site/pmh/oai?verb=GetRecord&amp;identifier=a8a0bb9f-c5b6-47e8-9503-4f5f8ce9966f&amp;metadataPrefix=lom">Get Single Record (lom : edurep)</a>
+        </li>
+        <li>
+          <a href="http://localhost:8080/site/pmh/oai?verb=ListMetadataFormats">List Metadata formats oai_dc &amp; lom (edurep)</a>
+        </li>
+        <li>
+          <a href="http://localhost:8080/site/pmh/oai?verb=ListSets">List Sets</a>
+        </li>
+      </subsection>
+      <subsection name="EDUREP NLLOM">
+        <p>Important for EDUREP!!</p>
+        <p>You should have the knowlegde about the used xml formats and which elements and attributes are mandatory for edurep NLLOM</p>
+        <p>
+          <a href="http://wiki.surf.nl/display/nllom/Home">http://wiki.surf.nl/display/nllom/Home</a>
+        </p>
+        <p>All elements and attributes are already provided in the oai-pmh project under the following package: <a href="https://forge.onehippo.org/svn/oaipmh/trunk/hst/src/main/java/org/onehippo/forge/oaipmh/provider/model/oai/edurep/lom/"> package</a></p>
+        <p>Plus we also provide a helper class which should get you going: <a href="https://forge.onehippo.org/svn/oaipmh/trunk/hst/src/main/java/org/onehippo/forge/oaipmh/provider/model/oai/edurep/lom/NLLom.java">NLLOM</a></p>
+        <p>Be aware you probably need to check your own metadata configuration for mandatory elements and properties</p>
+      </subsection>
     </section>
+
   </body>
 </document>
