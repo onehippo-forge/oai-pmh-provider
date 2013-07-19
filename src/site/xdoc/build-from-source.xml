@@ -18,36 +18,39 @@
   limitations under the License.
 -->
 <document>
-    <properties>
-        <title>Building from source</title>
-    </properties>
-    <body>
-        <section name="Building from source">
-            <subsection name="Requirements">
-                <ul>
-                    <li>
-                        <p>Java 6 JDK</p>
-                    </li>
-                    <li>
-                        <p>Maven 2</p>
-                    </li>
-                    <li>
-                        <p>Subversion client</p>
-                    </li>
-                </ul>
-            </subsection>
-            <subsection name="Checkout the source code">
-                <p>
-                    Check out the source code from the SVN repository:
-                </p>
-                <source>svn co http://forge.onehippo.org/svn/oaiprovider/</source>
-            </subsection>
-            <subsection name="Build the project">
-                <p>
-                    Build the project using Maven 2:
-                </p>
-                <source>mvn install</source>
-            </subsection>
-        </section>
-    </body>
+  <properties>
+    <title>Building from source</title>
+  </properties>
+  <body>
+    <section name="Building from source">
+      <subsection name="Requirements">
+        <ul>
+          <li>
+            <p>Java 6 JDK</p>
+          </li>
+          <li>
+            <p>Maven 2</p>
+          </li>
+          <li>
+            <p>Subversion client</p>
+          </li>
+          <li>
+            <p>Hippo 7.8 and above</p>
+          </li>
+        </ul>
+      </subsection>
+      <subsection name="Checkout the source code">
+        <p>
+          Check out the source code from the SVN repository:
+        </p>
+        <source>svn co https://forge.onehippo.org/svn/oaipmh/trunk/</source>
+      </subsection>
+      <subsection name="Build the project">
+        <p>
+          Build the project using Maven 2:
+        </p>
+        <source>mvn install</source>
+      </subsection>
+    </section>
+  </body>
 </document>

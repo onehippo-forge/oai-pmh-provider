@@ -18,25 +18,26 @@
   limitations under the License.
 -->
 <document>
-    <properties>
-        <title>Introduction</title>
-    </properties>
-    <body>
-        <section name="Introduction">
-            <subsection name="What is OAI-PMH?">
-                <p>
-                  The Open Archives Initiative Protocol for Metadata Harvesting (referred to as the OAI-PMH in the remainder of this document) provides an application-independent interoperability framework based on metadata harvesting.
-   
-                </p>
-                <p>
-                  <a href="http://www.openarchives.org/OAI/openarchivesprotocol.html">offical website</a>
-                </p>
-            </subsection>
-            <subsection name="How can I use OAI-PMH provider in my project?">
-                <p>
-                    Follow the <a href="usage.html">usage instructions!</a>
-                </p>
-            </subsection>
-        </section>
-    </body>
+  <properties>
+    <title>Introduction</title>
+  </properties>
+  <body>
+    <section name="Introduction">
+      <subsection name="What is OAI-PMH?">
+        <p>
+          The Open Archives Initiative Protocol for Metadata Harvesting (referred to as the OAI-PMH in the remainder of this document) provides an application-independent interoperability framework based on metadata harvesting.
+
+        </p>
+        <p>
+          <a href="http://www.openarchives.org/OAI/openarchivesprotocol.html">offical website</a>
+        </p>
+      </subsection>
+      <subsection name="How can I use OAI-PMH provider in my project?">
+        <p>
+          Follow the
+          <a href="usage.html">usage instructions!</a>
+        </p>
+      </subsection>
+    </section>
+  </body>
 </document>

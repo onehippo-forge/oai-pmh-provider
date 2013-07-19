@@ -42,6 +42,21 @@
       <subsection name="Installation">
         <ol>
 
+
+          <li>
+            <p>Add to the pom.xml of your
+              <i>cms</i>
+              module:
+            </p>
+            <source>
+              <![CDATA[
+<dependency>
+ <groupId>org.onehippo.forge</groupId>
+ <artifactId>oai-pmh-provider-repository</artifactId>
+</dependency>
+                        ]]>
+            </source>
+          </li>
           <li>
             <p>Add to the pom.xml of your
               <i>site</i>
@@ -57,73 +72,124 @@
             </source>
           </li>
           <li>
-            <p>Add to the pom.xml of your
-              <i>cms</i>
+            <p>Add to the web.xml of your
+              <i>site</i>
               module:
             </p>
             <source>
               <![CDATA[
-<dependency>
- <groupId>org.onehippo.forge</groupId>
- <artifactId>oai-pmh-provider-repository</artifactId>
-</dependency>
+<context-param>
+    <param-name>hst-beans-annotated-classes</param-name>
+    <param-value>.....,
+      classpath*:org/onehippo/forge/oaipmh/provider/api/**/*.class,
+    </param-value>
+  </context-param>
                         ]]>
             </source>
           </li>
 
         </ol>
       </subsection>
+
       <subsection name="Configure your content beans">
         <p>first implement the org.onehippo.forge.oaipmh.provider.api.OAIBean</p>
         <p>There are 3 types of annotations you should use in your content beans:</p>
         <ol>
-          <li>OAI: for setting the setName on the bean class</li>
-          <li>OAIDelegate: for delegating different metadata prefixes ("dc" etc)</li>
-          <li>OAIIdentifier: for generating the record identifier</li>
-          <li> <a href="">example newsdocument: </a></li>
-          <li> <a href="">example textdocument: </a></li>
+          <li>@OAI: for setting the setName (on the bean class)</li>
+          <li>@OAIDelegate: for delegating different metadata prefixes (we currently only support "dc_oai" and/or "lom")</li>
+          <li>@OAIIdentifier: for generating the record identifier</li>
+          <li>
+            <a href="https://forge.onehippo.org/svn/oaipmh/oai-pmh-demo/trunk/site/src/main/java/org/onehippo/forge/oaipmh/beans/NewsDocument.java">example newsdocument:</a>
+          </li>
+          <li>
+            <a href="https://forge.onehippo.org/svn/oaipmh/oai-pmh-demo/trunk/site/src/main/java/org/onehippo/forge/oaipmh/beans/TextDocument.java">example textdocument:</a>
+          </li>
         </ol>
       </subsection>
-      <subsection name="Extending the org.onehippo.forge.oaipmh.provider.api.BaseOAIResource">
-        <p>Extend the org.onehippo.forge.oaipmh.provider.api.BaseOAIResource and implement the abstract methods accordingly as required by the
-          <a href="http://www.openarchives.org/OAI/openarchivesprotocol.html">oai protocol</a>
-        </p>
-        <p>* Note that you are responsible for you own resumption token parsing and usage</p>
-        <p>* Note that you are also responsible for handling the correct Jaxb context (for different namespaces; you might need to create your own jaxb context)</p>
+      <subsection name="Make sure you have the oai:document mixin on your document">
+        <p>Either in the CND (example):</p>
+        <source>
+          <![CDATA[
+
+            <'oaipmh.demo'='http://www.onehippo.org/oaipmh.demo/nt/1.0'>
+<'hippo'='http://www.onehippo.org/jcr/hippo/nt/2.0'>
+<'hippostd'='http://www.onehippo.org/jcr/hippostd/nt/2.0'>
+<'hippostdpubwf'='http://www.onehippo.org/jcr/hippostdpubwf/nt/1.0'>
+<'oai'='http://www.hippoecm.org/hst/nt/oai/1.0'>
+
+[oaipmh.demo:basedocument] > hippo:document, hippostd:publishableSummary, hippostdpubwf:document orderable
+
+[oaipmh.demo:textdocument] > oaipmh.demo:basedocument, hippostd:relaxed
+
+[oaipmh.demo:newsdocument] > oaipmh.demo:basedocument, hippostd:relaxed, oai:document
+
+              ]]>
+        </source>
+        <p>Or in your prototype (best practice):</p>
+        <source>
+          <![CDATA[
+
+            <sv:node sv:name="hipposysedit:prototypes">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>hipposysedit:prototypeset</sv:value>
+    </sv:property>
+    <sv:node sv:name="hipposysedit:prototype">
+      <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>oaipmh.demo:textdocument</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:mixinTypes" sv:type="Name">
+        <sv:value>hippo:harddocument</sv:value>
+        <sv:value>hippotranslation:translated</sv:value>
+        <sv:value>oai:document</sv:value>
+      </sv:property>
+
+              ]]>
+        </source>
+        <p>Depending on your project, you might need to create a script which will add the mixin on all existing documents</p>
       </subsection>
       <subsection name="Add the resource to the Custom Jaxrs Plain resource Pipeline (or to custom pipeline)">
         <li>
-          <p>example:</p>
+          <p>add oai-pmh.xml to META-INF.hst-assembly.overrides package of your site project. Example:</p>
           <source>
             <![CDATA[
-              <bean id="jaxrsTestOAIPMHervice" class="org.onehippo.forge.oaipmh.provider.TestResource"/>
+   <?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-              <!-- Custom JAX-RS REST Plain Resource Providers to be overriden.-->
-              <bean id="customRestPlainResourceProviders" class="org.springframework.beans.factory.config.ListFactoryBean">
-                <property name="sourceList">
-                  <list>
-                    <bean class="org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider">
-                      <constructor-arg ref="jaxrsTestOAIPMHervice"/>
-                    </bean>
+  <!-- The following three imports will include pipeline configurations for both JaxrsRestPlainPipeline and JaxrsRestContentPipeline !!! -->
+  <import resource="classpath:/org/hippoecm/hst/site/optional/jaxrs/SpringComponentManager-rest-jackson.xml"/>
+  <import resource="classpath:/org/hippoecm/hst/site/optional/jaxrs/SpringComponentManager-rest-plain-pipeline.xml"/>
 
-                  </list>
-                </property>
-              </bean>
+  <!-- Your custom JAX-RS REST Plain Resource Providers will be added into the following list !!! -->
+  <bean id="customRestPlainResourceProviders" class="org.springframework.beans.factory.config.ListFactoryBean">
+    <property name="sourceList">
+      <list>
+        <!-- Wrap your JAX-RS component by SingletonResourceProvider. -->
+        <bean class="org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider">
+          <constructor-arg>
+            <bean class="org.onehippo.forge.oaipmh.provider.resource.OAIPMHResource"/>
+          </constructor-arg>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+</beans>
               ]]>
           </source>
 
         </li>
+      </subsection>
+      <subsection name="Configure HST mount">
         <li>
-          <p>Configure you hst mount configuration to display the correct mount on the URL. e.g. http://localhost:8080/site/jaxrs</p>
-          <p>try out the identify verb e.g. http://localhost:8080/site/jaxrs/oai?verb=Identify</p>
+          <p>Configure you hst mount configuration to display the correct mount on the URL. e.g.
+            <a href="http://localhost:8080/site/pmh">http://localhost:8080/site/pmh</a></p>
+          <p>Automatically the oai-pmh project will set pmh mount on the hst:root mount</p>
+          <p>try out the identify verb e.g. <a href="http://localhost:8080/site/pmh/oai?verb=Identify">http://localhost:8080/site/pmh/oai?verb=Identify</a></p>
+          <p>You can configure metadata from the Identify by looking at the mount for the identify.path property. Which points to an Identify document</p>
         </li>
-
-
       </subsection>
-      <subsection name="Check the test modules for a general idea on implementing your beans or resource">
-      </subsection>
-
-
     </section>
   </body>
 </document>
