@@ -38,6 +38,14 @@
           <a href="usage.html">usage instructions!</a>
         </p>
       </subsection>
+      <subsection name="Supported versions and changes">
+        <p>
+         The OAI-PMH plug-in has been build for hippo 7.8.3 and up.
+        </p>
+        <p>
+        Plugin version 2.01.01
+        </p>
+      </subsection>
     </section>
   </body>
 </document>
