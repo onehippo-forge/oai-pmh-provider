@@ -41,6 +41,7 @@ import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.content.beans.standard.HippoBeanIterator;
 import org.hippoecm.hst.core.request.HstRequestContext;
 import org.hippoecm.hst.jaxrs.services.AbstractResource;
+import org.hippoecm.repository.util.DateTools;
 import org.onehippo.forge.oaipmh.provider.model.oai.GetRecordType;
 import org.onehippo.forge.oaipmh.provider.model.oai.HeaderType;
 import org.onehippo.forge.oaipmh.provider.model.oai.IdentifyType;
@@ -61,7 +62,10 @@ import org.onehippo.forge.oaipmh.provider.model.oai.VerbType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** The Open Archives Initiative Protocol for Metadata Harvesting (referred to as the OAI-PMH in the remainder of this document) provides an application-independent interoperability framework based on metadata harvesting
+/**
+ * The Open Archives Initiative Protocol for Metadata Harvesting (referred to as the OAI-PMH in the remainder of this
+ * document) provides an application-independent interoperability framework based on metadata harvesting
+ *
  * @version "$Id$"
  */
 @Produces({MediaType.APPLICATION_XML})
@@ -70,6 +74,9 @@ public abstract class BaseOAIResource extends AbstractResource {
 
     private static Logger log = LoggerFactory.getLogger(BaseOAIResource.class);
 
+    /**
+     * registered variables:
+     */
     protected static final String PARAM_VERB = "verb";
     protected static final String PARAM_META_PREFIX = "metadataPrefix";
     protected static final String PARAM_IDENTIFIER = "identifier";
@@ -78,15 +85,21 @@ public abstract class BaseOAIResource extends AbstractResource {
     protected static final String PARAM_FROM = "from";
     protected static final String PARAM_UNTIL = "until";
 
+    /**
+     * property names
+     */
     protected static final String HIPPOSTDPUBWF_PUBLICATION_DATE = "hippostdpubwf:publicationDate";
+    protected static final String OAI_PUBDATE = "oai:pubdate";
+
+    private static final String OAI_PUBLICATION_DATE_FORMAT = "yyyyMMddhhmmss";
 
     private static final String BAD_VERB_NO_VERB = "The request includes illegal arguments, is missing required arguments, includes a repeated argument, or values for arguments have an illegal syntax. No \"verb\" argument found.";
     private static final String BAD_VERB_NOT_LEGAL = "Value of the verb argument is not a legal OAI-PMH verb, the verb argument is missing, or the verb argument is repeated.";
 
     protected static final String DATEFORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     protected static final String SIMPLEFORMAT = "yyyy-MM-dd";
-    protected final SimpleDateFormat SIMPLEFORMATTER = new SimpleDateFormat(SIMPLEFORMAT);
-    protected final SimpleDateFormat FORMATTER = new SimpleDateFormat(DATEFORMAT);
+    protected static final SimpleDateFormat SIMPLEFORMATTER = new SimpleDateFormat(SIMPLEFORMAT);
+    protected static final SimpleDateFormat FORMATTER = new SimpleDateFormat(DATEFORMAT);
 
     protected static final Set<String> VERB_VALUES = new ImmutableSet.Builder<String>()
             .add("Identify")
@@ -112,6 +125,7 @@ public abstract class BaseOAIResource extends AbstractResource {
 
     /**
      * Responsible for delegating the verb into several actions
+     *
      * @param request
      * @param response
      * @param uriInfo
@@ -137,7 +151,6 @@ public abstract class BaseOAIResource extends AbstractResource {
     ) {
         OAIPMHtype oaipmHtype = new OAIPMHtype();
         RestContext context = new RestContext(this, request, response, uriInfo);
-
         try {
             processRoot(context, oaipmHtype, verb);
             validateVerb(verb);
@@ -177,8 +190,10 @@ public abstract class BaseOAIResource extends AbstractResource {
             .add("identifier")
             .build();
 
-    /***
-     * This verb is used to retrieve the metadata formats available from a repository. An optional argument restricts the request to the formats available for a specific item.
+    /**
+     * This verb is used to retrieve the metadata formats available from a repository. An optional argument restricts
+     * the request to the formats available for a specific item.
+     *
      * @param context
      * @param oaipmHtype
      * @param identifier
@@ -207,8 +222,13 @@ public abstract class BaseOAIResource extends AbstractResource {
             .add("identifier")
             .build();
 
-    /***
-     * This verb is used to retrieve an individual metadata record from a repository. Required arguments specify the identifier of the item from which the record is requested and the format of the metadata that should be included in the record. Depending on the level at which a repository tracks deletions, a header with a "deleted" value for the status attribute may be returned, in case the metadata format specified by the metadataPrefix is no longer available from the repository or from the specified item.
+    /**
+     * This verb is used to retrieve an individual metadata record from a repository. Required arguments specify the
+     * identifier of the item from which the record is requested and the format of the metadata that should be included
+     * in the record. Depending on the level at which a repository tracks deletions, a header with a "deleted" value for
+     * the status attribute may be returned, in case the metadata format specified by the metadataPrefix is no longer
+     * available from the repository or from the specified item.
+     *
      * @param context
      * @param oaipmHtype
      * @param metaPrefix
@@ -257,14 +277,17 @@ public abstract class BaseOAIResource extends AbstractResource {
 
             record.setHeader(headerType);
             // meta
-            final MetadataType meta = new MetadataType();
-            record.setMetadata(meta);
+            final MetadataType meta = createMetadataType();
+
             // populate meta:
             meta.setAny(populateMetaData(context, bean, metaPrefix));
+            record.setMetadata(meta);
         }
 
 
     }
+
+    protected abstract MetadataType createMetadataType();
 
 
     protected static final Set<String> LISTSETS_ALLOWED = new ImmutableSet.Builder<String>()
@@ -316,8 +339,12 @@ public abstract class BaseOAIResource extends AbstractResource {
             .add("set")
             .build();
 
-    /***
-     * This verb is used to harvest records from a repository. Optional arguments permit selective harvesting of records based on set membership and/or datestamp. Depending on the repository's support for deletions, a returned header may have a status attribute of "deleted" if a record matching the arguments specified in the request has been deleted. No metadata will be present for records with deleted status.
+    /**
+     * This verb is used to harvest records from a repository. Optional arguments permit selective harvesting of records
+     * based on set membership and/or datestamp. Depending on the repository's support for deletions, a returned header
+     * may have a status attribute of "deleted" if a record matching the arguments specified in the request has been
+     * deleted. No metadata will be present for records with deleted status.
+     *
      * @param context
      * @param oaipmHtype
      * @param metaPrefix
@@ -332,8 +359,12 @@ public abstract class BaseOAIResource extends AbstractResource {
         listRecordsOrIdentifiers(context, oaipmHtype, metaPrefix, resumptionToken, set, from, until, false);
     }
 
-    /***
-     * This verb is an abbreviated form of ListRecords, retrieving only headers rather than records. Optional arguments permit selective harvesting of headers based on set membership and/or datestamp. Depending on the repository's support for deletions, a returned header may have a status attribute of "deleted" if a record matching the arguments specified in the request has been deleted.
+    /**
+     * This verb is an abbreviated form of ListRecords, retrieving only headers rather than records. Optional arguments
+     * permit selective harvesting of headers based on set membership and/or datestamp. Depending on the repository's
+     * support for deletions, a returned header may have a status attribute of "deleted" if a record matching the
+     * arguments specified in the request has been deleted.
+     *
      * @param context
      * @param oaipmHtype
      * @param metaPrefix
@@ -365,8 +396,8 @@ public abstract class BaseOAIResource extends AbstractResource {
         }
         validateMetaDataPrefix(metaPrefix);
 
-        Calendar fromCalendar;
-        Calendar untilCalendar;
+        final Calendar fromCalendar;
+        final Calendar untilCalendar;
         try {
             fromCalendar = getSimpleDate(from);
             untilCalendar = getSimpleDate(until);
@@ -392,13 +423,17 @@ public abstract class BaseOAIResource extends AbstractResource {
             query = generateHstQuery(context, OAIBean.class, true);
         }
         if (fromCalendar != null) {
+            //todo
             final Filter filter = getFilter(query);
-            filter.addGreaterOrEqualThan(HIPPOSTDPUBWF_PUBLICATION_DATE, fromCalendar);
+            //noinspection HippoHstFilterInspection
+            filter.addGreaterOrEqualThan(OAI_PUBDATE, getPublicationDateAsString(fromCalendar));
             query.setFilter(filter);
         }
         if (untilCalendar != null) {
+            //todo
             final Filter filter = getFilter(query);
-            filter.addLessOrEqualThan(HIPPOSTDPUBWF_PUBLICATION_DATE, untilCalendar);
+            //noinspection HippoHstFilterInspection
+            filter.addLessOrEqualThan(OAI_PUBDATE, getPublicationDateAsString(untilCalendar));
             query.setFilter(filter);
         }
         if (useResumptionToken) {
@@ -419,20 +454,12 @@ public abstract class BaseOAIResource extends AbstractResource {
     }
 
 
-    public Calendar getSimpleDate(String input) throws ParseException {
-        final Calendar instance = Calendar.getInstance();
-        Date parse;
-        try {
-            parse = FORMATTER.parse(input);
-        } catch (ParseException e) {
-            parse = SIMPLEFORMATTER.parse(input);
-        } catch (Exception e) {
-            return null;
-        }
-        instance.setTime(parse);
-        return instance;
+    /**
+     * Format a calendar object to a dcr:publicationDate string property.
+     */
+    protected String getPublicationDateAsString(final Calendar calendar) {
+        return new SimpleDateFormat(OAI_PUBLICATION_DATE_FORMAT).format(calendar.getTime());
     }
-
 
     private void populateListIdentifiers(final RestContext context, final HstQueryResult queryResult, final OAIPMHtype oaipmHtype, final String metaPrefix, final String resumptionToken, final String set, final String from, final String until) throws OAIException {
         final ListIdentifiersType listIdentifiersType = new ListIdentifiersType();
@@ -497,11 +524,12 @@ public abstract class BaseOAIResource extends AbstractResource {
             record.setHeader(headerType);
 
             // meta
-            final MetadataType meta = new MetadataType();
-            record.setMetadata(meta);
+            final MetadataType meta = createMetadataType();
+
             // populate meta:
             //if (!identfiersOnly) {
             meta.setAny(populateMetaData(context, bean, metaPrefix));
+            record.setMetadata(meta);
             //}
 
             lastKnownPublicationDate = publicationDate;
@@ -516,6 +544,7 @@ public abstract class BaseOAIResource extends AbstractResource {
 
     /**
      * Important method, should overwrite for specific cases
+     *
      * @param context
      * @param bean
      * @param metaPrefix
@@ -525,8 +554,9 @@ public abstract class BaseOAIResource extends AbstractResource {
         return OAIUtil.getInstance().getIdentifier(bean, context);
     }
 
-    /***
+    /**
      * Important method, should overwrite for specific cases
+     *
      * @param context
      * @param bean
      * @param metaPrefix
@@ -541,8 +571,11 @@ public abstract class BaseOAIResource extends AbstractResource {
             .add("verb")
             .build();
 
-    /***
-     *  This verb is used to retrieve information about a repository. Some of the information returned is required as part of the OAI-PMH. Repositories may also employ the Identify verb to return additional descriptive information.
+    /**
+     * This verb is used to retrieve information about a repository. Some of the information returned is required as
+     * part of the OAI-PMH. Repositories may also employ the Identify verb to return additional descriptive
+     * information.
+     *
      * @param context
      * @param root
      * @throws OAIException
@@ -576,6 +609,21 @@ public abstract class BaseOAIResource extends AbstractResource {
     /**
      * UTILITIES:
      */
+
+    public Calendar getSimpleDate(String input) throws ParseException {
+        final Calendar instance = Calendar.getInstance();
+        Date parse;
+        try {
+            parse = FORMATTER.parse(input);
+        } catch (ParseException e) {
+            parse = SIMPLEFORMATTER.parse(input);
+        } catch (Exception e) {
+            return null;
+        }
+        instance.setTime(parse);
+        return instance;
+    }
+
     private boolean isExclusive(String value, String... othervalues) {
         if (StringUtils.isEmpty(value)) {
             return false;
@@ -663,8 +711,7 @@ public abstract class BaseOAIResource extends AbstractResource {
     }
 
     /**
-     * Validates requests: if action type is not supported, exception
-     * will be thrown
+     * Validates requests: if action type is not supported, exception will be thrown
      *
      * @param verb
      */
@@ -765,7 +812,7 @@ public abstract class BaseOAIResource extends AbstractResource {
 
         try {
             HstRequestContext requestContext = getRequestContext(request);
-            Mount siteMount = requestContext.getMount(MOUNT_ALIAS_SITE);
+            Mount siteMount = requestContext.getResolvedMount().getMount();
             if (siteMount == null) {
                 log.error("Couldn't find site mount for rest service");
                 return null;
@@ -781,4 +828,5 @@ public abstract class BaseOAIResource extends AbstractResource {
         return null;
 
     }
+
 }

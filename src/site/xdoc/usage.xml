@@ -26,7 +26,7 @@
       <subsection name="Prerequisites">
         <p>
           These instructions assume that you have a Hippo project based on the Hippo project archetype, i.e.
-          a Maven multiproject consisting of three submodules: cms, site and content.
+          a Maven multiproject consisting of three submodules: cms, site and content/bootstrap.
 
         </p>
         <p>
@@ -51,7 +51,21 @@
               <![CDATA[
 <dependency>
  <groupId>org.onehippo.forge</groupId>
- <artifactId>oai-pmh-provider</artifactId>
+ <artifactId>oai-pmh-provider-hst</artifactId>
+</dependency>
+                        ]]>
+            </source>
+          </li>
+          <li>
+            <p>Add to the pom.xml of your
+              <i>cms</i>
+              module:
+            </p>
+            <source>
+              <![CDATA[
+<dependency>
+ <groupId>org.onehippo.forge</groupId>
+ <artifactId>oai-pmh-provider-repository</artifactId>
 </dependency>
                         ]]>
             </source>
@@ -60,14 +74,14 @@
         </ol>
       </subsection>
       <subsection name="Configure your content beans">
-        <p>first implement from OAIBean</p>
+        <p>first implement the org.onehippo.forge.oaipmh.provider.api.OAIBean</p>
         <p>There are 3 types of annotations you should use in your content beans:</p>
         <ol>
-          <li>OAI: for setting the setName</li>
+          <li>OAI: for setting the setName on the bean class</li>
           <li>OAIDelegate: for delegating different metadata prefixes ("dc" etc)</li>
           <li>OAIIdentifier: for generating the record identifier</li>
-
-
+          <li> <a href="">example newsdocument: </a></li>
+          <li> <a href="">example textdocument: </a></li>
         </ol>
       </subsection>
       <subsection name="Extending the org.onehippo.forge.oaipmh.provider.api.BaseOAIResource">

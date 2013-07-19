@@ -101,9 +101,9 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link MetadataType }
      */
-    public MetadataType createMetadataType() {
-        return new MetadataType();
-    }
+//    public MetadataType createMetadataType() {
+//        return new MetadataType();
+//    }
 
     /**
      * Create an instance of {@link IdentifyType }

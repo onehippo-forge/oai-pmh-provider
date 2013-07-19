@@ -1,4 +1,4 @@
-package org.onehippo.forge.oaipmh.provider;
+package org.onehippo.forge.oaipmh.provider.resource;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -8,22 +8,29 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.jcr.Session;
+
 import org.apache.commons.lang.StringUtils;
+import org.hippoecm.hst.configuration.hosting.Mount;
 import org.hippoecm.hst.content.beans.Node;
+import org.hippoecm.hst.content.beans.manager.ObjectConverter;
 import org.hippoecm.hst.content.beans.query.HstQuery;
 import org.hippoecm.hst.content.beans.query.exceptions.FilterException;
 import org.hippoecm.hst.content.beans.query.filter.Filter;
 import org.hippoecm.hst.content.beans.query.filter.NodeTypeFilter;
 import org.hippoecm.hst.content.beans.query.filter.PrimaryNodeTypeFilterImpl;
+import org.hippoecm.hst.core.request.HstRequestContext;
 import org.onehippo.forge.oaipmh.provider.api.BaseOAIResource;
 import org.onehippo.forge.oaipmh.provider.api.OAIBean;
 import org.onehippo.forge.oaipmh.provider.api.OAIException;
 import org.onehippo.forge.oaipmh.provider.api.RestContext;
+import org.onehippo.forge.oaipmh.provider.api.Identify;
 import org.onehippo.forge.oaipmh.provider.model.oai.DeletedRecordType;
 import org.onehippo.forge.oaipmh.provider.model.oai.GranularityType;
 import org.onehippo.forge.oaipmh.provider.model.oai.IdentifyType;
 import org.onehippo.forge.oaipmh.provider.model.oai.ListType;
 import org.onehippo.forge.oaipmh.provider.model.oai.MetadataFormatType;
+import org.onehippo.forge.oaipmh.provider.model.oai.MetadataType;
 import org.onehippo.forge.oaipmh.provider.model.oai.OAIPMHerrorcodeType;
 import org.onehippo.forge.oaipmh.provider.model.oai.ResumptionTokenType;
 import org.slf4j.Logger;
@@ -32,37 +39,69 @@ import org.slf4j.LoggerFactory;
 /**
  * @version "$Id$"
  */
-public class DefaultOAIPMResource extends BaseOAIResource {
+public class OAIPMHResource extends BaseOAIResource {
 
-    private static Logger log = LoggerFactory.getLogger(DefaultOAIPMResource.class);
+    protected static final String THE_VALUE_OF_THE_RESUMPTION_TOKEN_ARGUMENT_IS_INVALID_OR_EXPIRED = "The value of the resumptionToken argument is invalid or expired.";
+    protected static final String OAI_IDENTIFIER = "oai:identifier";
+    private static Logger log = LoggerFactory.getLogger(OAIPMHResource.class);
+
+    protected static final Pattern TOKEN_PATTERN = Pattern.compile("tx([0-9]+)xmx([a-z[0-9]]+)xpx(.*)frm(.*)utl(.*)");
+    private static final String RESUMPTION_TOKEN_FORMAT = "tx%sxmx%sxpx%sfrm%sutl%s";
+
+    protected static final String PROTOCOL_VERSION = "2.0";
+    protected static final String ADMIN_EMAIL = "k.salic@onehippo.com";
+    protected static final String REPOSITORY_NAME = "Test repository";
+
+    @Override
+    protected MetadataType createMetadataType() {
+        return new MetadataType();
+    }
 
     @Override
     protected List<MetadataFormatType> getMetadataFormatTypes() {
         final List<MetadataFormatType> metaDataFormatType = new ArrayList<MetadataFormatType>();
+        final MetadataFormatType dc = new MetadataFormatType();
+        dc.setMetadataPrefix("oai_dc");
+        dc.setSchema("http://www.openarchives.org/OAI/2.0/oai_dc.xsd");
+        dc.setMetadataNamespace("http://www.openarchives.org/OAI/2.0/oai_dc/");
+        metaDataFormatType.add(dc);
+
         final MetadataFormatType lom = new MetadataFormatType();
         lom.setMetadataPrefix("lom");
         lom.setSchema("http://www.imsglobal.org/xsd/imsmd_v1p2p4.xsd");
         lom.setMetadataNamespace("http://www.imsglobal.org/xsd/imsmd_v1p2");
         metaDataFormatType.add(lom);
-        final MetadataFormatType dc = new MetadataFormatType();
-        dc.setMetadataPrefix("dc");
-        dc.setSchema("");
-        dc.setMetadataNamespace("");
-        metaDataFormatType.add(dc);
+
         return metaDataFormatType;
     }
 
-    protected static final String ADMIN_EMAIL = "k.salic@onehippo.com";
-    protected static final String REPOSITORY_NAME = "HIPPO repository";
-    protected static final String PROTOCOL_VERSION = "2.0";
-
+    /**
+     * TODO create configurable
+     *
+     * @param context
+     * @return
+     */
     @Override
     public IdentifyType getIdentifyType(final RestContext context) {
         final IdentifyType identifyType = new IdentifyType();
-        identifyType.setRepositoryName(REPOSITORY_NAME);
+        final HstRequestContext hstRequestContext = context.getHstRequestContext();
+        final Mount mount = hstRequestContext.getResolvedMount().getMount();
+        final String property = mount.getProperty("identify.path");
+        if(StringUtils.isNotEmpty(property)){
+            try {
+                final Session session = hstRequestContext.getSession();
+                if(session.itemExists(property)){
+                    final ObjectConverter objectConverter = getObjectConverter(hstRequestContext);
+                    final Identify identify = (Identify) objectConverter.getObject(session, property);
+                    identifyType.setRepositoryName(identify.getRepositoryName());
+                    identifyType.getAdminEmail().add(identify.getAdminEmail());
+                }
+            } catch (Exception e) {
+                log.error("Exception happened while trying to retrieve identifiable document definition", e);
+            }
+        }
         identifyType.setBaseURL(resolveRequestUrl(context));
         identifyType.setProtocolVersion(PROTOCOL_VERSION);
-        identifyType.getAdminEmail().add(ADMIN_EMAIL);
         final Calendar earliestDate = Calendar.getInstance();
         earliestDate.setTime(new Date(0));
         identifyType.setEarliestDatestamp(getDate(earliestDate));
@@ -71,9 +110,6 @@ public class DefaultOAIPMResource extends BaseOAIResource {
         return identifyType;
     }
 
-    protected static final Pattern TOKEN_PATTERN = Pattern.compile("tx([0-9]+)xmx([a-z[0-9]]+)xpx(.*)frm(.*)utl(.*)");
-    private static final String RESUMPTION_TOKEN_FORMAT = "tx%sxmx%sxpx%sfrm%sutl%s";
-
     @Override
     public boolean validResumptionToken(final String resumptionToken) {
         return TOKEN_PATTERN.matcher(resumptionToken).matches();
@@ -81,7 +117,7 @@ public class DefaultOAIPMResource extends BaseOAIResource {
 
     @Override
     public int getPageSize() {
-        return 100;
+        return 10;
     }
 
     @Override
@@ -92,8 +128,8 @@ public class DefaultOAIPMResource extends BaseOAIResource {
             final String from = getFromResumptionTokenOrUseDefaultNull(resumptionToken, 4, null);
             final String until = getFromResumptionTokenOrUseDefaultNull(resumptionToken, 5, null);
 
-            Calendar fromCalendar;
-            Calendar untilCalendar;
+            final Calendar fromCalendar;
+            final Calendar untilCalendar;
             try {
                 fromCalendar = getSimpleDate(from);
                 untilCalendar = getSimpleDate(until);
@@ -106,21 +142,24 @@ public class DefaultOAIPMResource extends BaseOAIResource {
                 }
             }
             if (fromCalendar != null) {
-                filter.addGreaterOrEqualThan(HIPPOSTDPUBWF_PUBLICATION_DATE, fromCalendar);
+                //noinspection HippoHstFilterInspection
+                filter.addGreaterOrEqualThan(OAI_PUBDATE, getPublicationDateAsString(fromCalendar));
                 query.setFilter(filter);
             }
             if (untilCalendar != null) {
-                filter.addLessOrEqualThan(HIPPOSTDPUBWF_PUBLICATION_DATE, untilCalendar);
+                //noinspection HippoHstFilterInspection
+                filter.addLessOrEqualThan(OAI_PUBDATE, getPublicationDateAsString(untilCalendar));
                 query.setFilter(filter);
             }
-            filter.addGreaterThan(HIPPOSTDPUBWF_PUBLICATION_DATE, calendarFromResumptionToken);
+            //noinspection HippoHstFilterInspection
+            filter.addGreaterThan(OAI_PUBDATE, getPublicationDateAsString(calendarFromResumptionToken));
         } catch (FilterException e) {
-            throw new OAIException(OAIPMHerrorcodeType.BAD_RESUMPTION_TOKEN, "The value of the resumptionToken argument is invalid or expired.");
+            throw new OAIException(OAIPMHerrorcodeType.BAD_RESUMPTION_TOKEN, THE_VALUE_OF_THE_RESUMPTION_TOKEN_ARGUMENT_IS_INVALID_OR_EXPIRED);
         }
         final String setFromResumptionToken = getSetFromResumptionToken(resumptionToken);
         if (StringUtils.isNotEmpty(setFromResumptionToken)) {
             if (!SETMAP.containsKey(setFromResumptionToken)) {
-                throw new OAIException(OAIPMHerrorcodeType.BAD_RESUMPTION_TOKEN, "The value of the resumptionToken argument is invalid or expired.");
+                throw new OAIException(OAIPMHerrorcodeType.BAD_RESUMPTION_TOKEN, THE_VALUE_OF_THE_RESUMPTION_TOKEN_ARGUMENT_IS_INVALID_OR_EXPIRED);
             }
             final Class<? extends OAIBean> aClass = SETMAP.get(setFromResumptionToken);
             if (aClass.isAnnotationPresent(Node.class)) {
@@ -143,6 +182,38 @@ public class DefaultOAIPMResource extends BaseOAIResource {
         listType.setResumptionToken(resumptionTokenType);
     }
 
+    @Override
+    protected void applyGetRecordFilter(final HstQuery query, final String identifier, final String metaPrefix) throws OAIException {
+        if (StringUtils.isEmpty(identifier)) {
+            throw new OAIException(OAIPMHerrorcodeType.ID_DOES_NOT_EXIST, "The value of the identifier argument is unknown or illegal in this repository.");
+        }
+        final Filter filter = getFilter(query);
+        try {
+            //noinspection HippoHstFilterInspection
+            filter.addEqualTo(OAI_IDENTIFIER, identifier);
+        } catch (FilterException e) {
+            log.error("Filter exception happed while trying to retrieve single record by ID:" + identifier, e);
+        }
+        query.setFilter(filter);
+    }
+
+    @Override
+    protected String getMetadataPrefixFromResumptionToken(final String resumptionToken) throws OAIException {
+        final Matcher matcher = TOKEN_PATTERN.matcher(resumptionToken);
+        if (matcher.matches()) {
+            final String metadataPrefix = matcher.group(2);
+
+            return metadataPrefix;
+
+        }
+        throw new OAIException(OAIPMHerrorcodeType.BAD_RESUMPTION_TOKEN, THE_VALUE_OF_THE_RESUMPTION_TOKEN_ARGUMENT_IS_INVALID_OR_EXPIRED);
+    }
+
+
+    /**
+     * UTILS
+     */
+
     public String getFromResumptionTokenOrUseDefault(String resumptionToken, int group, String defaultString) {
         if (StringUtils.isNotEmpty(resumptionToken)) {
             final Matcher matcher = TOKEN_PATTERN.matcher(resumptionToken);
@@ -163,32 +234,6 @@ public class DefaultOAIPMResource extends BaseOAIResource {
         return defaultString;
     }
 
-    @Override
-    protected void applyGetRecordFilter(final HstQuery query, final String identifier, final String metaPrefix) throws OAIException {
-        if (StringUtils.isEmpty(identifier)) {
-            throw new OAIException(OAIPMHerrorcodeType.ID_DOES_NOT_EXIST, "The value of the identifier argument is unknown or illegal in this repository.");
-        }
-        final Filter filter = getFilter(query);
-        try {
-            filter.addEqualTo("oai:identifier", identifier);
-        } catch (FilterException e) {
-            log.error("", e);
-        }
-        query.setFilter(filter);
-    }
-
-    @Override
-    protected String getMetadataPrefixFromResumptionToken(final String resumptionToken) throws OAIException {
-        final Matcher matcher = TOKEN_PATTERN.matcher(resumptionToken);
-        if (matcher.matches()) {
-            final String metadataPrefix = matcher.group(2);
-
-            return metadataPrefix;
-
-        }
-        throw new OAIException(OAIPMHerrorcodeType.BAD_RESUMPTION_TOKEN, "The value of the resumptionToken argument is invalid or expired.");
-    }
-
     protected Calendar getCalendarFromResumptionToken(final String resumptionToken) throws OAIException {
         final Matcher matcher = TOKEN_PATTERN.matcher(resumptionToken);
         if (matcher.matches()) {
@@ -198,7 +243,7 @@ public class DefaultOAIPMResource extends BaseOAIResource {
             return calendar;
 
         }
-        throw new OAIException(OAIPMHerrorcodeType.BAD_RESUMPTION_TOKEN, "The value of the resumptionToken argument is invalid or expired.");
+        throw new OAIException(OAIPMHerrorcodeType.BAD_RESUMPTION_TOKEN, THE_VALUE_OF_THE_RESUMPTION_TOKEN_ARGUMENT_IS_INVALID_OR_EXPIRED);
     }
 
     protected String getSetFromResumptionToken(final String resumptionToken) throws OAIException {
@@ -209,4 +254,5 @@ public class DefaultOAIPMResource extends BaseOAIResource {
         }
         return null;
     }
+
 }
