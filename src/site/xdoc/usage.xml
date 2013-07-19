@@ -223,7 +223,8 @@
           <a href="http://wiki.surf.nl/display/nllom/Home">http://wiki.surf.nl/display/nllom/Home</a>
         </p>
         <p>All elements and attributes are already provided in the oai-pmh project under the following package: <a href="https://forge.onehippo.org/svn/oaipmh/trunk/hst/src/main/java/org/onehippo/forge/oaipmh/provider/model/oai/edurep/lom/"> package</a></p>
-        <p>Plus we also provide a helper class which should get you going: <a href="https://forge.onehippo.org/svn/oaipmh/trunk/hst/src/main/java/org/onehippo/forge/oaipmh/provider/model/oai/edurep/lom/NLLom.java">NLLOM</a></p>
+        <p>Plus we also provide a helper class which should get you going: <a href="https://forge.onehippo.org/svn/oaipmh/trunk/hst/src/main/java/org/onehippo/forge/oaipmh/provider/model/oai/edurep/lom/NLLom.java">NLLOM</a> in combination with
+          <a href="https://forge.onehippo.org/svn/oaipmh/oai-pmh-demo/trunk/site/src/main/java/org/onehippo/forge/oaipmh/beans/NewsDocument.java"> newsdocument:</a></p>
         <p>Be aware you probably need to check your own metadata configuration for mandatory elements and properties</p>
       </subsection>
     </section>
