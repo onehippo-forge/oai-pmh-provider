@@ -1,5 +1,6 @@
 package org.onehippo.forge.oaipmh.provider.api;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
@@ -27,6 +28,7 @@ import javax.xml.ws.WebServiceException;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.reflect.ClassPath;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
@@ -41,7 +43,6 @@ import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.content.beans.standard.HippoBeanIterator;
 import org.hippoecm.hst.core.request.HstRequestContext;
 import org.hippoecm.hst.jaxrs.services.AbstractResource;
-import org.hippoecm.repository.util.DateTools;
 import org.onehippo.forge.oaipmh.provider.model.oai.GetRecordType;
 import org.onehippo.forge.oaipmh.provider.model.oai.HeaderType;
 import org.onehippo.forge.oaipmh.provider.model.oai.IdentifyType;
@@ -295,9 +296,10 @@ public abstract class BaseOAIResource extends AbstractResource {
             .add("resumptionToken")
             .build();
 
-    private void loadListSets(final RestContext context) {
-        final List<Class<? extends HippoBean>> annotatedClasses = getAnnotatedClasses(context.getHstRequestContext());
-        for (Class<? extends HippoBean> clazz : annotatedClasses) {
+    private void loadListSets(final RestContext context) throws IOException, ClassNotFoundException {
+        final List<Class<?>> annotatedClasses = new ArrayList<>();
+        includeAnnotatedTopLevelClassesFromBeansPackage(annotatedClasses);
+        for (Class<?> clazz : annotatedClasses) {
             if (OAIBean.class.isAssignableFrom(clazz) && !clazz.equals(OAIBean.class)) {
                 if (clazz.isAnnotationPresent(Node.class)) {
                     SETMAP.put(StringUtils.substringAfter(clazz.getAnnotation(Node.class).jcrType(), ":"), (Class<? extends OAIBean>) clazz);
@@ -306,12 +308,13 @@ public abstract class BaseOAIResource extends AbstractResource {
         }
     }
 
-    private void listSets(final RestContext context, final OAIPMHtype oaipmHtype) throws OAIException {
+    private void listSets(final RestContext context, final OAIPMHtype oaipmHtype) throws OAIException, IOException, ClassNotFoundException {
         processBase(context, LISTSETS_ALLOWED);
         final ListSetsType listSetsType = new ListSetsType();
         final List<SetType> setTypes = listSetsType.getSet();
-        final List<Class<? extends HippoBean>> annotatedClasses = getAnnotatedClasses(context.getHstRequestContext());
-        for (Class<? extends HippoBean> clazz : annotatedClasses) {
+        final List<Class<?>> annotatedClasses = new ArrayList<>();
+        includeAnnotatedTopLevelClassesFromBeansPackage(annotatedClasses);
+        for (Class<?> clazz : annotatedClasses) {
             if (OAIBean.class.isAssignableFrom(clazz) && !clazz.equals(OAIBean.class)) {
                 if (clazz.isAnnotationPresent(Node.class)) {
                     final SetType setType = new SetType();
@@ -327,6 +330,29 @@ public abstract class BaseOAIResource extends AbstractResource {
             }
         }
         oaipmHtype.setListSets(listSetsType);
+    }
+
+    private String beansPackage;
+
+    public String getBeansPackage() {
+        return beansPackage;
+    }
+
+    public void setBeansPackage(final String beansPackage) {
+        this.beansPackage = beansPackage;
+    }
+
+    private void includeAnnotatedTopLevelClassesFromBeansPackage(final List<Class<?>> allClasses)
+            throws IOException, ClassNotFoundException {
+        if (!Strings.isNullOrEmpty(beansPackage)) {
+            final ClassPath classPath = ClassPath.from(getClass().getClassLoader());
+            final ImmutableSet<ClassPath.ClassInfo> topLevelClasses = classPath.getTopLevelClassesRecursive(beansPackage);
+            for (ClassPath.ClassInfo topLevelClass : topLevelClasses) {
+                final String name = topLevelClass.getName();
+                final Class<?> clazz = Class.forName(name);
+                allClasses.add(clazz);
+            }
+        }
     }
 
 
@@ -355,7 +381,7 @@ public abstract class BaseOAIResource extends AbstractResource {
      * @throws OAIException
      * @throws QueryException
      */
-    private void listRecords(final RestContext context, final OAIPMHtype oaipmHtype, String metaPrefix, final String resumptionToken, final String set, final String from, final String until) throws OAIException, QueryException {
+    private void listRecords(final RestContext context, final OAIPMHtype oaipmHtype, String metaPrefix, final String resumptionToken, final String set, final String from, final String until) throws OAIException, QueryException, IOException, ClassNotFoundException {
         listRecordsOrIdentifiers(context, oaipmHtype, metaPrefix, resumptionToken, set, from, until, false);
     }
 
@@ -375,11 +401,11 @@ public abstract class BaseOAIResource extends AbstractResource {
      * @throws OAIException
      * @throws QueryException
      */
-    private void listIdentifiers(final RestContext context, final OAIPMHtype oaipmHtype, final String metaPrefix, final String resumptionToken, final String set, final String from, final String until) throws OAIException, QueryException {
+    private void listIdentifiers(final RestContext context, final OAIPMHtype oaipmHtype, final String metaPrefix, final String resumptionToken, final String set, final String from, final String until) throws OAIException, QueryException, IOException, ClassNotFoundException {
         listRecordsOrIdentifiers(context, oaipmHtype, metaPrefix, resumptionToken, set, from, until, true);
     }
 
-    private void listRecordsOrIdentifiers(final RestContext context, final OAIPMHtype oaipmHtype, String metaPrefix, final String resumptionToken, final String set, String from, String until, final boolean identfiersOnly) throws OAIException, QueryException {
+    private void listRecordsOrIdentifiers(final RestContext context, final OAIPMHtype oaipmHtype, String metaPrefix, final String resumptionToken, final String set, String from, String until, final boolean identfiersOnly) throws OAIException, QueryException, IOException, ClassNotFoundException {
         processBase(context, LISTRECORDIDENTIFIER_ALLOWED);
         boolean useResumptionToken = false;
         if (StringUtils.isNotEmpty(resumptionToken)) {

@@ -56,6 +56,7 @@ hst/src/main/java/org/onehippo/forge/oaipmh/provider/model/oai/edurep/lom/ValueT
 hst/src/main/java/org/onehippo/forge/oaipmh/provider/model/oai/edurep/lom/VersionType.java -text
 hst/src/main/java/org/onehippo/forge/oaipmh/provider/model/oai/edurep/lom/msmd_v1p2p4.xsd -text
 hst/src/main/java/org/onehippo/forge/oaipmh/provider/model/oai/edurep/lom/package-info.java -text
+hst/src/main/java/org/onehippo/forge/oaipmh/provider/provider/JaxbContextProvider.java -text
 hst/src/main/java/org/onehippo/forge/oaipmh/provider/resource/OAIPMHResource.java -text
 hst/src/main/resources/org/onehippo/forge/oaipmh/provider/resource/oai-pmh.xml -text
 repository/pom.xml -text

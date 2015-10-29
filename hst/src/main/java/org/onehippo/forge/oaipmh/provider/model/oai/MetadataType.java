@@ -40,10 +40,10 @@ import org.onehippo.forge.oaipmh.provider.model.oai.edurep.lom.LomType;
 public class MetadataType {
 
 
-    @XmlElementRefs({
-            @XmlElementRef(type = LomType.class),
-            @XmlElementRef(type = OaiDcType.class)
-    })
+//    @XmlElementRefs({
+//            @XmlElementRef(type = LomType.class),
+//            @XmlElementRef(type = OaiDcType.class)
+//    })
     @XmlAnyElement(lax = true)
     protected Object any;
 
