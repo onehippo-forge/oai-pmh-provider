@@ -350,7 +350,9 @@ public abstract class BaseOAIResource extends AbstractResource {
             for (ClassPath.ClassInfo topLevelClass : topLevelClasses) {
                 final String name = topLevelClass.getName();
                 final Class<?> clazz = Class.forName(name);
-                allClasses.add(clazz);
+                if (clazz.isAnnotationPresent(OAI.class)) {
+                    allClasses.add(clazz);
+                }
             }
         }
     }
