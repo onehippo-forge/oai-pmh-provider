@@ -46,33 +46,6 @@
     </property>
   </bean>
 
-  <!--<bean id="jaxrsRestOAIPMHResourceProviders" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">-->
-    <!--<property name="targetClass" value="org.apache.commons.collections.ListUtils" />-->
-    <!--<property name="targetMethod" value="union" />-->
-    <!--<property name="arguments">-->
-      <!--<list>-->
-        <!--<ref bean="customRestOAIPMHResourceProviders" />-->
-      <!--</list>-->
-    <!--</property>-->
-  <!--</bean>-->
-
-  <!--<bean id="customRestPlainResourceProviders" class="org.springframework.beans.factory.config.ListFactoryBean">-->
-    <!--<property name="sourceList">-->
-      <!--<list>-->
-        <!--<bean class="org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider">-->
-          <!--<constructor-arg>-->
-            <!--<bean class="de.provinzial.rest.MenuResource"/>-->
-          <!--</constructor-arg>-->
-        <!--</bean>-->
-        <!--<bean class="org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider">-->
-          <!--<constructor-arg>-->
-            <!--<bean class="de.provinzial.rest.OAIPMHResource"/>-->
-          <!--</constructor-arg>-->
-        <!--</bean>-->
-      <!--</list>-->
-    <!--</property>-->
-  <!--</bean>-->
-
   <bean id="jaxrsRestOAIPMHServiceInvoker" class="org.hippoecm.hst.jaxrs.cxf.AroundProcessableJAXRSInvoker">
     <property name="invokerPreprocessors">
       <list>
