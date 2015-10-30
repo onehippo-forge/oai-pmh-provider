@@ -34,6 +34,8 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
 
 import org.onehippo.forge.oaipmh.provider.model.oai.OAIPMHtype;
+import org.onehippo.forge.oaipmh.provider.model.oai.dc.OaiDcType;
+import org.onehippo.forge.oaipmh.provider.model.oai.edurep.lom.LomType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,6 +64,8 @@ public class JaxbContextProvider implements ContextResolver<JAXBContext> {
                     allClasses.addAll(classes);
                 }
                 allClasses.add(OAIPMHtype.class);
+                allClasses.add(OaiDcType.class);
+                allClasses.add(LomType.class);
                 context = JAXBContext.newInstance(allClasses.toArray(new Class[allClasses.size()]));
             } catch (JAXBException | IOException | ClassNotFoundException e) {
                 log.error("Error creating JAXB context:", e);

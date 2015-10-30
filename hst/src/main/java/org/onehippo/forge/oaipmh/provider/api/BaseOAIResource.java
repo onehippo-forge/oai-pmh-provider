@@ -468,7 +468,7 @@ public abstract class BaseOAIResource extends AbstractResource {
             processQueryBasedOnResumptionToken(query, resumptionToken);
         }
         query.setLimit(getPageSize());
-        query.addOrderByAscending(HIPPOSTDPUBWF_PUBLICATION_DATE);
+        query.addOrderByDescending(HIPPOSTDPUBWF_PUBLICATION_DATE);
         final HstQueryResult queryResult = query.execute();
         final int totalSize = queryResult.getTotalSize();
         if (totalSize <= 0) {
