@@ -152,7 +152,8 @@ public class OAIPMHResource extends BaseOAIResource {
                 query.setFilter(filter);
             }
             //noinspection HippoHstFilterInspection
-            filter.addGreaterThan(OAI_PUBDATE, getPublicationDateAsString(calendarFromResumptionToken));
+            //filter.addGreaterThan(OAI_PUBDATE, getPublicationDateAsString(calendarFromResumptionToken));
+            filter.addLessThan(OAI_PUBDATE, getPublicationDateAsString(calendarFromResumptionToken));
         } catch (FilterException e) {
             throw new OAIException(OAIPMHerrorcodeType.BAD_RESUMPTION_TOKEN, THE_VALUE_OF_THE_RESUMPTION_TOKEN_ARGUMENT_IS_INVALID_OR_EXPIRED);
         }
