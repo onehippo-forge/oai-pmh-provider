@@ -92,7 +92,7 @@ public abstract class BaseOAIResource extends AbstractResource {
     protected static final String HIPPOSTDPUBWF_PUBLICATION_DATE = "hippostdpubwf:publicationDate";
     protected static final String OAI_PUBDATE = "oai:pubdate";
 
-    private static final String OAI_PUBLICATION_DATE_FORMAT = "yyyyMMddhhmmss";
+    protected static final String OAI_PUBLICATION_DATE_FORMAT = "yyyyMMddHHmmss";
 
     private static final String BAD_VERB_NO_VERB = "The request includes illegal arguments, is missing required arguments, includes a repeated argument, or values for arguments have an illegal syntax. No \"verb\" argument found.";
     private static final String BAD_VERB_NOT_LEGAL = "Value of the verb argument is not a legal OAI-PMH verb, the verb argument is missing, or the verb argument is repeated.";
@@ -101,6 +101,7 @@ public abstract class BaseOAIResource extends AbstractResource {
     protected static final String SIMPLEFORMAT = "yyyy-MM-dd";
     protected static final SimpleDateFormat SIMPLEFORMATTER = new SimpleDateFormat(SIMPLEFORMAT);
     protected static final SimpleDateFormat FORMATTER = new SimpleDateFormat(DATEFORMAT);
+    protected static final SimpleDateFormat OAI_DATE_FORMATTER = new SimpleDateFormat(OAI_PUBLICATION_DATE_FORMAT);
 
     protected static final Set<String> VERB_VALUES = new ImmutableSet.Builder<String>()
             .add("Identify")

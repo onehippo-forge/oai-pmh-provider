@@ -1,6 +1,7 @@
 package org.onehippo.forge.oaipmh.provider.resource;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,10 +22,10 @@ import org.hippoecm.hst.content.beans.query.filter.NodeTypeFilter;
 import org.hippoecm.hst.content.beans.query.filter.PrimaryNodeTypeFilterImpl;
 import org.hippoecm.hst.core.request.HstRequestContext;
 import org.onehippo.forge.oaipmh.provider.api.BaseOAIResource;
+import org.onehippo.forge.oaipmh.provider.api.Identify;
 import org.onehippo.forge.oaipmh.provider.api.OAIBean;
 import org.onehippo.forge.oaipmh.provider.api.OAIException;
 import org.onehippo.forge.oaipmh.provider.api.RestContext;
-import org.onehippo.forge.oaipmh.provider.api.Identify;
 import org.onehippo.forge.oaipmh.provider.model.oai.DeletedRecordType;
 import org.onehippo.forge.oaipmh.provider.model.oai.GranularityType;
 import org.onehippo.forge.oaipmh.provider.model.oai.IdentifyType;
@@ -87,10 +88,10 @@ public class OAIPMHResource extends BaseOAIResource {
         final HstRequestContext hstRequestContext = context.getHstRequestContext();
         final Mount mount = hstRequestContext.getResolvedMount().getMount();
         final String property = mount.getProperty("identify.path");
-        if(StringUtils.isNotEmpty(property)){
+        if (StringUtils.isNotEmpty(property)) {
             try {
                 final Session session = hstRequestContext.getSession();
-                if(session.itemExists(property)){
+                if (session.itemExists(property)) {
                     final ObjectConverter objectConverter = getObjectConverter(hstRequestContext);
                     final Identify identify = (Identify) objectConverter.getObject(session, property);
                     identifyType.setRepositoryName(identify.getRepositoryName());
@@ -175,7 +176,7 @@ public class OAIPMHResource extends BaseOAIResource {
     @Override
     protected void processResumptionToken(final RestContext context, final ListType listType, final String resumptionToken, final Calendar lastKnownPublicationDate, final String metaPrefix, final String set, final String from, final String until, final int totalSize) throws OAIException {
         final ResumptionTokenType resumptionTokenType = new ResumptionTokenType();
-        final long time = lastKnownPublicationDate.getTimeInMillis();
+        final String time = OAI_DATE_FORMATTER.format(lastKnownPublicationDate.getTime());
 
         String resToken = String.format(RESUMPTION_TOKEN_FORMAT, time, getFromResumptionTokenOrUseDefault(resumptionToken, 2, metaPrefix), getFromResumptionTokenOrUseDefault(resumptionToken, 3, set), getFromResumptionTokenOrUseDefault(resumptionToken, 4, from), getFromResumptionTokenOrUseDefault(resumptionToken, 5, until));
         resumptionTokenType.setValue(resToken);
@@ -235,12 +236,19 @@ public class OAIPMHResource extends BaseOAIResource {
         return defaultString;
     }
 
+
     protected Calendar getCalendarFromResumptionToken(final String resumptionToken) throws OAIException {
         final Matcher matcher = TOKEN_PATTERN.matcher(resumptionToken);
         if (matcher.matches()) {
-            final String timeInMillis = matcher.group(1);
+            final String pubDateString = matcher.group(1);
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(Long.valueOf(timeInMillis));
+            Date parse = null;
+            try {
+                parse = OAI_DATE_FORMATTER.parse(pubDateString);
+            } catch (ParseException e) {
+                throw new OAIException(OAIPMHerrorcodeType.BAD_RESUMPTION_TOKEN, THE_VALUE_OF_THE_RESUMPTION_TOKEN_ARGUMENT_IS_INVALID_OR_EXPIRED);
+            }
+            calendar.setTime(parse);
             return calendar;
 
         }
