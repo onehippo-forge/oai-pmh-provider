@@ -23,7 +23,7 @@ public class OAIPMHDateFunction extends DerivedDataFunction {
 
     private static final String PUBLICATION_DATE = "publicationDate";
     private static final String OAI_PUBLICATION_DATE = "oaipublicationDate";
-    private static final String DATE_FORMAT = "yyyyMMddhhmmss";
+    private static final String DATE_FORMAT = "yyyyMMddHHmmss";
 
     @Override
     public Map<String, Value[]> compute(final Map<String, Value[]> parameters) {
