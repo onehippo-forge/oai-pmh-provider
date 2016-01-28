@@ -518,7 +518,7 @@ public abstract class BaseOAIResource extends AbstractResource {
 
         final int totalSize = queryResult.getTotalSize();
         if (totalSize > getPageSize()) {
-            processResumptionToken(context, listIdentifiersType, resumptionToken, lastKnownPublicationDate, metaPrefix, set, from, until);
+            processResumptionToken(context, listIdentifiersType, resumptionToken, lastKnownPublicationDate, metaPrefix, set, from, until, totalSize);
         }
     }
 
@@ -566,7 +566,7 @@ public abstract class BaseOAIResource extends AbstractResource {
 
         final int totalSize = queryResult.getTotalSize();
         if (totalSize > getPageSize()) {
-            processResumptionToken(context, listRecordType, resumptionToken, lastKnownPublicationDate, metaPrefix, set, from, until);
+            processResumptionToken(context, listRecordType, resumptionToken, lastKnownPublicationDate, metaPrefix, set, from, until, totalSize);
         }
     }
 
@@ -628,7 +628,7 @@ public abstract class BaseOAIResource extends AbstractResource {
 
     protected abstract void processQueryBasedOnResumptionToken(final HstQuery query, final String resumptionToken) throws OAIException;
 
-    protected abstract void processResumptionToken(final RestContext context, final ListType listType, String resumptionToken, final Calendar lastKnownPublicationDate, final String metaPrefix, final String set, final String from, final String until) throws OAIException;
+    protected abstract void processResumptionToken(final RestContext context, final ListType listType, String resumptionToken, final Calendar lastKnownPublicationDate, final String metaPrefix, final String set, final String from, final String until, final int totalSize) throws OAIException;
 
     protected abstract void applyGetRecordFilter(final HstQuery query, final String identifier, final String metaPrefix) throws OAIException;
 

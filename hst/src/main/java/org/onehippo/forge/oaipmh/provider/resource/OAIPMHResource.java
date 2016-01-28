@@ -173,7 +173,7 @@ public class OAIPMHResource extends BaseOAIResource {
     }
 
     @Override
-    protected void processResumptionToken(final RestContext context, final ListType listType, final String resumptionToken, final Calendar lastKnownPublicationDate, final String metaPrefix, final String set, final String from, final String until) throws OAIException {
+    protected void processResumptionToken(final RestContext context, final ListType listType, final String resumptionToken, final Calendar lastKnownPublicationDate, final String metaPrefix, final String set, final String from, final String until, final int totalSize) throws OAIException {
         final ResumptionTokenType resumptionTokenType = new ResumptionTokenType();
         final long time = lastKnownPublicationDate.getTimeInMillis();
 
