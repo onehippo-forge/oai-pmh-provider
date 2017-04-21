@@ -1,0 +1,11 @@
+<'oaipmh.demo'='http://www.onehippo.org/oaipmh.demo/nt/1.0'>
+<'hippo'='http://www.onehippo.org/jcr/hippo/nt/2.0'>
+<'hippostd'='http://www.onehippo.org/jcr/hippostd/nt/2.0'>
+<'hippostdpubwf'='http://www.onehippo.org/jcr/hippostdpubwf/nt/1.0'>
+<'oai'='http://www.hippoecm.org/hst/nt/oai/1.0'>
+
+[oaipmh.demo:basedocument] > hippo:document, hippostd:publishableSummary, hippostdpubwf:document orderable
+
+[oaipmh.demo:textdocument] > oaipmh.demo:basedocument, hippostd:relaxed
+
+[oaipmh.demo:newsdocument] > oaipmh.demo:basedocument, hippostd:relaxed, oai:document
