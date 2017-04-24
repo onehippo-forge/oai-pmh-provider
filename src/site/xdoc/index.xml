@@ -3,7 +3,7 @@
   "-//Apache Software Foundation//DTD XDOC 1.0//EN"
   "http://maven.apache.org/dtd/xdoc_1_0.dtd">
 <!--
-  Copyright 2009-2012 Hippo
+  Copyright 2009-2017 Hippo
 
   Licensed under the Apache License, Version 2.0 (the  "License");
   you may not use this file except in compliance with the License.
@@ -25,17 +25,19 @@
     <section name="Introduction">
       <subsection name="What is OAI-PMH?">
         <p>
-          The Open Archives Initiative Protocol for Metadata Harvesting (referred to as the OAI-PMH in the remainder of this document) provides an application-independent interoperability framework based on metadata harvesting.
-
+          The Open Archives Initiative Protocol for Metadata Harvesting (referred to as the OAI-PMH in the remainder of
+          this document) provides an application-independent interoperability framework based on metadata harvesting.
         </p>
         <p>
-          <a href="http://www.openarchives.org/OAI/openarchivesprotocol.html">offical website</a>
+          See also the <a href="http://www.openarchives.org/pmh/">PMH section at the Open Archives Initiative website</a>.
         </p>
+      </subsection>
+      <subsection name="Code base on GitHub">
+        <p>The code of this project is on GitHub at <a href="https://github.com/onehippo-forge/oai-pmh-provider/">https://github.com/onehippo-forge/oai-pmh-provider/</a>.</p>
       </subsection>
       <subsection name="How can I use OAI-PMH provider in my project?">
         <p>
-          Follow the
-          <a href="usage.html">usage instructions!</a>
+          Follow the <a href="usage.html">usage instructions!</a>
         </p>
       </subsection>
       <subsection name="Supported versions and changes">
@@ -43,7 +45,7 @@
          The OAI-PMH plug-in has been build for hippo 7.8.3 and up.
         </p>
         <p>
-        Plugin version 2.01.01
+        Latest is plugin version 2.01.06 for Hippo 10.
         </p>
       </subsection>
     </section>

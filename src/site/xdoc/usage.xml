@@ -3,7 +3,7 @@
   "-//Apache Software Foundation//DTD XDOC 1.0//EN"
   "http://maven.apache.org/dtd/xdoc_1_0.dtd">
 <!--
-    Copyright 2009-2012 Hippo
+    Copyright 2009-2017 Hippo
     
     Licensed under the Apache License, Version 2.0 (the  "License");
     you may not use this file except in compliance with the License.
@@ -27,22 +27,19 @@
         <p>
           These instructions assume that you have a Hippo project based on the Hippo project archetype, i.e.
           a Maven multiproject consisting of three submodules: cms, site and content/bootstrap.
-
         </p>
         <p>
           You should know on how to use the
           <a href="http://www.onehippo.org/7_7/library/concepts/rest/restful-jax-rs-component-support-in-hst-2.html">HST jax-rs API</a>
         </p>
         <p>
-          You should know how the OAI-PMH protocol works;
-          <a href="http://www.openarchives.org/OAI/openarchivesprotocol.html">offical website</a>
+          You should know how the OAI-PMH protocol works; see the
+          <a href="http://www.openarchives.org/OAI/openarchivesprotocol.html">Protocol for Metadata Harvesting specification</a>
         </p>
       </subsection>
 
       <subsection name="Installation">
         <ol>
-
-
           <li>
             <p>Add to the pom.xml of your
               <i>cms</i>
@@ -53,7 +50,7 @@
 <dependency>
  <groupId>org.onehippo.forge</groupId>
  <artifactId>oai-pmh-provider-repository</artifactId>
- <version>2.01.01</version>
+ <version>2.01.06</version>
 </dependency>
                         ]]>
             </source>
@@ -68,7 +65,7 @@
 <dependency>
  <groupId>org.onehippo.forge</groupId>
  <artifactId>oai-pmh-provider-hst</artifactId>
- <version>2.01.01</version>
+ <version>2.01.06</version>
 </dependency>
                         ]]>
             </source>
@@ -101,10 +98,10 @@
           <li>@OAIDelegate: for delegating different metadata prefixes (we currently only support "dc_oai" and/or "lom")</li>
           <li>@OAIIdentifier: for generating the record identifier</li>
           <li>
-            <a href="https://forge.onehippo.org/svn/oaipmh/oai-pmh-demo/trunk/site/src/main/java/org/onehippo/forge/oaipmh/beans/NewsDocument.java">example newsdocument:</a>
+            <a href="https://github.com/onehippo-forge/oai-pmh-provider/tree/master/demo/site/src/main/java/org/onehippo/forge/oaipmh/beans/NewsDocument.java">example newsdocument:</a>
           </li>
           <li>
-            <a href="https://forge.onehippo.org/svn/oaipmh/oai-pmh-demo/trunk/site/src/main/java/org/onehippo/forge/oaipmh/beans/TextDocument.java">example textdocument:</a>
+            <a href="https://github.com/onehippo-forge/oai-pmh-provider/tree/master/demo/site/src/main/java/org/onehippo/forge/oaipmh/beans/TextDocument.java">example textdocument:</a>
           </li>
         </ol>
       </subsection>
@@ -224,13 +221,13 @@
       </subsection>
       <subsection name="EDUREP NLLOM">
         <p>Important for EDUREP!!</p>
-        <p>You should have the knowlegde about the used xml formats and which elements and attributes are mandatory for edurep NLLOM</p>
+        <p>You should have the knowledge about the used xml formats and which elements and attributes are mandatory for edurep NLLOM</p>
         <p>
           <a href="http://wiki.surf.nl/display/nllom/Home">http://wiki.surf.nl/display/nllom/Home</a>
         </p>
-        <p>All elements and attributes are already provided in the oai-pmh project under the following package: <a href="https://forge.onehippo.org/svn/oaipmh/trunk/hst/src/main/java/org/onehippo/forge/oaipmh/provider/model/oai/edurep/lom/"> package</a></p>
-        <p>Plus we also provide a helper class which should get you going: <a href="https://forge.onehippo.org/svn/oaipmh/trunk/hst/src/main/java/org/onehippo/forge/oaipmh/provider/model/oai/edurep/lom/NLLom.java">NLLOM</a> in combination with
-          <a href="https://forge.onehippo.org/svn/oaipmh/oai-pmh-demo/trunk/site/src/main/java/org/onehippo/forge/oaipmh/beans/NewsDocument.java"> newsdocument:</a></p>
+        <p>All elements and attributes are already provided in the oai-pmh project under the following package: <a href="https://github.com/onehippo-forge/oai-pmh-provider/tree/master/hst/src/main/java/org/onehippo/forge/oaipmh/provider/model/oai/edurep/lom/"> package</a></p>
+        <p>Plus we also provide a helper class which should get you going: <a href="https://github.com/onehippo-forge/oai-pmh-provider/tree/master/hst/src/main/java/org/onehippo/forge/oaipmh/provider/model/oai/edurep/lom/NLLom.java">NLLOM</a> in combination with
+          <a href="https://github.com/onehippo-forge/oai-pmh-provider/tree/master/demo/site/src/main/java/org/onehippo/forge/oaipmh/beans/NewsDocument.java"> newsdocument:</a></p>
         <p>Be aware you probably need to check your own metadata configuration for mandatory elements and properties</p>
       </subsection>
     </section>
