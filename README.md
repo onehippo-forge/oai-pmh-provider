@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/onehippo-forge/oai-pmh-provider.svg?branch=develop)](https://travis-ci.org/onehippo-forge/oai-pmh-provider)
 
 # Hippo OAI-PMH Provider
 
