@@ -1,0 +1,135 @@
+definitions:
+  config:
+    /hippo:namespaces/oai:
+      jcr:primaryType: hipposysedit:namespace
+      jcr:mixinTypes: ['mix:referenceable']
+      /identify:
+        jcr:primaryType: hipposysedit:templatetype
+        jcr:mixinTypes: ['mix:referenceable', 'editor:editable']
+        jcr:uuid: 329106c6-f2bb-4956-9f48-b5189d35faaf
+        /hipposysedit:nodetype:
+          jcr:primaryType: hippo:handle
+          jcr:uuid: 47f85168-750f-4151-840b-755bea5c20b2
+          /hipposysedit:nodetype:
+            jcr:primaryType: hipposysedit:nodetype
+            jcr:mixinTypes: ['hipposysedit:remodel']
+            jcr:uuid: b68306a0-60fd-4474-9da8-7a1929b82ae5
+            hipposysedit:node: true
+            hipposysedit:supertype: ['hippo:document', 'hippostd:relaxed', 'hippostdpubwf:document',
+              'hippotranslation:translated']
+            hipposysedit:uri: http://www.hippoecm.org/hst/nt/oai/1.0
+            /reponame:
+              jcr:primaryType: hipposysedit:field
+              hipposysedit:mandatory: false
+              hipposysedit:multiple: false
+              hipposysedit:ordered: false
+              hipposysedit:path: oai:reponame
+              hipposysedit:primary: false
+              hipposysedit:type: String
+              hipposysedit:validators: [non-empty, required]
+            /version:
+              jcr:primaryType: hipposysedit:field
+              hipposysedit:mandatory: false
+              hipposysedit:multiple: false
+              hipposysedit:ordered: false
+              hipposysedit:path: oai:version
+              hipposysedit:primary: false
+              hipposysedit:type: String
+            /email:
+              jcr:primaryType: hipposysedit:field
+              hipposysedit:mandatory: false
+              hipposysedit:multiple: false
+              hipposysedit:ordered: false
+              hipposysedit:path: oai:email
+              hipposysedit:primary: false
+              hipposysedit:type: String
+              hipposysedit:validators: [non-empty, required]
+            /deletedrecord:
+              jcr:primaryType: hipposysedit:field
+              hipposysedit:mandatory: false
+              hipposysedit:multiple: false
+              hipposysedit:ordered: false
+              hipposysedit:path: oai:deletedrecord
+              hipposysedit:primary: false
+              hipposysedit:type: String
+            /granularity:
+              jcr:primaryType: hipposysedit:field
+              hipposysedit:mandatory: false
+              hipposysedit:multiple: false
+              hipposysedit:ordered: false
+              hipposysedit:path: oai:granularity
+              hipposysedit:primary: false
+              hipposysedit:type: String
+        /hipposysedit:prototypes:
+          jcr:primaryType: hipposysedit:prototypeset
+          /hipposysedit:prototype:
+            jcr:primaryType: oai:identify
+            jcr:uuid: b60158b6-c1a5-464b-b4c1-826d518f14b5
+            hippostd:holder: holder
+            hippostd:state: draft
+            hippostdpubwf:createdBy: ''
+            hippostdpubwf:creationDate: 2013-07-19T12:02:23.247+02:00
+            hippostdpubwf:lastModificationDate: 2013-07-19T12:02:23.247+02:00
+            hippostdpubwf:lastModifiedBy: ''
+            hippotranslation:id: document-type-locale-id
+            hippotranslation:locale: document-type-locale
+            oai:deletedrecord: 'NO'
+            oai:email: ''
+            oai:granularity: YYYY-MM-DDThh:mm:ssZ
+            oai:reponame: ''
+            oai:version: '2.0'
+        /editor:templates:
+          jcr:primaryType: editor:templateset
+          /_default_:
+            jcr:primaryType: frontend:plugincluster
+            frontend:properties: [mode]
+            frontend:references: [wicket.model, model.compareTo, engine, validator.id]
+            frontend:services: [wicket.id, validator.id]
+            type: oai:identify
+            /root:
+              jcr:primaryType: frontend:plugin
+              item: ${cluster.id}.field
+              plugin.class: org.hippoecm.frontend.service.render.ListViewPlugin
+            /reponame:
+              jcr:primaryType: frontend:plugin
+              caption: Repository Name
+              field: reponame
+              plugin.class: org.hippoecm.frontend.editor.plugins.field.PropertyFieldPlugin
+              wicket.id: ${cluster.id}.field
+              /cluster.options:
+                jcr:primaryType: frontend:pluginconfig
+            /version:
+              jcr:primaryType: frontend:plugin
+              caption: Version
+              field: version
+              mode: view
+              plugin.class: org.hippoecm.frontend.editor.plugins.field.PropertyFieldPlugin
+              wicket.id: ${cluster.id}.field
+              /cluster.options:
+                jcr:primaryType: frontend:pluginconfig
+            /email:
+              jcr:primaryType: frontend:plugin
+              caption: Admin e-mail
+              field: email
+              plugin.class: org.hippoecm.frontend.editor.plugins.field.PropertyFieldPlugin
+              wicket.id: ${cluster.id}.field
+              /cluster.options:
+                jcr:primaryType: frontend:pluginconfig
+            /deletedrecord:
+              jcr:primaryType: frontend:plugin
+              caption: Deleted Record
+              field: deletedrecord
+              mode: view
+              plugin.class: org.hippoecm.frontend.editor.plugins.field.PropertyFieldPlugin
+              wicket.id: ${cluster.id}.field
+              /cluster.options:
+                jcr:primaryType: frontend:pluginconfig
+            /granularity:
+              jcr:primaryType: frontend:plugin
+              caption: Granularity
+              field: granularity
+              mode: view
+              plugin.class: org.hippoecm.frontend.editor.plugins.field.PropertyFieldPlugin
+              wicket.id: ${cluster.id}.field
+              /cluster.options:
+                jcr:primaryType: frontend:pluginconfig
