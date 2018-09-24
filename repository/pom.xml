@@ -7,8 +7,8 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <name>Hippo OAI-PMH provider Repository</name>
-  <description>Hippo OAI-PMH provider Respository</description>
+  <name>Hippo OAI-PMH Provider Repository</name>
+  <description>Hippo OAI-PMH Provider Respository</description>
   <groupId>org.onehippo.forge</groupId>
   <artifactId>oai-pmh-provider-repository</artifactId>
   <version>3.0.0-SNAPSHOT</version>

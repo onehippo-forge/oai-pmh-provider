@@ -9,7 +9,7 @@
   </parent>
   <artifactId>oai-pmh-demo-site</artifactId>
   <packaging>war</packaging>
-  <name>OAI-PMH Demo Site</name>
+  <name>Hippo OAI-PMH Provider Demo Site</name>
   <description>OAI-PMH Demo Site</description>
   <dependencies>
     <dependency>
@@ -90,6 +90,14 @@
       <artifactId>hst-mock</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <!-- oai-pmh dependencies -->
+    <dependency>
+      <groupId>org.onehippo.forge</groupId>
+      <artifactId>oai-pmh-provider-hst</artifactId>
+      <version>${forge.oaipmh.version}</version>
+    </dependency>
+
   </dependencies>
   <build>
     <resources>

@@ -8,8 +8,8 @@
     <version>3.0.0-SNAPSHOT</version>
   </parent>
 
-  <name>OAI-PMH Demo Repository Data For Development</name>
-  <description>OAI-PMH Demo Repository Data For Development</description>
+  <name>Hippo OAI-PMH Provider Demo Repository Data For Development</name>
+  <description>Hippo OAI-PMH Provider Demo Repository Data For Development</description>
   <artifactId>oai-pmh-demo-repository-data-development</artifactId>
 
   <build>
