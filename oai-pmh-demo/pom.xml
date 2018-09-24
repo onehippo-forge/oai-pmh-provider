@@ -149,6 +149,18 @@
         <scope>test</scope>
       </dependency>
 
+      <!-- oai-pmh dependencies -->
+      <dependency>
+        <groupId>org.onehippo.forge</groupId>
+        <artifactId>oai-pmh-provider-hst</artifactId>
+        <version>${forge.oaipmh.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.onehippo.forge</groupId>
+        <artifactId>oai-pmh-provider-repository</artifactId>
+        <version>${forge.oaipmh.version}</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
