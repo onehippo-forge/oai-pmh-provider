@@ -1,6 +1,6 @@
 group: 
   name: oai-pmh-demo
-  after: hippo-cms
+  after: [hippo-cms, hippo-forge]
 project: oai-pmh-demo
 module:
   name: oai-pmh-demo-repository-data-application

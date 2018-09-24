@@ -1,0 +1,78 @@
+definitions:
+  config:
+    /hippo:configuration/hippo:translations/hippo:types/oaipmhdemo:contentdocument:
+      jcr:primaryType: hipposys:resourcebundles
+      /en:
+        jcr:primaryType: hipposys:resourcebundle
+        jcr:name: Simple Document
+        oaipmhdemo:content: Content
+        oaipmhdemo:introduction: Introduction
+        oaipmhdemo:publicationdate: Publication date
+        oaipmhdemo:title: Title
+      /nl:
+        jcr:primaryType: hipposys:resourcebundle
+        jcr:name: Eenvoudig Document
+        oaipmhdemo:content: Inhoud
+        oaipmhdemo:introduction: Introductie
+        oaipmhdemo:publicationdate: Publicatiedatum
+        oaipmhdemo:title: Titel
+      /fr:
+        jcr:primaryType: hipposys:resourcebundle
+        jcr:name: Document simple
+        oaipmhdemo:content: Contenu
+        oaipmhdemo:introduction: Introduction
+        oaipmhdemo:publicationdate: Date de publication
+        oaipmhdemo:title: Titre
+      /de:
+        jcr:primaryType: hipposys:resourcebundle
+        jcr:name: Einfaches Dokument
+        oaipmhdemo:content: Inhalt
+        oaipmhdemo:introduction: Einführung
+        oaipmhdemo:publicationdate: Publikationsdatum
+        oaipmhdemo:title: Titel
+    /hippo:configuration/hippo:translations/hippo:types/oaipmhdemo:newsdocument:
+      jcr:primaryType: hipposys:resourcebundles
+      /en:
+        jcr:primaryType: hipposys:resourcebundle
+        jcr:name: News Item
+        oaipmhdemo:author: Author
+        oaipmhdemo:content: Content
+        oaipmhdemo:date: Date
+        oaipmhdemo:image: Image
+        oaipmhdemo:introduction: Introduction
+        oaipmhdemo:location: Location
+        oaipmhdemo:source: Source
+        oaipmhdemo:title: Title
+      /nl:
+        jcr:primaryType: hipposys:resourcebundle
+        jcr:name: Nieuwsbericht
+        oaipmhdemo:author: Auteur
+        oaipmhdemo:content: Inhoud
+        oaipmhdemo:date: Datum
+        oaipmhdemo:image: Afbeelding
+        oaipmhdemo:introduction: Introductie
+        oaipmhdemo:location: Locatie
+        oaipmhdemo:source: Bron
+        oaipmhdemo:title: Titel
+      /de:
+        jcr:primaryType: hipposys:resourcebundle
+        jcr:name: News
+        oaipmhdemo:author: Verfasser
+        oaipmhdemo:content: Inhalt
+        oaipmhdemo:date: Datum
+        oaipmhdemo:image: Abbildung
+        oaipmhdemo:introduction: Einführung
+        oaipmhdemo:location: Standort
+        oaipmhdemo:source: Quelle
+        oaipmhdemo:title: Titel
+      /fr:
+        jcr:primaryType: hipposys:resourcebundle
+        jcr:name: Message d'info
+        oaipmhdemo:author: Auteur
+        oaipmhdemo:content: Contenu
+        oaipmhdemo:date: Date
+        oaipmhdemo:image: Image
+        oaipmhdemo:introduction: Introduction
+        oaipmhdemo:location: Lieu
+        oaipmhdemo:source: Source
+        oaipmhdemo:title: Titre
