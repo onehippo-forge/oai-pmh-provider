@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Hippo B.V. (http://www.onehippo.com)
+ * Copyright 2015-2018 Hippo B.V. (http://www.onehippo.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ public class JaxbContextProvider implements ContextResolver<JAXBContext> {
     private String beansPackage;
     private List<Class<?>> classes;
 
-    public JaxbContextProvider() throws Exception {
+    public JaxbContextProvider() {
         log.debug("Creating custom JAXB ContextResolver");
     }
 
@@ -83,6 +83,7 @@ public class JaxbContextProvider implements ContextResolver<JAXBContext> {
                 final String name = topLevelClass.getName();
                 final Class<?> clazz = Class.forName(name);
                 if (clazz.isAnnotationPresent(XmlRootElement.class)) {
+                    log.debug("include {}", clazz);
                     allClasses.add(clazz);
                 }
             }

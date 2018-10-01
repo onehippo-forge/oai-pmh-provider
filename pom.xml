@@ -1,22 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <groupId>org.onehippo.cms7</groupId>
-    <artifactId>hippo-cms7-project</artifactId>
-    <version>27</version>
+    <artifactId>hippo-cms7-release</artifactId>
+    <version>12.4.1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <name>Hippo OAI-PMH provider</name>
-  <description>Hippo OAI-PMH provider</description>
+  <name>Hippo OAI-PMH Provider</name>
+  <description>Hippo OAI-PMH Provider</description>
   <groupId>org.onehippo.forge</groupId>
   <artifactId>oai-pmh-provider</artifactId>
-  <version>2.01.07-SNAPSHOT</version>
+  <version>1.2.3</version>
   <packaging>pom</packaging>
 
   <properties>
-    <hippo.hst.version>3.0.0</hippo.hst.version>
-    <hippo.repository.version>3.0.0</hippo.repository.version>
-
     <plugin.site.version>3.4</plugin.site.version>
   </properties>
 
@@ -26,6 +24,19 @@
     <url>https://github.com/onehippo-forge/oai-pmh-provider.git</url>
     <tag>HEAD</tag>
   </scm>
+
+  <developers>
+    <developer>
+      <name>Kenan Salic</name>
+      <id>ksalic</id>
+      <email>kenan.salic@bloomreach.com</email>
+    </developer>
+    <developer>
+      <name>Saimir Muco</name>
+      <id>smuco</id>
+      <email>saimir.muco@bloomreach.com</email>
+    </developer>
+  </developers>
 
   <distributionManagement>
     <repository>
@@ -80,12 +91,6 @@
         <version>${guava.version}</version>
       </dependency>
       <dependency>
-        <groupId>javax.ws.rs</groupId>
-        <artifactId>jsr311-api</artifactId>
-        <version>1.1</version>
-        <scope>compile</scope>
-      </dependency>
-      <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>4.10</version>
@@ -117,7 +122,7 @@
       <id>hippo-maven2</id>
       <name>Hippo maven 2 repository.</name>
       <url>http://maven.onehippo.com/maven2/</url>
-      <snapshots />
+      <snapshots/>
       <releases>
         <updatePolicy>never</updatePolicy>
       </releases>
@@ -150,4 +155,3 @@
   </build>
 
 </project>
-

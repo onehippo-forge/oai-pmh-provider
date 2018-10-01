@@ -1,0 +1,6 @@
+definitions:
+  config:
+    /hst:hst/hst:configurations/oaipmhdemo/hst:catalog:
+      jcr:primaryType: hst:catalog
+      /oaipmhdemo-catalog:
+        jcr:primaryType: hst:containeritempackage

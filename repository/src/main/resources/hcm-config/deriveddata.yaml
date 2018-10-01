@@ -1,0 +1,23 @@
+definitions:
+  config:
+    /hippo:configuration/hippo:derivatives/oaipmh:
+      jcr:primaryType: hipposys:deriveddefinition
+      hipposys:classname: org.onehippo.forge.oaipmh.repository.deriveddata.OAIPMHDateFunction
+      hipposys:nodetype: oai:document
+      hipposys:serialver: 1
+      /hipposys:accessed:
+        jcr:primaryType: hipposys:propertyreferences
+        /id:
+          jcr:primaryType: hipposys:relativepropertyreference
+          hipposys:relPath: ../jcr:uuid
+        /publicationDate:
+          jcr:primaryType: hipposys:relativepropertyreference
+          hipposys:relPath: hippostdpubwf:publicationDate
+      /hipposys:derived:
+        jcr:primaryType: hipposys:propertyreferences
+        /id:
+          jcr:primaryType: hipposys:relativepropertyreference
+          hipposys:relPath: oai:identifier
+        /oaipublicationDate:
+          jcr:primaryType: hipposys:relativepropertyreference
+          hipposys:relPath: oai:pubdate

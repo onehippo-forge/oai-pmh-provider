@@ -1,0 +1,7 @@
+group: 
+  name: oai-pmh-demo
+  after: hippo-cms
+project: oai-pmh-demo
+module: 
+  name: oai-pmh-demo-repository-data-development
+  after: oai-pmh-demo-repository-data-application

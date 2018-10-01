@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-    version="2.5" 
-    id="cms">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0"
+         id="cms">
 
   <!-- General configuration -->
-  <display-name>OAI-PMH demo CMS</display-name>
-  <description>OAI-PMH demo CMS</description>
+  <display-name>OAI-PMH Demo CMS</display-name>
+  <description>OAI-PMH Demo CMS</description>
 
   <context-param>
     <description>The address of the repository</description>
     <param-name>repository-address</param-name>
-    <param-value>rmi://localhost:1099/hipporepository</param-value>
+    <param-value>vm://</param-value>
   </context-param>
   <context-param>
     <description>The (relative) location where to store files</description>
@@ -21,8 +21,9 @@
   </context-param>
   <context-param>
     <description>The location of the repository configuration file. Unless the location
-    starts with file://, the location is retrieved from within the application package as
-    resource.</description>
+      starts with file://, the location is retrieved from within the application package as
+      resource.
+    </description>
     <param-name>repository-config</param-name>
     <param-value>repository.xml</param-value>
   </context-param>
@@ -99,17 +100,17 @@
     <filter-name>Console</filter-name>
     <url-pattern>/console/*</url-pattern>
   </filter-mapping>
-  
+
   <listener>
     <listener-class>org.hippoecm.frontend.plugins.login.ConcurrentLoginListener</listener-class>
   </listener>
 
   <servlet>
-    <servlet-name>XinhaResourceServlet</servlet-name>
-    <servlet-class>org.onehippo.cms7.utilities.servlet.ResourceServlet</servlet-class>
+    <servlet-name>AngularResourceServlet</servlet-name>
+    <servlet-class>org.onehippo.cms7.utilities.servlet.SecureCmsResourceServlet</servlet-class>
     <init-param>
       <param-name>jarPathPrefix</param-name>
-      <param-value>/xinha</param-value>
+      <param-value>/angular</param-value>
     </init-param>
     <init-param>
       <param-name>allowedResourcePaths</param-name>
@@ -117,9 +118,20 @@
         ^/.*\..*
       </param-value>
     </init-param>
+  </servlet>
+
+  <servlet>
+    <servlet-name>CKEditorResourceServlet</servlet-name>
+    <servlet-class>org.onehippo.cms7.utilities.servlet.SecureCmsResourceServlet</servlet-class>
     <init-param>
-      <param-name>cacheTimeout</param-name>
-      <param-value>0</param-value>
+      <param-name>jarPathPrefix</param-name>
+      <param-value>/ckeditor</param-value>
+    </init-param>
+    <init-param>
+      <param-name>allowedResourcePaths</param-name>
+      <param-value>
+        ^/.*\..*
+      </param-value>
     </init-param>
   </servlet>
 
@@ -136,16 +148,6 @@
         ^/.*\..*
       </param-value>
     </init-param>
-    <init-param>
-      <param-name>cacheTimeout</param-name>
-      <param-value>0</param-value>
-    </init-param>
-  </servlet>
-
-  <servlet>
-    <servlet-name>StatusServlet</servlet-name>
-    <servlet-class>org.hippoecm.repository.StatusServlet</servlet-class>
-    <load-on-startup>2</load-on-startup>
   </servlet>
 
   <servlet>
@@ -161,20 +163,21 @@
     <load-on-startup>4</load-on-startup>
   </servlet>
 
-  <servlet> 
-    <servlet-name>PingServlet</servlet-name> 
-    <servlet-class>org.hippoecm.repository.PingServlet</servlet-class> 
+  <servlet>
+    <servlet-name>PingServlet</servlet-name>
+    <servlet-class>org.hippoecm.repository.PingServlet</servlet-class>
     <init-param>
       <param-name>repository-address</param-name>
       <param-value>vm://</param-value>
     </init-param>
-    <load-on-startup>5</load-on-startup> 
-  </servlet> 
+    <load-on-startup>5</load-on-startup>
+  </servlet>
 
-  <servlet-mapping>
-    <servlet-name>StatusServlet</servlet-name>
-    <url-pattern>/status/*</url-pattern>
-  </servlet-mapping>
+  <servlet>
+    <servlet-name>RepositoryJaxrsServlet</servlet-name>
+    <servlet-class>org.onehippo.repository.jaxrs.RepositoryJaxrsServlet</servlet-class>
+    <load-on-startup>6</load-on-startup>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>LoggingServlet</servlet-name>
@@ -186,14 +189,19 @@
     <url-pattern>/repository/*</url-pattern>
   </servlet-mapping>
 
-  <servlet-mapping> 
-    <servlet-name>PingServlet</servlet-name> 
-    <url-pattern>/ping/</url-pattern> 
+  <servlet-mapping>
+    <servlet-name>PingServlet</servlet-name>
+    <url-pattern>/ping/</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
-    <servlet-name>XinhaResourceServlet</servlet-name>
-    <url-pattern>/xinha/*</url-pattern>
+    <servlet-name>AngularResourceServlet</servlet-name>
+    <url-pattern>/angular/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>CKEditorResourceServlet</servlet-name>
+    <url-pattern>/ckeditor/*</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
@@ -201,9 +209,21 @@
     <url-pattern>/skin/*</url-pattern>
   </servlet-mapping>
 
+  <servlet-mapping>
+    <servlet-name>RepositoryJaxrsServlet</servlet-name>
+    <url-pattern>/ws/*</url-pattern>
+  </servlet-mapping>
+
   <!-- Timeout in minutes -->
   <session-config>
     <session-timeout>10</session-timeout>
+    <!--
+    The tracking-mode setting protects against so-called session fixation attacks.
+    Although this setting is not defined in the servlet 2.5 spec, Tomcat allows it here.
+    If your container does not then you can remove this setting but then should configure your container
+    to get the same protection.
+    -->
+    <tracking-mode>COOKIE</tracking-mode>
   </session-config>
 
   <error-page>
@@ -215,5 +235,11 @@
     <exception-type>java.lang.Throwable</exception-type>
     <location>/WEB-INF/error.jsp</location>
   </error-page>
+
+  <env-entry>
+    <env-entry-name>logging/contextName</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>cms</env-entry-value>
+  </env-entry>
 
 </web-app>
