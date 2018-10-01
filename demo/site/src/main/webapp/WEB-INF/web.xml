@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-  version="2.5"
-  id="site">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0"
+         id="site">
 
-  <display-name>OAI-PMH demo site</display-name>
-  <description>OAI-PMH demo site</description>
+
+  <display-name>OAI-PMH Demo site</display-name>
+  <description>OAI-PMH Demo site</description>
 
   <jsp-config>
     <jsp-property-group>
@@ -31,11 +32,6 @@
     </jsp-property-group>
   </jsp-config>
 
-  <!-- I18N  -->
-  <context-param>
-    <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
-    <param-value>messages</param-value>
-  </context-param>
   <!--
     HST-2 Content Beans Annotation Configuration. You can configure it
     with either xml or classes location filter. For example, if the
@@ -55,11 +51,12 @@
   -->
   <context-param>
     <param-name>hst-beans-annotated-classes</param-name>
-    <param-value>classpath*:org/onehippo/forge/oaipmh/beans/**/*.class,
-      classpath*:org/onehippo/forge/oaipmh/provider/api/**/*.class,
+    <param-value>classpath*:org/onehippo/forge/**/*.class
+      ,classpath*:org/onehippo/**/*.class
+      ,classpath*:com/onehippo/**/*.class
+      ,classpath*:org/onehippo/forge/**/*.class
     </param-value>
   </context-param>
-
   <filter>
     <filter-name>CharacterEncodingFilter</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -81,38 +78,6 @@
   <filter>
     <filter-name>HstFilter</filter-name>
     <filter-class>org.hippoecm.hst.container.HstFilter</filter-class>
-    <init-param>
-      <param-name>prefixExclusions</param-name>
-      <!-- on purpose /resources/ is not added here a prefix exclusion as resources should be catched
-      in general by suffixExclusions -->
-      <param-value>/ping/, /binaries/, /login/, /hst/pagecomposer/sources/</param-value>
-    </init-param>
-    <init-param>
-      <param-name>suffixExclusions</param-name>
-      <param-value>.jsp, .ftl, .FTL</param-value>
-    </init-param>
-    <!--
-      HST Application Context Namespace Prefix. This should be unique
-      among multiple HST-based application contexts.
-    -->
-    <!--
-      <init-param> <param-name>hstContextNamespace</param-name>
-      <param-value>news</param-value> </init-param>
-    -->
-    <!--
-      HST-2 based SITE application can define and assemble its own
-      components by uncommenting the following two init parameters and
-      set the spring configuration files properly. The spring
-      configuration resources are loaded by the context classloader.
-    -->
-    <!--
-      <init-param> <param-name>clientComponentManagerClass</param-name>
-      <param-value>org.hippoecm.hst.component.support.ClientComponentManager</param-value>
-      </init-param> <init-param>
-      <param-name>clientComponentManagerConfigurations</param-name>
-      <param-value>/META-INF/client-assembly/*.xml</param-value>
-      </init-param>
-    -->
   </filter>
 
   <filter-mapping>
@@ -130,26 +95,15 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
+  <!-- HstContextLoaderListener configuring/initializing/destroying HST Container -->
+  <listener>
+    <listener-class>org.hippoecm.hst.site.container.HstContextLoaderListener</listener-class>
+  </listener>
+
   <!-- Listener that dispatches http session events to ComponentManager. -->
   <listener>
     <listener-class>org.hippoecm.hst.site.container.session.HttpSessionEventPublisher</listener-class>
   </listener>
-
-  <servlet>
-    <servlet-name>HstSiteConfigServlet</servlet-name>
-    <servlet-class>org.hippoecm.hst.site.container.HstSiteConfigServlet</servlet-class>
-    <!--
-      If 'hst-config-refresh-delay' parameter is greater than 0,
-      then the HST configuration file changes will be monitored to re-initialize the HST Container.
-      The value is in ms. If set to 0 or missing, the re-initialization option on configuration file changes is not turned on.
-      Default below is set to 3 sec
-    -->
-    <init-param>
-      <param-name>hst-config-refresh-delay</param-name>
-      <param-value>3000</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
 
   <servlet>
     <servlet-name>BinariesServlet</servlet-name>
@@ -170,8 +124,13 @@
       <!-- Forces UTF-8 output encoding! -->
     </init-param>
     <!--
-      if in case of template exception rendering should short-circuit in case of errors, set template_exception_handler = debug
-      Default template_exception_handler is "ignore" which only logs errors and then continues rendering
+      'template_exception_handler' determines what Freemarker does when it encounters an error:
+      - "ignore" lets Freemarker log an exception and then continue rendering.
+      - "debug" lets Freemarker log a stack trace, stops rendering and re-throws the exception.
+      - "rethrow" does not let Freemarker log a stack trace, stops rendering and re-throws the exception.
+      By default, if no template_exception_handler as above is configured, an extended "ignore" type
+      template exception handler will be configured which provides additional detail logging but like the
+      "ignore" handler will continue rendering.
       <init-param>
         <param-name>template_exception_handler</param-name>
         <param-value>debug</param-value>
@@ -179,7 +138,6 @@
     -->
     <load-on-startup>200</load-on-startup>
   </servlet>
-
   <servlet>
     <servlet-name>TemplateComposerResourceServlet</servlet-name>
     <servlet-class>org.onehippo.cms7.utilities.servlet.ResourceServlet</servlet-class>
@@ -277,6 +235,11 @@
   </security-role>
 
   <error-page>
+    <error-code>400</error-code>
+    <location>/WEB-INF/jsp/errorpages/ErrorPage400.jsp</location>
+  </error-page>
+
+  <error-page>
     <error-code>401</error-code>
     <location>/WEB-INF/jsp/errorpages/ErrorPage401.jsp</location>
   </error-page>
@@ -300,6 +263,12 @@
     <exception-type>java.lang.Exception</exception-type>
     <location>/WEB-INF/jsp/errorpages/ErrorPage500.jsp</location>
   </error-page>
+
+  <env-entry>
+    <env-entry-name>logging/contextName</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>site</env-entry-value>
+  </env-entry>
 
 </web-app>
 

@@ -1,0 +1,4 @@
+definitions:
+  config:
+    /hst:hst/hst:configurations/oaipmhdemo/hst:prototypepages:
+      jcr:primaryType: hst:pages
