@@ -81,11 +81,6 @@
       <artifactId>easymock</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>javax.ws.rs</groupId>
-      <artifactId>javax.ws.rs-api</artifactId>
-      <scope>compile</scope>
-    </dependency>
   </dependencies>
 
   <build>

@@ -15,9 +15,6 @@
   <packaging>pom</packaging>
 
   <properties>
-    <!--<hippo.hst.version>3.0.0</hippo.hst.version>-->
-    <!--<hippo.repository.version>3.0.0</hippo.repository.version>-->
-
     <plugin.site.version>3.4</plugin.site.version>
   </properties>
 
@@ -29,6 +26,11 @@
   </scm>
 
   <developers>
+    <developer>
+      <name>Kenan Salic</name>
+      <id>ksalic</id>
+      <email>kenan.salic@bloomreach.com</email>
+    </developer>
     <developer>
       <name>Saimir Muco</name>
       <id>smuco</id>
@@ -87,12 +89,6 @@
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
         <version>${guava.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>javax.ws.rs</groupId>
-        <artifactId>javax.ws.rs-api</artifactId>
-        <version>2.0.1</version>
-        <scope>compile</scope>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
