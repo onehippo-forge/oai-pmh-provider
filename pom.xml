@@ -11,7 +11,7 @@
   <description>Hippo OAI-PMH Provider</description>
   <groupId>org.onehippo.forge</groupId>
   <artifactId>oai-pmh-provider</artifactId>
-  <version>3.0.1-SNAPSHOT</version>
+  <version>3.0.1</version>
   <packaging>pom</packaging>
 
   <properties>
