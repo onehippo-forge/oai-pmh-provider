@@ -18,5 +18,5 @@ definitions:
             jcr:primaryType: hst:mount
             hst:alias: pmh
             hst:ismapped: false
-            hst:namedpipeline: JaxrsRestPlainPipeline
+            hst:namedpipeline: JaxrsRestOAIPMHPipeline
             hst:types: [rest]

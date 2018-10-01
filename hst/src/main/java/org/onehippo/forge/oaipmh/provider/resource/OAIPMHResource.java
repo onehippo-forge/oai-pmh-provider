@@ -1,7 +1,6 @@
 package org.onehippo.forge.oaipmh.provider.resource;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -50,9 +49,6 @@ public class OAIPMHResource extends BaseOAIResource {
     private static final String RESUMPTION_TOKEN_FORMAT = "tx%sxmx%sxpx%sfrm%sutl%s";
 
     protected static final String PROTOCOL_VERSION = "2.0";
-    protected static final String ADMIN_EMAIL = "k.salic@onehippo.com";
-    protected static final String REPOSITORY_NAME = "Test repository";
-
     @Override
     protected MetadataType createMetadataType() {
         return new MetadataType();

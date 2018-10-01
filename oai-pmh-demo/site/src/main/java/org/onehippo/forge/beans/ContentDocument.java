@@ -1,44 +1,69 @@
 package org.onehippo.forge.beans;
 
 import java.util.Calendar;
+
+import javax.xml.bind.JAXBElement;
+
 import org.hippoecm.hst.content.beans.Node;
 import org.hippoecm.hst.content.beans.standard.HippoHtml;
-import org.onehippo.cms7.essentials.dashboard.annotations.HippoEssentialsGenerated;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.onehippo.cms7.essentials.components.rest.adapters.HippoHtmlAdapter;
+import org.onehippo.forge.oaipmh.provider.api.OAI;
 import org.onehippo.forge.oaipmh.provider.api.OAIBean;
+import org.onehippo.forge.oaipmh.provider.api.OAIDelegate;
+import org.onehippo.forge.oaipmh.provider.api.OAIIdentifier;
+import org.onehippo.forge.oaipmh.provider.api.RestContext;
+import org.onehippo.forge.oaipmh.provider.model.oai.dc.ElementType;
+import org.onehippo.forge.oaipmh.provider.model.oai.dc.OaiDcType;
+import org.onehippo.forge.oaipmh.provider.model.oai.dc.ObjectFactory;
+import org.onehippo.forge.oaipmh.provider.model.oai.edurep.lom.LomType;
+import org.onehippo.forge.oaipmh.provider.model.oai.edurep.lom.NLLom;
 
-@XmlRootElement(name = "contentdocument")
-@XmlAccessorType(XmlAccessType.NONE)
-@HippoEssentialsGenerated(internalName = "oaipmhdemo:contentdocument")
+@OAI(setName = "ContentDocument")
 @Node(jcrType = "oaipmhdemo:contentdocument")
 public class ContentDocument extends BaseDocument implements OAIBean {
-    @XmlElement
-    @HippoEssentialsGenerated(internalName = "oaipmhdemo:introduction")
+
+    private static final ObjectFactory objectFactory = new ObjectFactory();
+
     public String getIntroduction() {
         return getProperty("oaipmhdemo:introduction");
     }
 
-    @XmlElement
-    @HippoEssentialsGenerated(internalName = "oaipmhdemo:title")
     public String getTitle() {
         return getProperty("oaipmhdemo:title");
     }
 
-    @XmlJavaTypeAdapter(HippoHtmlAdapter.class)
-    @XmlElement
-    @HippoEssentialsGenerated(internalName = "oaipmhdemo:content")
     public HippoHtml getContent() {
         return getHippoHtml("oaipmhdemo:content");
     }
 
-    @XmlElement
-    @HippoEssentialsGenerated(internalName = "oaipmhdemo:publicationdate")
+    @Override
     public Calendar getPublicationDate() {
         return getProperty("oaipmhdemo:publicationdate");
+    }
+
+
+    @OAIDelegate(metadataPrefix = "oai_dc")
+    public OaiDcType dublinCore(RestContext context){
+        OaiDcType type = objectFactory.createOaiDcType();
+        ElementType titleElement = objectFactory.createElementType();
+        titleElement.setValue(getTitle());
+        final JAXBElement<ElementType> title = objectFactory.createTitle(titleElement);
+        type.getTitleOrCreatorOrSubject().add(title);
+        return type;
+    }
+
+    @OAIDelegate(metadataPrefix = "lom")
+    public LomType getNLLomType(RestContext context) {
+        NLLom lom = new NLLom();
+        lom.setAggregationLevel();
+        lom.setCopyRightAndOtherRestrictions();
+        lom.setCosts();
+        lom.setTitle(getTitle());
+        lom.setDescription(getIntroduction());
+        return lom.getLomType();
+    }
+
+    @OAIIdentifier
+    public String getIdentifier(RestContext context) {
+        return getCanonicalHandleUUID();
     }
 }

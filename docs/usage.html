@@ -36,7 +36,7 @@
         <div class="row-fluid">
             <div id="header">
                 <div id="logo">
-                    <a href="http://www.onehippo.com">
+                    <a href="http://www.bloomreach.com">
                         <img src="./images/hipposkin/hippo-logo.png" alt="Hippo Logo" />
                     </a>
                 </div>
@@ -54,11 +54,11 @@
                 <ul class="breadcrumb">
                                 
                                         
-                            <li id="publishDate">Last Published: 2017-09-05</li>
+                            <li id="publishDate">Last Published: 2018-09-28</li>
                                                                                                                                                 </ul>
 
                 <div class="links">
-                    <a href="https://www.onehippo.com">Onehippo.com</a>
+                    <a href="https://www.bloomreach.com">bloomreach.com</a>
                     <a href="https://www.onehippo.org">Onehippo.org</a>
                 </div>
             </div>
@@ -111,7 +111,7 @@
         
         <div id="bodyColumn"  class="span9" >
                                 
-            <!-- Copyright 2009-2017 Hippo
+            <!-- Copyright 2009-2018 Hippo
     
     Licensed under the Apache License, Version 2.0 (the  "License");
     you may not use this file except in compliance with the License.
@@ -162,7 +162,7 @@
     &lt;repository&gt;
       &lt;id&gt;hippo-forge&lt;/id&gt;
       &lt;name&gt;Hippo Forge maven 2 repository.&lt;/name&gt;
-      &lt;url&gt;https://maven.onehippo.com/maven2-forge/&lt;/url&gt;
+      &lt;url&gt;https://maven.bloomreach.com/maven2-forge/&lt;/url&gt;
       &lt;snapshots&gt;
         &lt;enabled&gt;false&lt;/enabled&gt;
       &lt;/snapshots&gt;
@@ -334,7 +334,7 @@
       &lt;list&gt;
         &lt;bean class=&quot;org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider&quot;&gt;
           &lt;constructor-arg&gt;
-            &lt;bean class=&quot;org.onehippo.demo.rest.OAIPMHResource&quot;&gt;
+            &lt;bean class=&quot;org.onehippo.forge.oaipmh.provider.resource.OAIPMHResource&quot;&gt;
               &lt;property name=&quot;beansPackage&quot; value=&quot;org.onehippo.beans&quot;/&gt;
             &lt;/bean&gt;
           &lt;/constructor-arg&gt;
@@ -351,23 +351,21 @@
       </div>
       
 <div class="section">
-<h3>Configure HST mount<a name="Configure_HST_mount"></a></h3>
-        
-<li>
-          
-<p>Configure you hst mount configuration to display the correct mount on the URL. e.g.
-            <a class="externalLink" href="http://localhost:8080/site/pmh">http://localhost:8080/site/pmh</a>
-          </p>
-          
-<p>Automatically the oai-pmh project will set pmh mount on the hst:root mount</p>
-          
-<p>try out the identify verb e.g.
-            <a class="externalLink" href="http://localhost:8080/site/pmh/oai?verb=Identify">http://localhost:8080/site/pmh/oai?verb=Identify</a>
-          </p>
-          
-<p>You can configure metadata from the Identify by looking at the mount for the identify.path property. Which points to an Identify document</p>
-        </li>
-      </div>
+  <h3>Configure HST mount<a name="Configure_HST_mount"></a></h3>
+
+  <p>Configure you hst mount configuration to display the correct mount on the URL. Set the attribute hst:mountpipeline=JaxrsRestOAIPMHPipeline  e.g.
+    <a class="externalLink" href="http://localhost:8080/site/pmh">http://localhost:8080/site/pmh</a>
+  </p>
+
+  <p>Automatically the oai-pmh project will set pmh mount on the hst:root mount</p>
+
+  <p>try out the identify verb e.g.
+    <a class="externalLink" href="http://localhost:8080/site/pmh/oai?verb=Identify">http://localhost:8080/site/pmh/oai?verb=Identify</a>
+  </p>
+
+  <p>You can configure metadata from the Identify by looking at the mount for the identify.path property. Which points to an Identify document</p>
+
+</div>
       
 <div class="section">
 <h3>Test<a name="Test"></a></h3>
@@ -432,7 +430,7 @@
     <footer>
                 <div class="container-fluid">
                 <div class="row span12">Copyright &copy;                                                2007-2017
-                                            <a href="http://www.onehippo.com/">Hippo B.V. (http://www.onehippo.com)</a>.
+                                            <a href="http://www.bloomreach.com/">Hippo B.V. (http://www.bloomreach.com)</a>.
                         All Rights Reserved.            
                                         
             </div>

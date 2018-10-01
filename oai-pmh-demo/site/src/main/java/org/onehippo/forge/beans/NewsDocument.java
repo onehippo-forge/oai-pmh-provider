@@ -1,23 +1,25 @@
 package org.onehippo.forge.beans;
 
 import java.util.Calendar;
+
+import javax.xml.bind.JAXBElement;
+
 import org.hippoecm.hst.content.beans.Node;
 import org.hippoecm.hst.content.beans.standard.HippoDocument;
 import org.hippoecm.hst.content.beans.standard.HippoGalleryImageSet;
 import org.hippoecm.hst.content.beans.standard.HippoHtml;
-import org.onehippo.cms7.essentials.dashboard.annotations.HippoEssentialsGenerated;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.onehippo.cms7.essentials.components.rest.adapters.HippoHtmlAdapter;
-import org.onehippo.cms7.essentials.components.rest.adapters.HippoGalleryImageAdapter;
+import org.onehippo.forge.oaipmh.provider.api.OAI;
 import org.onehippo.forge.oaipmh.provider.api.OAIBean;
+import org.onehippo.forge.oaipmh.provider.api.OAIDelegate;
+import org.onehippo.forge.oaipmh.provider.api.OAIIdentifier;
+import org.onehippo.forge.oaipmh.provider.api.RestContext;
+import org.onehippo.forge.oaipmh.provider.model.oai.dc.ElementType;
+import org.onehippo.forge.oaipmh.provider.model.oai.dc.OaiDcType;
+import org.onehippo.forge.oaipmh.provider.model.oai.dc.ObjectFactory;
+import org.onehippo.forge.oaipmh.provider.model.oai.edurep.lom.LomType;
+import org.onehippo.forge.oaipmh.provider.model.oai.edurep.lom.NLLom;
 
-@XmlRootElement(name = "newsdocument")
-@XmlAccessorType(XmlAccessType.NONE)
-@HippoEssentialsGenerated(internalName = "oaipmhdemo:newsdocument")
+@OAI(setName = "NewsDocument")
 @Node(jcrType = "oaipmhdemo:newsdocument")
 public class NewsDocument extends HippoDocument implements OAIBean {
     /** 
@@ -33,12 +35,12 @@ public class NewsDocument extends HippoDocument implements OAIBean {
     private static final String AUTHOR = "oaipmhdemo:author";
     private static final String SOURCE = "oaipmhdemo:source";
 
+    private static final ObjectFactory objectFactory = new ObjectFactory();
+
     /** 
      * Get the title of the document.
      * @return the title
      */
-    @XmlElement
-    @HippoEssentialsGenerated(internalName = "oaipmhdemo:title")
     public String getTitle() {
         return getProperty(TITLE);
     }
@@ -47,8 +49,6 @@ public class NewsDocument extends HippoDocument implements OAIBean {
      * Get the date of the document.
      * @return the date
      */
-    @XmlElement
-    @HippoEssentialsGenerated(internalName = "oaipmhdemo:date")
     public Calendar getDate() {
         return getProperty(DATE);
     }
@@ -57,8 +57,6 @@ public class NewsDocument extends HippoDocument implements OAIBean {
      * Get the introduction of the document.
      * @return the introduction
      */
-    @XmlElement
-    @HippoEssentialsGenerated(internalName = "oaipmhdemo:introduction")
     public String getIntroduction() {
         return getProperty(INTRODUCTION);
     }
@@ -67,9 +65,6 @@ public class NewsDocument extends HippoDocument implements OAIBean {
      * Get the image of the document.
      * @return the image
      */
-    @XmlJavaTypeAdapter(HippoGalleryImageAdapter.class)
-    @XmlElement
-    @HippoEssentialsGenerated(internalName = "oaipmhdemo:image")
     public HippoGalleryImageSet getImage() {
         return getLinkedBean(IMAGE, HippoGalleryImageSet.class);
     }
@@ -78,9 +73,6 @@ public class NewsDocument extends HippoDocument implements OAIBean {
      * Get the main content of the document.
      * @return the content
      */
-    @XmlJavaTypeAdapter(HippoHtmlAdapter.class)
-    @XmlElement
-    @HippoEssentialsGenerated(internalName = "oaipmhdemo:content")
     public HippoHtml getContent() {
         return getHippoHtml(CONTENT);
     }
@@ -89,8 +81,6 @@ public class NewsDocument extends HippoDocument implements OAIBean {
      * Get the location of the document.
      * @return the location
      */
-    @XmlElement
-    @HippoEssentialsGenerated(internalName = "oaipmhdemo:location")
     public String getLocation() {
         return getProperty(LOCATION);
     }
@@ -99,8 +89,6 @@ public class NewsDocument extends HippoDocument implements OAIBean {
      * Get the author of the document.
      * @return the author
      */
-    @XmlElement
-    @HippoEssentialsGenerated(internalName = "oaipmhdemo:author")
     public String getAuthor() {
         return getProperty(AUTHOR);
     }
@@ -109,8 +97,6 @@ public class NewsDocument extends HippoDocument implements OAIBean {
      * Get the source of the document.
      * @return the source
      */
-    @XmlElement
-    @HippoEssentialsGenerated(internalName = "oaipmhdemo:source")
     public String getSource() {
         return getProperty(SOURCE);
     }
@@ -118,5 +104,34 @@ public class NewsDocument extends HippoDocument implements OAIBean {
     @Override
     public Calendar getPublicationDate() {
         return getProperty("hippostdpubwf:publicationDate");
+    }
+
+    /**
+     * OAI PMH Examples dublin core + NL LOM for edurep
+     */
+    @OAIDelegate(metadataPrefix = "oai_dc")
+    public OaiDcType dublinCore(RestContext context){
+        OaiDcType type = objectFactory.createOaiDcType();
+        ElementType titleElement = objectFactory.createElementType();
+        titleElement.setValue(getTitle());
+        final JAXBElement<ElementType> title = objectFactory.createTitle(titleElement);
+        type.getTitleOrCreatorOrSubject().add(title);
+        return type;
+    }
+
+    @OAIDelegate(metadataPrefix = "lom")
+    public LomType getNLLomType(RestContext context) {
+        NLLom lom = new NLLom();
+        lom.setAggregationLevel();
+        lom.setCopyRightAndOtherRestrictions();
+        lom.setCosts();
+        lom.setTitle(getTitle());
+        lom.setDescription(getIntroduction());
+        return lom.getLomType();
+    }
+
+    @OAIIdentifier
+    public String getIdentifier(RestContext context) {
+        return getCanonicalHandleUUID();
     }
 }

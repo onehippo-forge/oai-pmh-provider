@@ -61,6 +61,10 @@
       <artifactId>hst-cms-rest</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.onehippo.cms7.hst.components</groupId>
+      <artifactId>hst-jaxrs</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.onehippo.cms7.hst.client-modules</groupId>
       <artifactId>hst-page-composer</artifactId>
     </dependency>
@@ -91,7 +95,7 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- oai-pmh dependencies -->
+     <!--oai-pmh dependencies-->
     <dependency>
       <groupId>org.onehippo.forge</groupId>
       <artifactId>oai-pmh-provider-hst</artifactId>
