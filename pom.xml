@@ -143,11 +143,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>${plugin.site.version}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
+        <version>${plugin.site.version}</version>
        <configuration>
           <outputDirectory>docs</outputDirectory>
         </configuration>
