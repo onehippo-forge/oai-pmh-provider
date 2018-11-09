@@ -17,10 +17,11 @@
 <project name="Hippo OAI-PMH provider">
 
   <skin>
-    <groupId>org.onehippo.forge.mavenskin</groupId>
+    <groupId>org.bloomreach.forge.mavenskin</groupId>
     <artifactId>forge-maven-skin</artifactId>
-    <version>1.04.00</version>
+    <version>3.0.1</version>
   </skin>
+
 
   <body>
     <menu name="Hippo OAI-PMH provider">
