@@ -15,7 +15,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <plugin.site.version>3.4</plugin.site.version>
+    <plugin.site.version>3.6</plugin.site.version>
   </properties>
 
   <scm>
