@@ -46,7 +46,7 @@
               <![CDATA[
     <repository>
       <id>hippo-forge</id>
-      <name>Hippo Forge maven 2 repository.</name>
+      <name>Bloomreach Forge maven 2 repository.</name>
       <url>https://maven.onehippo.com/maven2-forge/</url>
       <snapshots>
         <enabled>false</enabled>
@@ -117,10 +117,10 @@
           <li>@OAIDelegate: for delegating different metadata prefixes (we currently only support "dc_oai" and/or "lom")</li>
           <li>@OAIIdentifier: for generating the record identifier</li>
           <li>
-            <a href="https://github.com/onehippo-forge/oai-pmh-provider/tree/master/demo/site/src/main/java/org/onehippo/forge/oaipmh/beans/NewsDocument.java">example newsdocument:</a>
+            <a href="https://github.com/bloomreach-forge/oai-pmh-provider/tree/master/demo/site/src/main/java/org/onehippo/forge/oaipmh/beans/NewsDocument.java">example newsdocument:</a>
           </li>
           <li>
-            <a href="https://github.com/onehippo-forge/oai-pmh-provider/tree/master/demo/site/src/main/java/org/onehippo/forge/oaipmh/beans/TextDocument.java">example textdocument:</a>
+            <a href="https://github.com/bloomreach-forge/oai-pmh-provider/tree/master/demo/site/src/main/java/org/onehippo/forge/oaipmh/beans/TextDocument.java">example textdocument:</a>
           </li>
         </ol>
       </subsection>
@@ -244,9 +244,9 @@
         <p>
           <a href="http://wiki.surf.nl/display/nllom/Home">http://wiki.surf.nl/display/nllom/Home</a>
         </p>
-        <p>All elements and attributes are already provided in the oai-pmh project under the following package: <a href="https://github.com/onehippo-forge/oai-pmh-provider/tree/master/hst/src/main/java/org/onehippo/forge/oaipmh/provider/model/oai/edurep/lom/"> package</a></p>
-        <p>Plus we also provide a helper class which should get you going: <a href="https://github.com/onehippo-forge/oai-pmh-provider/tree/master/hst/src/main/java/org/onehippo/forge/oaipmh/provider/model/oai/edurep/lom/NLLom.java">NLLOM</a> in combination with
-          <a href="https://github.com/onehippo-forge/oai-pmh-provider/tree/master/demo/site/src/main/java/org/onehippo/forge/oaipmh/beans/NewsDocument.java"> newsdocument:</a></p>
+        <p>All elements and attributes are already provided in the oai-pmh project under the following package: <a href="https://github.com/bloomreach-forge/oai-pmh-provider/tree/master/hst/src/main/java/org/onehippo/forge/oaipmh/provider/model/oai/edurep/lom/"> package</a></p>
+        <p>Plus we also provide a helper class which should get you going: <a href="https://github.com/bloomreach-forge/oai-pmh-provider/tree/master/hst/src/main/java/org/onehippo/forge/oaipmh/provider/model/oai/edurep/lom/NLLom.java">NLLOM</a> in combination with
+          <a href="https://github.com/bloomreach-forge/oai-pmh-provider/tree/master/demo/site/src/main/java/org/onehippo/forge/oaipmh/beans/NewsDocument.java"> newsdocument:</a></p>
         <p>Be aware you probably need to check your own metadata configuration for mandatory elements and properties</p>
       </subsection>
     </section>
