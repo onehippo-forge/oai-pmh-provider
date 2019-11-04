@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.onehippo.cms7</groupId>
     <artifactId>hippo-cms7-release</artifactId>
-    <version>12.4.1</version>
+    <version>13.3.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -11,11 +11,11 @@
   <description>Hippo OAI-PMH Provider</description>
   <groupId>org.onehippo.forge</groupId>
   <artifactId>oai-pmh-provider</artifactId>
-  <version>3.0.3</version>
+  <version>4.0.0</version>
   <packaging>pom</packaging>
 
   <properties>
-    <plugin.site.version>3.6</plugin.site.version>
+    <plugin.site.version>3.7.1</plugin.site.version>
   </properties>
 
   <scm>
@@ -144,19 +144,10 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>${plugin.site.version}</version>
-       <configuration>
-          <outputDirectory>docs</outputDirectory>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 
   <profiles>
-    <!-- Only for generating/publishing GitHub Site Pages into docs/ folder from master branch. -->
     <profile>
       <id>github.pages</id>
       <build>
