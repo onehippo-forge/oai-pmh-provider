@@ -10,7 +10,7 @@ definitions:
         jcr:uuid: df9fd00b-67e6-4357-800a-c19c7a8d7d8d
         /hipposysedit:nodetype:
           jcr:primaryType: hipposysedit:nodetype
-          jcr:mixinTypes: ['hipposysedit:remodel', 'mix:referenceable','oai:document']
+          jcr:mixinTypes: ['mix:referenceable', 'hipposysedit:remodel']
           jcr:uuid: 6c6f7b33-56f7-4577-9aa2-a8b7f1f22f46
           hipposysedit:node: true
           hipposysedit:supertype: ['oaipmhdemo:basedocument', 'hippostd:relaxed',
@@ -85,7 +85,7 @@ definitions:
         jcr:primaryType: hipposysedit:prototypeset
         /hipposysedit:prototype:
           jcr:primaryType: oaipmhdemo:newsdocument
-          jcr:mixinTypes: ['mix:referenceable']
+          jcr:mixinTypes: ['mix:referenceable', 'oai:document']
           jcr:uuid: d4dc7cc0-2590-4b99-9365-aad597b6e256
           hippo:related___pathreference: []
           hippostd:holder: holder
