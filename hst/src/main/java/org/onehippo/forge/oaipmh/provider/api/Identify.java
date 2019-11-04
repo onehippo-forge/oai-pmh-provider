@@ -14,11 +14,11 @@ public class Identify extends HippoDocument {
     private static Logger log = LoggerFactory.getLogger(Identify.class);
 
     public String getRepositoryName(){
-        return getProperty("oai:reponame");
+        return getSingleProperty("oai:reponame");
     }
 
     public String getAdminEmail(){
-        return getProperty("oai:email");
+        return getSingleProperty("oai:email");
     }
 
 }

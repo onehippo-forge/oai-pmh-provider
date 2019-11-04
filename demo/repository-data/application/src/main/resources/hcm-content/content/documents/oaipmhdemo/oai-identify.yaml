@@ -1,0 +1,58 @@
+/content/documents/oaipmhdemo/oai-identify:
+  jcr:primaryType: hippo:handle
+  jcr:mixinTypes: ['hippo:named', 'hippo:versionInfo', 'mix:referenceable']
+  jcr:uuid: 2e74bd69-d2e0-42e7-9ae2-757335bbddcc
+  hippo:name: oai identify
+  hippo:versionHistory: e818cbc3-6b65-48b7-8614-68a27c00a211
+  /oai-identify[1]:
+    jcr:primaryType: oai:identify
+    jcr:mixinTypes: ['mix:referenceable']
+    jcr:uuid: 17c46214-7851-4a2b-bb52-b336b257a1f0
+    hippo:availability: []
+    hippostd:state: draft
+    hippostdpubwf:createdBy: admin
+    hippostdpubwf:creationDate: 2019-11-04T14:21:15.936+01:00
+    hippostdpubwf:lastModificationDate: 2019-11-04T14:21:15.936+01:00
+    hippostdpubwf:lastModifiedBy: admin
+    hippotranslation:id: 77aeb947-6943-417c-a3ce-f993c5903aa9
+    hippotranslation:locale: en
+    oai:deletedrecord: 'NO'
+    oai:email: test@example.com
+    oai:granularity: YYYY-MM-DDThh:mm:ssZ
+    oai:reponame: OAI PMH Demo
+    oai:version: '2.0'
+  /oai-identify[2]:
+    jcr:primaryType: oai:identify
+    jcr:mixinTypes: ['mix:referenceable', 'mix:versionable']
+    jcr:uuid: bd71b9cb-c9f0-4722-859f-65f7898ffac0
+    hippo:availability: [preview]
+    hippostd:state: unpublished
+    hippostdpubwf:createdBy: admin
+    hippostdpubwf:creationDate: 2019-11-04T14:21:15.936+01:00
+    hippostdpubwf:lastModificationDate: 2019-11-04T14:21:41.629+01:00
+    hippostdpubwf:lastModifiedBy: admin
+    hippotranslation:id: 77aeb947-6943-417c-a3ce-f993c5903aa9
+    hippotranslation:locale: en
+    oai:deletedrecord: 'NO'
+    oai:email: test@example.com
+    oai:granularity: YYYY-MM-DDThh:mm:ssZ
+    oai:reponame: OAI PMH Demo
+    oai:version: '2.0'
+  /oai-identify[3]:
+    jcr:primaryType: oai:identify
+    jcr:mixinTypes: ['mix:referenceable']
+    jcr:uuid: 95f8974b-5481-4ff6-8071-260dbb3c5806
+    hippo:availability: [live]
+    hippostd:state: published
+    hippostdpubwf:createdBy: admin
+    hippostdpubwf:creationDate: 2019-11-04T14:21:15.936+01:00
+    hippostdpubwf:lastModificationDate: 2019-11-04T14:21:41.629+01:00
+    hippostdpubwf:lastModifiedBy: admin
+    hippostdpubwf:publicationDate: 2019-11-04T14:21:46.553+01:00
+    hippotranslation:id: 77aeb947-6943-417c-a3ce-f993c5903aa9
+    hippotranslation:locale: en
+    oai:deletedrecord: 'NO'
+    oai:email: test@example.com
+    oai:granularity: YYYY-MM-DDThh:mm:ssZ
+    oai:reponame: OAI PMH Demo
+    oai:version: '2.0'

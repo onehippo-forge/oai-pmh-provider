@@ -26,10 +26,6 @@ import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.ws.WebServiceException;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.reflect.ClassPath;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.FastDateFormat;
@@ -62,6 +58,10 @@ import org.onehippo.forge.oaipmh.provider.model.oai.SetType;
 import org.onehippo.forge.oaipmh.provider.model.oai.VerbType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.reflect.ClassPath;
 
 /**
  * The Open Archives Initiative Protocol for Metadata Harvesting (referred to as the OAI-PMH in the remainder of this
@@ -780,7 +780,8 @@ public abstract class BaseOAIResource extends AbstractResource {
 
 
     protected String resolveRequestUrl(RestContext context) {
-        Mount mount = context.getHstRequestContext().getResolvedMount().getMount();
+        final Mount mount = context.getHstRequestContext().getResolvedMount().getMount();
+
         String host = mount.getScheme() + "://" + mount.getVirtualHost().getHostName();
 
         if (mount.isPortInUrl()) {
@@ -793,6 +794,9 @@ public abstract class BaseOAIResource extends AbstractResource {
             if (port != 80 && port != 443) {
                 host += ":" + port;
             }
+        }
+        if (mount.isContextPathInUrl()) {
+            host += mount.getContextPath();
         }
         return host + context.getHstRequestContext().getBaseURL().getRequestPath();
     }

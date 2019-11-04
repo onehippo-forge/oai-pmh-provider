@@ -3,20 +3,19 @@ definitions:
     /hippo:namespaces/oaipmhdemo/contentdocument:
       jcr:primaryType: hipposysedit:templatetype
       jcr:mixinTypes: ['editor:editable', 'mix:referenceable']
-      jcr:uuid: 4bbde176-5151-4b2d-ad38-f26500ca470d
+      jcr:uuid: c3355f34-8ea1-47a7-a97b-01dae025a9a5
       /hipposysedit:nodetype:
         jcr:primaryType: hippo:handle
         jcr:mixinTypes: ['mix:referenceable']
-        jcr:uuid: df162fd6-7b0e-403b-91bb-d18a262096f6
+        jcr:uuid: 2a66cc26-253c-47c4-ad84-91adc2826b8f
         /hipposysedit:nodetype:
           jcr:primaryType: hipposysedit:nodetype
-          jcr:mixinTypes: ['hipposysedit:remodel', 'mix:referenceable', 'oai:document']
-          jcr:uuid: e9a6d331-eca2-4e7c-9f53-0c142797b0a6
+          jcr:mixinTypes: ['hipposysedit:remodel', 'mix:referenceable','oai:document']
+          jcr:uuid: a1a4f59b-41fb-4980-9b55-b56d22afe59b
           hipposysedit:node: true
           hipposysedit:supertype: ['oaipmhdemo:basedocument', 'hippostd:relaxed',
             'hippotranslation:translated']
-          hipposysedit:uri: http://www.onehippo.org/oaipmhdemo/nt/1.0
-          oai:identifier: df162fd6-7b0e-403b-91bb-d18a262096f6
+          hipposysedit:uri: http://www.oaipmhdemo.com/oaipmhdemo/nt/1.0
           /title:
             jcr:primaryType: hipposysedit:field
             hipposysedit:mandatory: false
@@ -53,8 +52,8 @@ definitions:
         jcr:primaryType: hipposysedit:prototypeset
         /hipposysedit:prototype:
           jcr:primaryType: oaipmhdemo:contentdocument
-          jcr:mixinTypes: ['mix:referenceable', 'oai:document']
-          jcr:uuid: 2114b237-5ba0-4278-855f-1a3757dba7ec
+          jcr:mixinTypes: ['mix:referenceable']
+          jcr:uuid: a35e0379-b911-4742-a06e-6b863b36cb9b
           hippo:related___pathreference: []
           hippostd:holder: holder
           hippostd:state: draft
