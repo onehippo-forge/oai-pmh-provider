@@ -24,6 +24,7 @@ import org.hippoecm.hst.content.beans.standard.HippoGalleryImageSet;
 import org.hippoecm.hst.content.beans.standard.HippoHtml;
 import org.hippoecm.repository.HippoStdPubWfNodeType;
 import org.onehippo.cms7.essentials.dashboard.annotations.HippoEssentialsGenerated;
+import org.onehippo.forge.oaipmh.provider.api.OAI;
 import org.onehippo.forge.oaipmh.provider.api.OAIBean;
 import org.onehippo.forge.oaipmh.provider.api.OAIDelegate;
 import org.onehippo.forge.oaipmh.provider.api.OAIIdentifier;
@@ -36,6 +37,7 @@ import org.onehippo.forge.oaipmh.provider.model.oai.edurep.lom.NLLom;
 
 @HippoEssentialsGenerated(internalName = "oaipmhdemo:newsdocument", allowModifications = false)
 @Node(jcrType=NewsDocument.DOCUMENT_TYPE)
+@OAI(setName = "NewsDocument")
 public class NewsDocument extends HippoDocument implements OAIBean {
 
     /**
