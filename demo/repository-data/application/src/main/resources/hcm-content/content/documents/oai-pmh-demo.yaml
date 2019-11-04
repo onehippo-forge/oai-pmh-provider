@@ -2,8 +2,8 @@
   .meta:order-before: administration
   jcr:primaryType: hippostd:folder
   jcr:mixinTypes: ['hippo:named', 'hippotranslation:translated', 'mix:referenceable']
-  jcr:uuid: d5fe7ed7-b4a2-43d4-acca-84a72cc893c0
-  hippo:name: OAI-PMH Demo
+  jcr:uuid: b9d68817-aadc-4130-8f80-bde02a95bcdf
+  hippo:name: Hippo OAI-PMH Provider Demo
   hippostd:foldertype: [new-translated-folder, new-document]
   hippotranslation:id: 996bcac5-86cf-49b5-a7a3-16a74863e814
   hippotranslation:locale: en

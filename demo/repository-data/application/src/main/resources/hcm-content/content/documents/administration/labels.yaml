@@ -1,17 +1,17 @@
 /content/documents/administration/labels:
   jcr:primaryType: hippostd:folder
   jcr:mixinTypes: ['mix:referenceable']
-  jcr:uuid: c791e3dd-40a3-4469-9dbd-b673dcb886dd
+  jcr:uuid: 7d0317db-c2f9-4b48-aba1-e092c1064102
   hippostd:foldertype: [new-resource-bundle, new-untranslated-folder]
   /global:
     jcr:primaryType: hippo:handle
     jcr:mixinTypes: ['hippo:named', 'mix:referenceable']
-    jcr:uuid: 9f952b68-735d-433a-acbd-c24061786a64
+    jcr:uuid: a0b55ac4-c776-457f-8de8-496952aeff91
     hippo:name: Global
     /global:
       jcr:primaryType: resourcebundle:resourcebundle
       jcr:mixinTypes: ['mix:referenceable']
-      jcr:uuid: df562cae-0652-4ad1-ad02-62639914a36c
+      jcr:uuid: 2c760105-b318-4b99-b915-0099475351dc
       hippo:availability: [live, preview]
       hippostd:state: published
       hippostdpubwf:createdBy: admin
@@ -22,16 +22,16 @@
       resourcebundle:descriptions: [Text shown in the global page footer.]
       resourcebundle:id: essentials.global
       resourcebundle:keys: [footer.text]
-      resourcebundle:messages: [©2018]
+      resourcebundle:messages: [©2019]
   /homepage:
     jcr:primaryType: hippo:handle
     jcr:mixinTypes: ['hippo:named', 'mix:referenceable']
-    jcr:uuid: 9ecc8785-1862-4621-954c-af3a068cba6e
+    jcr:uuid: 5d287cc4-f57e-499f-b1e5-bb00a8a0e251
     hippo:name: Homepage
     /homepage:
       jcr:primaryType: resourcebundle:resourcebundle
       jcr:mixinTypes: ['mix:referenceable']
-      jcr:uuid: 4103b751-a681-4b51-8769-d8335b2f2dd1
+      jcr:uuid: eb5a542f-e2e4-4824-9f8c-6eae38a2c290
       hippo:availability: [live, preview]
       hippostd:state: published
       hippostdpubwf:createdBy: admin
@@ -44,19 +44,19 @@
       resourcebundle:id: essentials.homepage
       resourcebundle:keys: [homepage.title, homepage.text]
       resourcebundle:messages: [Home Page, 'Every website comes with its own styling
-          requirements. Hippo''s setup application can therefore not address site
-          styling. Instead, the generated pages use minimal styling to render the
-          content. It is the task of the Hippo developer to adjust the front-end to
-          the site''s needs.']
+          requirements. The BloomReach setup application can therefore not address
+          site styling. Instead, the generated pages use minimal styling to render
+          the content. It is the task of the project developer to adjust the front-end
+          to the site''s needs.']
   /pagenotfound:
     jcr:primaryType: hippo:handle
     jcr:mixinTypes: ['hippo:named', 'mix:referenceable']
-    jcr:uuid: e8e9f451-bf0f-4bc7-8efa-8b428a3a284b
+    jcr:uuid: 1f1db052-2445-4123-9958-c502e1ac90fc
     hippo:name: Page not found
     /pagenotfound:
       jcr:primaryType: resourcebundle:resourcebundle
       jcr:mixinTypes: ['mix:referenceable']
-      jcr:uuid: c5a194db-fe91-40fd-8a85-81114e08248d
+      jcr:uuid: 7363aabc-4c69-418b-b912-41447119117c
       hippo:availability: [live, preview]
       hippostd:state: published
       hippostdpubwf:createdBy: admin
@@ -73,12 +73,12 @@
   /pagination:
     jcr:primaryType: hippo:handle
     jcr:mixinTypes: ['hippo:named', 'mix:referenceable']
-    jcr:uuid: ebe5418d-17f2-4cba-9a0b-e303e829f8f7
+    jcr:uuid: 4e877d1d-95bf-4220-8f07-f32375c67de1
     hippo:name: Pagination
     /pagination:
       jcr:primaryType: resourcebundle:resourcebundle
       jcr:mixinTypes: ['mix:referenceable']
-      jcr:uuid: 21e90d59-c16c-470c-96b7-444dad990e9e
+      jcr:uuid: 8802e482-9d25-4a19-bc1b-76216a66b7a4
       hippo:availability: [live, preview]
       hippostd:state: published
       hippostdpubwf:createdBy: admin

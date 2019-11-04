@@ -44,10 +44,60 @@
         <p>
          The OAI-PMH plug-in has been build for hippo 7.8.3 and up.
         </p>
-        <p>
-        Latest is plugin version 2.01.06 for Hippo 10.
-        </p>
       </subsection>
     </section>
+    <div class="section">
+      <h2><a name="compatibility"></a>Compatibility</h2>
+      <table>
+        <tr>
+          <th>Plugin Version</th>
+          <th>Hippo CMS Release Version</th>
+        </tr>
+        <tr>
+          <td>1.01.x</td>
+          <td>7.8</td>
+        </tr>
+        <tr>
+          <td>2.x</td>
+          <td>7.9, 10, 11</td>
+        </tr>
+        <tr>
+          <td>3.x</td>
+          <td>12.x</td>
+        </tr>
+        <tr>
+          <td>4.x</td>
+          <td>13.x</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2><a name="Release_Notes"></a>Release Notes</h2>
+      <div class="section">
+        <h3><a name="a4.0.0"></a>4.0.0</h3>
+        <ul>
+          <li>[HIPFORGE-322] Upgrade to brXM 13</li>
+        </ul>
+      </div>
+      <div class="section">
+        <h3><a name="a3.0.3"></a>3.0.3</h3>
+        <ul>
+          <li>Fix documentation</li>
+        </ul>
+      </div>
+      <div class="section">
+        <h3><a name="a3.0.2"></a>3.0.2</h3>
+        <ul>
+          <li>Remove xml based bootstrap</li>
+        </ul>
+      </div>
+      <div class="section">
+        <h3><a name="a3.0.1"></a>3.0.1</h3>
+        <ul>
+          <li>HIPFORGE-196 upgrade to 12</li>
+        </ul>
+      </div>
+    </div>
   </body>
 </document>

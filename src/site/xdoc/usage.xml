@@ -30,7 +30,7 @@
         </p>
         <p>
           You should know on how to use the
-          <a href="http://www.onehippo.org/7_7/library/concepts/rest/restful-jax-rs-component-support-in-hst-2.html">HST jax-rs API</a>
+          <a href="https://documentation.bloomreach.com/library/concepts/rest/restful-jax-rs-component-support-in-hst-2.html">HST jax-rs API</a>
         </p>
         <p>
           You should know how the OAI-PMH protocol works; see the
@@ -69,7 +69,7 @@
 <dependency>
  <groupId>org.onehippo.forge</groupId>
  <artifactId>oai-pmh-provider-repository</artifactId>
- <version>2.01.06</version>
+ <version>[version]</version>
 </dependency>
                         ]]>
             </source>
@@ -84,7 +84,7 @@
 <dependency>
  <groupId>org.onehippo.forge</groupId>
  <artifactId>oai-pmh-provider-hst</artifactId>
- <version>2.01.06</version>
+ <version>[version]</version>
 </dependency>
                         ]]>
             </source>
@@ -117,10 +117,10 @@
           <li>@OAIDelegate: for delegating different metadata prefixes (we currently only support "dc_oai" and/or "lom")</li>
           <li>@OAIIdentifier: for generating the record identifier</li>
           <li>
-            <a href="https://github.com/bloomreach-forge/oai-pmh-provider/tree/master/demo/site/src/main/java/org/onehippo/forge/oaipmh/beans/NewsDocument.java">example newsdocument:</a>
+            <a href="https://github.com/bloomreach-forge/oai-pmh-provider/blob/develop/demo/site/components/src/main/java/org/onehippo/forge/beans/NewsDocument.java">example newsdocument:</a>
           </li>
           <li>
-            <a href="https://github.com/bloomreach-forge/oai-pmh-provider/tree/master/demo/site/src/main/java/org/onehippo/forge/oaipmh/beans/TextDocument.java">example textdocument:</a>
+            <a href="https://github.com/bloomreach-forge/oai-pmh-provider/blob/develop/demo/site/components/src/main/java/org/onehippo/forge/beans/ContentDocument.java">example contentdocument:</a>
           </li>
         </ol>
       </subsection>
@@ -129,7 +129,7 @@
         <source>
           <![CDATA[
 
-            <'oaipmh.demo'='http://www.onehippo.org/oaipmh.demo/nt/1.0'>
+<'oaipmh.demo'='http://www.onehippo.org/oaipmh.demo/nt/1.0'>
 <'hippo'='http://www.onehippo.org/jcr/hippo/nt/2.0'>
 <'hippostd'='http://www.onehippo.org/jcr/hippostd/nt/2.0'>
 <'hippostdpubwf'='http://www.onehippo.org/jcr/hippostdpubwf/nt/1.0'>
@@ -137,31 +137,17 @@
 
 [oaipmh.demo:basedocument] > hippo:document, hippostd:publishableSummary, hippostdpubwf:document orderable
 
-[oaipmh.demo:textdocument] > oaipmh.demo:basedocument, hippostd:relaxed
+[oaipmh.demo:contentdocument] > oaipmh.demo:basedocument, hippostd:relaxed
 
 [oaipmh.demo:newsdocument] > oaipmh.demo:basedocument, hippostd:relaxed, oai:document
 
               ]]>
         </source>
         <p>Or in your prototype (best practice):</p>
-        <source>
-          <![CDATA[
-
-            <sv:node sv:name="hipposysedit:prototypes">
-    <sv:property sv:name="jcr:primaryType" sv:type="Name">
-      <sv:value>hipposysedit:prototypeset</sv:value>
-    </sv:property>
-    <sv:node sv:name="hipposysedit:prototype">
-      <sv:property sv:name="jcr:primaryType" sv:type="Name">
-        <sv:value>oaipmh.demo:textdocument</sv:value>
-      </sv:property>
-      <sv:property sv:name="jcr:mixinTypes" sv:type="Name">
-        <sv:value>hippo:harddocument</sv:value>
-        <sv:value>hippotranslation:translated</sv:value>
-        <sv:value>oai:document</sv:value>
-      </sv:property>
-
-              ]]>
+        <source><![CDATA[
+ /hipposysedit:prototype:
+  jcr:primaryType: oaipmhdemo:contentdocument
+  jcr:mixinTypes: ['mix:referenceable', 'oai:document']]]>
         </source>
         <p>Depending on your project, you might need to create a script which will add the mixin on all existing documents</p>
       </subsection>
@@ -170,14 +156,12 @@
           <p>add oai-pmh.xml to META-INF.hst-assembly.overrides package of your site project. Example:</p>
           <source>
             <![CDATA[
-   <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
  <import resource="classpath:/org/onehippo/forge/oaipmh/provider/resource/oai-pmh.xml"/>
-
-
 
   <bean id="beanPackage" class="java.lang.String">
     <constructor-arg value="org.onehippo.demo"/>
@@ -198,9 +182,8 @@
   </bean>
 
 </beans>
-              ]]>
+]]>
           </source>
-
         </li>
       </subsection>
       <subsection name="Configure HST mount">
@@ -229,7 +212,7 @@
           <a href="http://localhost:8080/site/pmh/oai?verb=ListIdentifiers&amp;metadataPrefix=lom">List identifiers (lom : edurep)</a>
         </li>
         <li>
-          <a href="http://localhost:8080/site/pmh/oai?verb=GetRecord&amp;identifier=a8a0bb9f-c5b6-47e8-9503-4f5f8ce9966f&amp;metadataPrefix=lom">Get Single Record (lom : edurep)</a>
+          <a href="http://localhost:8080/site/pmh/oai?verb=GetRecord&amp;identifier=c580ac64-3874-4717-a6d9-e5ad72080abe&amp;metadataPrefix=lom">Get Single Record (lom : edurep)</a>
         </li>
         <li>
           <a href="http://localhost:8080/site/pmh/oai?verb=ListMetadataFormats">List Metadata formats oai_dc &amp; lom (edurep)</a>
@@ -242,7 +225,7 @@
         <p>Important for EDUREP!!</p>
         <p>You should have the knowledge about the used xml formats and which elements and attributes are mandatory for edurep NLLOM</p>
         <p>
-          <a href="http://wiki.surf.nl/display/nllom/Home">http://wiki.surf.nl/display/nllom/Home</a>
+          <a href="https://wiki.surfnet.nl/display/nllom/Home">https://wiki.surfnet.nl/display/nllom/Home</a>
         </p>
         <p>All elements and attributes are already provided in the oai-pmh project under the following package: <a href="https://github.com/bloomreach-forge/oai-pmh-provider/tree/master/hst/src/main/java/org/onehippo/forge/oaipmh/provider/model/oai/edurep/lom/"> package</a></p>
         <p>Plus we also provide a helper class which should get you going: <a href="https://github.com/bloomreach-forge/oai-pmh-provider/tree/master/hst/src/main/java/org/onehippo/forge/oaipmh/provider/model/oai/edurep/lom/NLLom.java">NLLOM</a> in combination with

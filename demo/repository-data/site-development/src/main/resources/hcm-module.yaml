@@ -1,0 +1,6 @@
+site: oai-pmh-demo
+group: oai-pmh-demo
+project: oai-pmh-demo
+module:
+  name: oai-pmh-demo-repository-data-site-development
+  after: oai-pmh-demo-repository-data-site
