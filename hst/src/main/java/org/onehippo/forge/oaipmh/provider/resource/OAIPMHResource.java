@@ -92,7 +92,6 @@ public class OAIPMHResource extends BaseOAIResource {
                     final Identify identify = (Identify) objectConverter.getObject(session, property);
                     identifyType.setRepositoryName(identify.getRepositoryName());
                     identifyType.getAdminEmail().add(identify.getAdminEmail());
-                    identify.get
                 }
             } catch (Exception e) {
                 log.error("Exception happened while trying to retrieve identifiable document definition", e);
