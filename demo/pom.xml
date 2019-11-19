@@ -62,7 +62,7 @@
 
     <!--***START temporary override of versions*** -->
     <!-- ***END temporary override of versions*** -->
-    <forge.oaipmh.version>3.0.4-SNAPSHOT</forge.oaipmh.version>
+    <forge.oaipmh.version>${project.version}</forge.oaipmh.version>
 
     <essentials.version>13.3.0</essentials.version>
     <jsp-api.version>2.2</jsp-api.version>
