@@ -1,6 +1,7 @@
 package org.onehippo.forge.oaipmh.provider.resource;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,6 +47,7 @@ public class OAIPMHResource extends BaseOAIResource {
     private static Logger log = LoggerFactory.getLogger(OAIPMHResource.class);
 
     protected static final Pattern TOKEN_PATTERN = Pattern.compile("tx([0-9]+)xmx([a-z[0-9]]+)xpx(.*)frm(.*)utl(.*)");
+    protected static final Pattern TOKEN_PATTERN_MILLI = Pattern.compile("tx([0-9]+)xmx([a-z0-9]+)xpx(.*)frm(.*)utl(.*)");
     private static final String RESUMPTION_TOKEN_FORMAT = "tx%sxmx%sxpx%sfrm%sutl%s";
 
     protected static final String PROTOCOL_VERSION = "2.0";
@@ -109,7 +111,7 @@ public class OAIPMHResource extends BaseOAIResource {
 
     @Override
     public boolean validResumptionToken(final String resumptionToken) {
-        return TOKEN_PATTERN.matcher(resumptionToken).matches();
+        return getTokenPattern().matcher(resumptionToken).matches();
     }
 
     @Override
@@ -172,12 +174,16 @@ public class OAIPMHResource extends BaseOAIResource {
     @Override
     protected void processResumptionToken(final RestContext context, final ListType listType, final String resumptionToken, final Calendar lastKnownPublicationDate, final String metaPrefix, final String set, final String from, final String until, final int totalSize) throws OAIException {
         final ResumptionTokenType resumptionTokenType = new ResumptionTokenType();
-        final String time = OAI_DATE_FORMATTER.format(lastKnownPublicationDate.getTime());
+        final String time = getOaiDateFormatter().format(lastKnownPublicationDate.getTime());
 
         String resToken = String.format(RESUMPTION_TOKEN_FORMAT, time, getFromResumptionTokenOrUseDefault(resumptionToken, 2, metaPrefix), getFromResumptionTokenOrUseDefault(resumptionToken, 3, set), getFromResumptionTokenOrUseDefault(resumptionToken, 4, from), getFromResumptionTokenOrUseDefault(resumptionToken, 5, until));
         resumptionTokenType.setValue(resToken);
 
         listType.setResumptionToken(resumptionTokenType);
+    }
+
+    private SimpleDateFormat getOaiDateFormatter() {
+        return isUseMilliSecondsDatePrecision()? OAI_DATE_FORMATTER_MILLI : OAI_DATE_FORMATTER;
     }
 
     @Override
@@ -197,7 +203,7 @@ public class OAIPMHResource extends BaseOAIResource {
 
     @Override
     protected String getMetadataPrefixFromResumptionToken(final String resumptionToken) throws OAIException {
-        final Matcher matcher = TOKEN_PATTERN.matcher(resumptionToken);
+        final Matcher matcher = getTokenPattern().matcher(resumptionToken);
         if (matcher.matches()) {
             final String metadataPrefix = matcher.group(2);
 
@@ -208,13 +214,15 @@ public class OAIPMHResource extends BaseOAIResource {
     }
 
 
+
+
     /**
      * UTILS
      */
 
     public String getFromResumptionTokenOrUseDefault(String resumptionToken, int group, String defaultString) {
         if (StringUtils.isNotEmpty(resumptionToken)) {
-            final Matcher matcher = TOKEN_PATTERN.matcher(resumptionToken);
+            final Matcher matcher = getTokenPattern().matcher(resumptionToken);
             if (matcher.matches()) {
                 return matcher.group(group);
             }
@@ -224,7 +232,7 @@ public class OAIPMHResource extends BaseOAIResource {
 
     public String getFromResumptionTokenOrUseDefaultNull(String resumptionToken, int group, String defaultString) {
         if (StringUtils.isNotEmpty(resumptionToken)) {
-            final Matcher matcher = TOKEN_PATTERN.matcher(resumptionToken);
+            final Matcher matcher = getTokenPattern().matcher(resumptionToken);
             if (matcher.matches()) {
                 return StringUtils.isEmpty(matcher.group(group)) ? defaultString : matcher.group(group);
             }
@@ -234,13 +242,13 @@ public class OAIPMHResource extends BaseOAIResource {
 
 
     protected Calendar getCalendarFromResumptionToken(final String resumptionToken) throws OAIException {
-        final Matcher matcher = TOKEN_PATTERN.matcher(resumptionToken);
+        final Matcher matcher = getTokenPattern().matcher(resumptionToken);
         if (matcher.matches()) {
             final String pubDateString = matcher.group(1);
             Calendar calendar = Calendar.getInstance();
             Date parse = null;
             try {
-                parse = OAI_DATE_FORMATTER.parse(pubDateString);
+                parse = getOaiDateFormatter().parse(pubDateString);
             } catch (ParseException e) {
                 throw new OAIException(OAIPMHerrorcodeType.BAD_RESUMPTION_TOKEN, THE_VALUE_OF_THE_RESUMPTION_TOKEN_ARGUMENT_IS_INVALID_OR_EXPIRED);
             }
@@ -252,12 +260,16 @@ public class OAIPMHResource extends BaseOAIResource {
     }
 
     protected String getSetFromResumptionToken(final String resumptionToken) throws OAIException {
-        final Matcher matcher = TOKEN_PATTERN.matcher(resumptionToken);
+        final Matcher matcher = getTokenPattern().matcher(resumptionToken);
         if (matcher.matches()) {
             final String setType = matcher.group(3);
             return setType;
         }
         return null;
+    }
+
+    private Pattern getTokenPattern() {
+        return isUseMilliSecondsDatePrecision() ? TOKEN_PATTERN_MILLI : TOKEN_PATTERN;
     }
 
 }

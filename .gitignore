@@ -1,5 +1,6 @@
 *.iml
-*.idea
-target
+*.idea/
+target/
 storage*
-overlays
+overlays/
+classes/
