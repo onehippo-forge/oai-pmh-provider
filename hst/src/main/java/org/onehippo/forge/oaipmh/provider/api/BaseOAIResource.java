@@ -67,13 +67,15 @@ import org.slf4j.LoggerFactory;
  * The Open Archives Initiative Protocol for Metadata Harvesting (referred to as the OAI-PMH in the remainder of this
  * document) provides an application-independent interoperability framework based on metadata harvesting
  *
- * @version "$Id$"
  */
 @Produces({MediaType.APPLICATION_XML})
 @Path("/oai")
 public abstract class BaseOAIResource extends AbstractResource {
 
     private static Logger log = LoggerFactory.getLogger(BaseOAIResource.class);
+
+    @SuppressWarnings("HippoHstThreadSafeInspection")
+    private boolean useMilliSecondsDatePrecision;
 
     /**
      * registered variables:
@@ -93,6 +95,7 @@ public abstract class BaseOAIResource extends AbstractResource {
     protected static final String OAI_PUBDATE = "oai:pubdate";
 
     protected static final String OAI_PUBLICATION_DATE_FORMAT = "yyyyMMddHHmmss";
+    protected static final String OAI_PUBLICATION_DATE_FORMAT_MILLI = "yyyyMMddHHmmssSSS";
 
     private static final String BAD_VERB_NO_VERB = "The request includes illegal arguments, is missing required arguments, includes a repeated argument, or values for arguments have an illegal syntax. No \"verb\" argument found.";
     private static final String BAD_VERB_NOT_LEGAL = "Value of the verb argument is not a legal OAI-PMH verb, the verb argument is missing, or the verb argument is repeated.";
@@ -102,6 +105,7 @@ public abstract class BaseOAIResource extends AbstractResource {
     protected static final SimpleDateFormat SIMPLEFORMATTER = new SimpleDateFormat(SIMPLEFORMAT);
     protected static final SimpleDateFormat FORMATTER = new SimpleDateFormat(DATEFORMAT);
     protected static final SimpleDateFormat OAI_DATE_FORMATTER = new SimpleDateFormat(OAI_PUBLICATION_DATE_FORMAT);
+    protected static final SimpleDateFormat OAI_DATE_FORMATTER_MILLI = new SimpleDateFormat(OAI_PUBLICATION_DATE_FORMAT_MILLI);
 
     protected static final Set<String> VERB_VALUES = new ImmutableSet.Builder<String>()
             .add("Identify")
@@ -858,4 +862,11 @@ public abstract class BaseOAIResource extends AbstractResource {
 
     }
 
+    public boolean isUseMilliSecondsDatePrecision() {
+        return useMilliSecondsDatePrecision;
+    }
+
+    public void setUseMilliSecondsDatePrecision(final boolean useMilliSecondsDatePrecision) {
+        this.useMilliSecondsDatePrecision = useMilliSecondsDatePrecision;
+    }
 }
