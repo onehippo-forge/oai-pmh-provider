@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC
+  "-//Apache Software Foundation//DTD XDOC 1.0//EN"
+  "http://maven.apache.org/dtd/xdoc_1_0.dtd">
+<!--
+  Copyright 2020 Hippo
+
+  Licensed under the Apache License, Version 2.0 (the  "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS"
+  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<document>
+  <properties>
+    <title>Release notes</title>
+  </properties>
+  <body>
+    <section name="Release Notes">
+      <subsection name="4.1.0">
+        <p class="smallinfo">Release Date: 14 January 2020</p>
+        <ul>
+          <li><a href="https://issues.onehippo.com/browse/HIPFORGE-290">HIPFORGE-290</a> -
+             Add "useMilliSecondsDatePrecision" option to OAIPMHResource configuration. See <a href="usage.html">usage page</a>.
+          </li>
+        </ul>
+      </subsection>
+      <subsection name="4.0.0">
+        <p class="smallinfo">Release Date: 4 November 2019</p>
+        <ul>
+          <li>HIPFORGE-322 - Upgrade to Bloomreach Experience Manager 13.</li>
+        </ul>
+      </subsection>
+      <subsection name="3.1.0">
+        <p class="smallinfo">Release Date: 14 January 2019</p>
+        <ul>
+          <li>HIPFORGE-322 - Upgrade to Bloomreach Experience Manager 13.</li>
+        </ul>
+      </subsection>
+      <subsection name="3.0.3">
+        <p class="smallinfo">Release Date: 26 November 2018</p>
+        <ul>
+          <li>Fix documentation.</li>
+        </ul>
+      </subsection>
+      <subsection name="3.0.2">
+        <p class="smallinfo">Release Date: 26 November 2018</p>
+        <ul>
+          <li>Remove XML based bootstrap</li>
+        </ul>
+      </subsection>
+      <subsection name="3.0.1">
+        <p class="smallinfo">Release Date: 1 October 2018</p>
+        <ul>
+          <li>HIPFORGE-196 - Upgrade to Bloomreach Experience Manager 12.</li>
+        </ul>
+      </subsection>
+      <subsection name="2.01.01/06">
+        <ul>
+          <li>Versions for Hippo 11.</li>
+        </ul>
+      </subsection>
+      <subsection name="1.01.01">
+        <ul>
+          <li>Version for Hippo 10.</li>
+        </ul>
+      </subsection>
+    </section>
+  </body>
+</document>
