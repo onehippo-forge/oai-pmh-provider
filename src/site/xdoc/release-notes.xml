@@ -24,7 +24,7 @@
   <body>
     <section name="Release Notes">
       <subsection name="4.1.0">
-        <p class="smallinfo">Release Date: 14 January 2020</p>
+        <p class="smallinfo">Release Date: 15 January 2020</p>
         <ul>
           <li><a href="https://issues.onehippo.com/browse/HIPFORGE-290">HIPFORGE-290</a> -
              Add "useMilliSecondsDatePrecision" option to OAIPMHResource configuration. See <a href="usage.html">usage page</a>.
@@ -38,9 +38,11 @@
         </ul>
       </subsection>
       <subsection name="3.1.0">
-        <p class="smallinfo">Release Date: 14 January 2019</p>
+        <p class="smallinfo">Release Date: 15 January 2019</p>
         <ul>
-          <li>HIPFORGE-322 - Upgrade to Bloomreach Experience Manager 13.</li>
+          <li><a href="https://issues.onehippo.com/browse/HIPFORGE-290">HIPFORGE-290</a> -
+            Add "useMilliSecondsDatePrecision" option to OAIPMHResource configuration. See <a href="usage.html">usage page</a>.
+          </li>
         </ul>
       </subsection>
       <subsection name="3.0.3">
