@@ -12,7 +12,7 @@
   <description>Hippo OAI-PMH Provider Demo</description>
   <groupId>org.onehippo.forge</groupId>
   <artifactId>oai-pmh-demo</artifactId>
-  <version>4.0.0</version>
+  <version>4.1.0</version>
   <packaging>pom</packaging>
 
   <!-- 
@@ -62,7 +62,7 @@
 
     <!--***START temporary override of versions*** -->
     <!-- ***END temporary override of versions*** -->
-    <forge.oaipmh.version>3.0.4-SNAPSHOT</forge.oaipmh.version>
+    <forge.oaipmh.version>${project.version}</forge.oaipmh.version>
 
     <essentials.version>13.3.0</essentials.version>
     <jsp-api.version>2.2</jsp-api.version>
