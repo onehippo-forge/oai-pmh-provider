@@ -16,6 +16,7 @@
           <constructor-arg>
             <bean class="org.onehippo.forge.oaipmh.provider.resource.OAIPMHResource">
               <property name="beansPackage" ref="beanPackage"/>
+              <property name="useMilliSecondsDatePrecision" value="false"/>
             </bean>
           </constructor-arg>
         </bean>
