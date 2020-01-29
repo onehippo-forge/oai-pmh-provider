@@ -3,14 +3,14 @@
   "-//Apache Software Foundation//DTD XDOC 1.0//EN"
   "http://maven.apache.org/dtd/xdoc_1_0.dtd">
 <!--
-    Copyright 2009-2017 Hippo
-    
+    Copyright 2009-2020 Hippo
+
     Licensed under the Apache License, Version 2.0 (the  "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS"
     BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -175,7 +175,7 @@
             <bean class="org.onehippo.demo.rest.OAIPMHResource">
               <property name="beansPackage" value="org.onehippo.beans"/>
               <!--milliseconds setting since versions 3.1.0 and 4.1.0 -->
-              <property name="useMilliSecondsDatePrecision" vale="false"/>
+              <property name="useMilliSecondsDatePrecision" value="false"/>
             </bean>
           </constructor-arg>
         </bean>
@@ -187,6 +187,26 @@
 ]]>
           </source>
         </li>
+      </subsection>
+      <subsection name="Configure usage of milliseconds date format">
+        <ul>
+          <p>Since versions 3.1.1 and 4.1.1 you can configure using either second or millisecond precision on
+            (publication)date (oai:pubdate) and resumption token properties.</p>
+          <p>Second-precision is used by default. To enable the use of millisecond-precision:</p>
+          <li><p>In oai-pmh.xml in the META-INF.hst-assembly.overrides package of your site project, set:
+            <source> <![CDATA[ <property name="useMilliSecondsDatePrecision" value="true"/> ]]></source> </p>
+          </li>
+          <li> <p>In the console, configure the oaipmh derivative configuration to use the OAIPMHDateFunctionMillis Class:</p>
+            <source>
+            <![CDATA[
+            definitions:
+              config:
+                /hippo:configuration/hippo:derivatives/oaipmh:
+                  hipposys:classname: org.onehippo.forge.oaipmh.repository.deriveddata.OAIPMHDateFunctionMillis]]>
+            </source>
+          </li>
+          <p>Documents that are touched by the derivative function will now have millisecond precision properties set. Existing documents will need to be updated using a groovy script.</p>
+        </ul>
       </subsection>
       <subsection name="Configure HST mount">
         <li>

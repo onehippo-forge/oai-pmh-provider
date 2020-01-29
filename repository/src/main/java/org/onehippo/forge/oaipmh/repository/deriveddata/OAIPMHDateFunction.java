@@ -30,13 +30,17 @@ public class OAIPMHDateFunction extends DerivedDataFunction {
         try {
             if (parameters.containsKey(PUBLICATION_DATE)) {
                 final Date publicationDate = parameters.get(PUBLICATION_DATE)[0].getDate().getTime();
-                final String dateString = new SimpleDateFormat(DATE_FORMAT).format(publicationDate);
+                final String dateString = new SimpleDateFormat(getDateFormat()).format(publicationDate);
                 parameters.put(OAI_PUBLICATION_DATE, new Value[]{getValueFactory().createValue(dateString)});
             }
         } catch (RepositoryException repositoryException) {
             log.error("Error computing publication date string. Parameters are: " + parameters, repositoryException);
         }
         return parameters;
+    }
+
+    protected String getDateFormat() {
+       return DATE_FORMAT;
     }
 
 }
