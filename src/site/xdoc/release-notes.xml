@@ -23,6 +23,16 @@
   </properties>
   <body>
     <section name="Release Notes">
+      <subsection name="4.1.2">
+        <p class="smallinfo">Release Date: 28 May 2020</p>
+        <ul>
+          <li><a href="https://issues.onehippo.com/browse/HIPFORGE-349">HIPFORGE-349</a> -
+            Upgraded to 13.4.2.
+            <p>After upgrade to 13.4.2 the plugin caused error message (hippotranslation:translations is an unknown document type with supertypes [nt:base]).</p>
+            Removed unused properties which caused this error.
+          </li>
+        </ul>
+      </subsection>
     <subsection name="4.1.1">
       <p class="smallinfo">Release Date: 29 January 2020</p>
       <ul>
