@@ -15,8 +15,7 @@ definitions:
             jcr:mixinTypes: ['hipposysedit:remodel']
             jcr:uuid: b68306a0-60fd-4474-9da8-7a1929b82ae5
             hipposysedit:node: true
-            hipposysedit:supertype: ['hippo:document', 'hippostd:relaxed', 'hippostdpubwf:document',
-              'hippotranslation:translated']
+            hipposysedit:supertype: ['hippo:document', 'hippostd:relaxed', 'hippostdpubwf:document']
             hipposysedit:uri: http://www.hippoecm.org/hst/nt/oai/1.0
             /reponame:
               jcr:primaryType: hipposysedit:field
@@ -71,8 +70,6 @@ definitions:
             hippostdpubwf:creationDate: 2013-07-19T12:02:23.247+02:00
             hippostdpubwf:lastModificationDate: 2013-07-19T12:02:23.247+02:00
             hippostdpubwf:lastModifiedBy: ''
-            hippotranslation:id: document-type-locale-id
-            hippotranslation:locale: document-type-locale
             oai:deletedrecord: 'NO'
             oai:email: ''
             oai:granularity: YYYY-MM-DDThh:mm:ssZ
