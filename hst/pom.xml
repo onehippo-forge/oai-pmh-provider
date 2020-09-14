@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.bloomreach.forge.oai-pmh-provider</groupId>
     <artifactId>oai-pmh-provider</artifactId>
-    <version>5.0.0</version>
+    <version>5.0.1-SNAPSHOT</version>
   </parent>
 
   <name>Bloomreach OAI-PMH Provider HST</name>

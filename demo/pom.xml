@@ -12,7 +12,7 @@
   <description>Bloomreach OAI-PMH Provider Demo</description>
   <groupId>org.bloomreach.forge.oai-pmh-provider</groupId>
   <artifactId>oai-pmh-demo</artifactId>
-  <version>5.0.0</version>
+  <version>5.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <!-- 
