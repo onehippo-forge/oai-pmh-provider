@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/bloomreach-forge/oai-pmh-provider.svg?branch=develop)](https://travis-ci.org/bloomreach-forge/oai-pmh-provider)
 
-# Hippo OAI-PMH Provider
+# Bloomreach OAI-PMH Provider
 
 The <strong>Open Archives Initiative Protocol for Metadata Harvesting</strong> (OAI-PMH) provides an application-independent 
 interoperability framework based on metadata harvesting.

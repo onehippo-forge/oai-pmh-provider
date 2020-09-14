@@ -1,13 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <parent>
-    <groupId>org.onehippo.forge</groupId>
-    <artifactId>oai-pmh-provider</artifactId>
-    <version>4.1.2</version>
-  </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <name>Hippo OAI-PMH Provider HST</name>
-  <description>Hippo OAI-PMH Provider HST</description>
+  <parent>
+    <groupId>org.bloomreach.forge.oai-pmh-provider</groupId>
+    <artifactId>oai-pmh-provider</artifactId>
+    <version>5.0.0</version>
+  </parent>
+
+  <name>Bloomreach OAI-PMH Provider HST</name>
+  <description>Bloomreach OAI-PMH Provider HST</description>
   <artifactId>oai-pmh-provider-hst</artifactId>
   <packaging>jar</packaging>
 

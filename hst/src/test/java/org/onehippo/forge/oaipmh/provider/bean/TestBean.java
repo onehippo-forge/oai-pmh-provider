@@ -29,12 +29,12 @@ public class TestBean extends HippoDocument implements OAIBean {
     private static Logger log = LoggerFactory.getLogger(TestBean.class);
 
     public String getTitle() {
-        return getProperty("test:title");
+        return getSingleProperty("test:title");
     }
 
     @Override
     public Calendar getPublicationDate() {
-        return getProperty("test:date");
+        return getSingleProperty("test:date");
     }
 
     @OAIDelegate(metadataPrefix = "dc")

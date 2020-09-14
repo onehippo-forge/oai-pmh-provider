@@ -3,14 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.onehippo.forge</groupId>
+    <groupId>org.bloomreach.forge.oai-pmh-provider</groupId>
     <artifactId>oai-pmh-demo</artifactId>
-    <version>4.1.2</version>
+    <version>5.0.0</version>
   </parent>
   <artifactId>oai-pmh-demo-site</artifactId>
   <packaging>pom</packaging>
-  <name>Hippo OAI-PMH Provider Demo Site</name>
-  <description>Hippo OAI-PMH Provider Demo Site</description>
+  <name>Bloomreach OAI-PMH Provider Demo Site</name>
+  <description>Bloomreach OAI-PMH Provider Demo Site</description>
 
   <modules>
     <module>components</module>

@@ -6,8 +6,8 @@
          id="site">
 
 
-  <display-name>Hippo OAI-PMH Provider Demo site</display-name>
-  <description>Hippo OAI-PMH Provider Demo site</description>
+  <display-name>Bloomreach OAI-PMH Provider Demo site</display-name>
+  <description>Bloomreach OAI-PMH Provider Demo site</description>
 
   <jsp-config>
     <jsp-property-group>

@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.onehippo.cms7</groupId>
     <artifactId>hippo-cms7-release</artifactId>
-    <version>13.4.2</version>
+    <version>14.0.0</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
 
-  <name>Hippo OAI-PMH Provider</name>
-  <description>Hippo OAI-PMH Provider</description>
-  <groupId>org.onehippo.forge</groupId>
+  <name>Bloomreach OAI-PMH Provider</name>
+  <description>Bloomreach OAI-PMH Provider</description>
+  <groupId>org.bloomreach.forge.oai-pmh-provider</groupId>
   <artifactId>oai-pmh-provider</artifactId>
-  <version>4.1.2</version>
+  <version>5.0.0</version>
   <packaging>pom</packaging>
 
   <properties>
-    <plugin.site.version>3.7.1</plugin.site.version>
+    <plugin.site.version>3.9.1</plugin.site.version>
   </properties>
 
   <scm>

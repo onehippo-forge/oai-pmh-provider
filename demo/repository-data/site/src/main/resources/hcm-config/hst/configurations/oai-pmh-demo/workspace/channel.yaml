@@ -3,5 +3,5 @@ definitions:
     /hst:hst/hst:configurations/oaipmhdemo/hst:workspace/hst:channel:
       .meta:residual-child-node-category: content
       jcr:primaryType: hst:channel
-      hst:name: Hippo OAI-PMH Provider Demo
+      hst:name: Bloomreach OAI-PMH Provider Demo
       hst:type: website
