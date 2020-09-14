@@ -9,8 +9,8 @@
   </parent>
   <artifactId>oai-pmh-demo-essentials</artifactId>
   <packaging>war</packaging>
-  <name>Hippo OAI-PMH Provider Demo Essentials</name>
-  <description>Hippo OAI-PMH Provider Demo Essentials</description>
+  <name>Bloomreach OAI-PMH Provider Demo Essentials</name>
+  <description>Bloomreach OAI-PMH Provider Demo Essentials</description>
   <dependencies>
     <dependency>
       <groupId>org.onehippo.cms7</groupId>

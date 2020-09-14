@@ -6,8 +6,8 @@
          id="cms">
 
   <!-- General configuration -->
-  <display-name>Hippo OAI-PMH Provider Demo CMS</display-name>
-  <description>Hippo OAI-PMH Provider Demo CMS</description>
+  <display-name>Bloomreach OAI-PMH Provider Demo CMS</display-name>
+  <description>Bloomreach OAI-PMH Provider Demo CMS</description>
 
   <listener>
     <listener-class>org.hippoecm.hst.platform.container.HstCmsContextLoaderListener</listener-class>

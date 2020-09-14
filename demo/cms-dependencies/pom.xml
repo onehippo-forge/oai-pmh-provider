@@ -9,8 +9,8 @@
   </parent>
   <artifactId>oai-pmh-demo-cms-dependencies</artifactId>
   <packaging>pom</packaging>
-  <name>Hippo OAI-PMH Provider Demo CMS Dependencies</name>
-  <description>Hippo OAI-PMH Provider Demo CMS Dependencies</description>
+  <name>Bloomreach OAI-PMH Provider Demo CMS Dependencies</name>
+  <description>Bloomreach OAI-PMH Provider Demo CMS Dependencies</description>
   <dependencies>
 
     <dependency>

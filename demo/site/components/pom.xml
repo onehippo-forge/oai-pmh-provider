@@ -9,8 +9,8 @@
   </parent>
   <artifactId>oai-pmh-demo-components</artifactId>
   <packaging>jar</packaging>
-  <name>Hippo OAI-PMH Provider Demo Site Components</name>
-  <description>Hippo OAI-PMH Provider Demo Site Components</description>
+  <name>Bloomreach OAI-PMH Provider Demo Site Components</name>
+  <description>Bloomreach OAI-PMH Provider Demo Site Components</description>
 
   <dependencies>
     <dependency>

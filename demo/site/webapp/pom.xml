@@ -9,8 +9,8 @@
   </parent>
   <artifactId>oai-pmh-demo-webapp</artifactId>
   <packaging>war</packaging>
-  <name>Hippo OAI-PMH Provider Demo Site Webapp</name>
-  <description>Hippo OAI-PMH Provider Demo Site Webapp</description>
+  <name>Bloomreach OAI-PMH Provider Demo Site Webapp</name>
+  <description>Bloomreach OAI-PMH Provider Demo Site Webapp</description>
 
   <dependencies>
     <dependency>

@@ -9,8 +9,8 @@
   </parent>
   <artifactId>oai-pmh-demo-site</artifactId>
   <packaging>pom</packaging>
-  <name>Hippo OAI-PMH Provider Demo Site</name>
-  <description>Hippo OAI-PMH Provider Demo Site</description>
+  <name>Bloomreach OAI-PMH Provider Demo Site</name>
+  <description>Bloomreach OAI-PMH Provider Demo Site</description>
 
   <modules>
     <module>components</module>
