@@ -3,7 +3,7 @@
   "-//Apache Software Foundation//DTD XDOC 1.0//EN"
   "http://maven.apache.org/dtd/xdoc_1_0.dtd">
 <!--
-  Copyright 2009-2020 Hippo
+  Copyright 2009-2020 Bloomreach (http://www.bloomreach.com)
 
   Licensed under the Apache License, Version 2.0 (the  "License");
   you may not use this file except in compliance with the License.
@@ -42,12 +42,16 @@
       </subsection>
       <subsection name="Supported versions and changes">
         <p>
-         The OAI-PMH plugin has been built for Bloomreach 7.8 and up. See also the <a href="release-notes.html">release notes</a>.
+          The OAI-PMH plugin has been built for Bloomreach XM 7.8 and up. See also the <a href="release-notes.html">release notes</a>.
         </p>
         <table>
           <tr>
             <th>Plugin Version</th>
-            <th>Bloomreach CMS Release Version</th>
+            <th>Bloomreach XM Release Version</th>
+          </tr>
+          <tr>
+            <td>5.0.0</td>
+            <td>14.0.0</td>
           </tr>
           <tr>
             <td>4.1.2</td>

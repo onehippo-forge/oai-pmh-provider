@@ -3,7 +3,7 @@
   "-//Apache Software Foundation//DTD XDOC 1.0//EN"
   "http://maven.apache.org/dtd/xdoc_1_0.dtd">
 <!--
-  Copyright 2020 Hippo
+  Copyright 2020 Bloomreach (http://www.bloomreach.com)
 
   Licensed under the Apache License, Version 2.0 (the  "License");
   you may not use this file except in compliance with the License.
@@ -23,6 +23,16 @@
   </properties>
   <body>
     <section name="Release Notes">
+      <subsection name="5.0.0">
+        <p class="smallinfo">Release Date: 14 September 2020</p>
+        <ul>
+          <li><a href="https://issues.onehippo.com/browse/HIPFORGE-342">HIPFORGE-342</a> -
+            Upgrade to Bloomreach Experience Manager 14.<br/>
+            <strong>Note:</strong> the artifacts' <code>&lt;groupId&gt;</code> has changed from <code>org.onehippo.forge</code>
+            to <code>org.bloomreach.forge.oai-pmh-provider</code>.
+          </li>
+        </ul>
+      </subsection>
       <subsection name="4.1.2">
         <p class="smallinfo">Release Date: 28 May 2020</p>
         <ul>
@@ -33,14 +43,14 @@
           </li>
         </ul>
       </subsection>
-    <subsection name="4.1.1">
-      <p class="smallinfo">Release Date: 29 January 2020</p>
-      <ul>
-        <li><a href="https://issues.onehippo.com/browse/HIPFORGE-290">HIPFORGE-290</a> -
-          OAIPMHDateFunctionMillis Class added for updating derivative data properties (oai:pubdate) with millisecond-precision. See <a href="usage.html">usage page</a>.
-        </li>
-      </ul>
-    </subsection>
+      <subsection name="4.1.1">
+        <p class="smallinfo">Release Date: 29 January 2020</p>
+        <ul>
+          <li><a href="https://issues.onehippo.com/browse/HIPFORGE-290">HIPFORGE-290</a> -
+            OAIPMHDateFunctionMillis Class added for updating derivative data properties (oai:pubdate) with millisecond-precision. See <a href="usage.html">usage page</a>.
+          </li>
+        </ul>
+      </subsection>
       <subsection name="4.1.0">
         <p class="smallinfo">Release Date: 15 January 2020</p>
         <ul>

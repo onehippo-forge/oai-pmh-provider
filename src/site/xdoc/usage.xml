@@ -3,7 +3,7 @@
   "-//Apache Software Foundation//DTD XDOC 1.0//EN"
   "http://maven.apache.org/dtd/xdoc_1_0.dtd">
 <!--
-    Copyright 2009-2020 Hippo
+    Copyright 2009-2020 Bloomreach (http://www.bloomreach.com)
 
     Licensed under the Apache License, Version 2.0 (the  "License");
     you may not use this file except in compliance with the License.
@@ -26,11 +26,11 @@
       <subsection name="Prerequisites">
         <p>
           These instructions assume that you have a Hippo project based on the Hippo project archetype, i.e.
-          a Maven multiproject consisting of three submodules: cms, site and content/bootstrap.
+          a Maven multiproject consisting of submodules like cms, site and repository-data.
         </p>
         <p>
           You should know on how to use the
-          <a href="https://documentation.bloomreach.com/library/concepts/rest/restful-jax-rs-component-support-in-hst-2.html">HST jax-rs API</a>
+          <a href="https://documentation.bloomreach.com/library/concepts/rest/restful-jax-rs-component-support-in-hst-2.html">HST RESTful JAX-RS Component Support</a>
         </p>
         <p>
           You should know how the OAI-PMH protocol works; see the
@@ -48,17 +48,9 @@
       <id>hippo-forge</id>
       <name>Bloomreach Forge maven 2 repository.</name>
       <url>https://maven.onehippo.com/maven2-forge/</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <layout>default</layout>
     </repository>]]>
             </source>
           </li>
-
           <li>
             <p>Add to the pom.xml of your
               <i>cms</i>
@@ -67,13 +59,15 @@
             <source>
               <![CDATA[
 <dependency>
- <groupId>org.onehippo.forge</groupId>
+ <groupId>org.bloomreach.forge.oai-pmh-provider</groupId>
  <artifactId>oai-pmh-provider-repository</artifactId>
  <version>[version]</version>
 </dependency>
                         ]]>
             </source>
-          </li>
+            <div class="alert alert-info">
+              Note: before version 5.0.0, the artifact's groupId was <code>org.onehippo.forge</code>.
+            </div>          </li>
           <li>
             <p>Add to the pom.xml of your
               <i>site</i>
@@ -82,12 +76,15 @@
             <source>
               <![CDATA[
 <dependency>
- <groupId>org.onehippo.forge</groupId>
+ <groupId>org.bloomreach.forge.oai-pmh-provider</groupId>
  <artifactId>oai-pmh-provider-hst</artifactId>
  <version>[version]</version>
 </dependency>
                         ]]>
             </source>
+            <div class="alert alert-info">
+              Note: before version 5.0.0, the artifact's groupId was <code>org.onehippo.forge</code>.
+            </div>
           </li>
           <li>
             <p>Add to the web.xml of your
@@ -152,73 +149,68 @@
         <p>Depending on your project, you might need to create a script which will add the mixin on all existing documents</p>
       </subsection>
       <subsection name="Add the resource to the Custom Jaxrs Plain resource Pipeline (or to custom pipeline)">
-        <li>
-          <p>add oai-pmh.xml to META-INF.hst-assembly.overrides package of your site project. Example:</p>
-          <source>
-            <![CDATA[
+        <p>add oai-pmh.xml to META-INF.hst-assembly.overrides package of your site project. Example:</p>
+        <source>
+          <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
- <import resource="classpath:/org/onehippo/forge/oaipmh/provider/resource/oai-pmh.xml"/>
+<import resource="classpath:/org/onehippo/forge/oaipmh/provider/resource/oai-pmh.xml"/>
 
-  <bean id="beanPackage" class="java.lang.String">
-    <constructor-arg value="org.onehippo.demo"/>
-  </bean>
+<bean id="beanPackage" class="java.lang.String">
+  <constructor-arg value="org.onehippo.demo"/>
+</bean>
 
-  <bean id="customRestOAIPMHResourceProviders" class="org.springframework.beans.factory.config.ListFactoryBean">
-    <property name="sourceList">
-      <list>
-        <bean class="org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider">
-          <constructor-arg>
-            <bean class="org.onehippo.demo.rest.OAIPMHResource">
-              <property name="beansPackage" value="org.onehippo.beans"/>
-              <!--milliseconds setting since versions 3.1.0 and 4.1.0 -->
-              <property name="useMilliSecondsDatePrecision" value="false"/>
-            </bean>
-          </constructor-arg>
-        </bean>
-      </list>
-    </property>
-  </bean>
+<bean id="customRestOAIPMHResourceProviders" class="org.springframework.beans.factory.config.ListFactoryBean">
+  <property name="sourceList">
+    <list>
+      <bean class="org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider">
+        <constructor-arg>
+          <bean class="org.onehippo.demo.rest.OAIPMHResource">
+            <property name="beansPackage" value="org.onehippo.beans"/>
+            <!--milliseconds setting since versions 3.1.0 and 4.1.0 -->
+            <property name="useMilliSecondsDatePrecision" value="false"/>
+          </bean>
+        </constructor-arg>
+      </bean>
+    </list>
+  </property>
+</bean>
 
 </beans>
 ]]>
-          </source>
-        </li>
+        </source>
       </subsection>
       <subsection name="Configure usage of milliseconds date format">
         <ul>
           <p>Since versions 3.1.1 and 4.1.1 you can configure using either second or millisecond precision on
             (publication)date (oai:pubdate) and resumption token properties.</p>
           <p>Second-precision is used by default. To enable the use of millisecond-precision:</p>
-          <li><p>In oai-pmh.xml in the META-INF.hst-assembly.overrides package of your site project, set:
+          <p>In oai-pmh.xml in the META-INF.hst-assembly.overrides package of your site project, set:
             <source> <![CDATA[ <property name="useMilliSecondsDatePrecision" value="true"/> ]]></source> </p>
-          </li>
-          <li> <p>In the console, configure the oaipmh derivative configuration to use the OAIPMHDateFunctionMillis Class:</p>
-            <source>
+          <p>In the console, configure the oaipmh derivative configuration to use the OAIPMHDateFunctionMillis Class:</p>
+          <source>
             <![CDATA[
-            definitions:
-              config:
-                /hippo:configuration/hippo:derivatives/oaipmh:
-                  hipposys:classname: org.onehippo.forge.oaipmh.repository.deriveddata.OAIPMHDateFunctionMillis]]>
-            </source>
-          </li>
+          definitions:
+            config:
+              /hippo:configuration/hippo:derivatives/oaipmh:
+                hipposys:classname: org.onehippo.forge.oaipmh.repository.deriveddata.OAIPMHDateFunctionMillis]]>
+          </source>
           <p>Documents that are touched by the derivative function will now have millisecond precision properties set. Existing documents will need to be updated using a groovy script.</p>
         </ul>
       </subsection>
       <subsection name="Configure HST mount">
-        <li>
-          <p>Configure you hst mount configuration to display the correct mount on the URL. e.g.
+          <p>Configure your HST mount to display the correct mount on the URL, e.g.
             <a href="http://localhost:8080/site/pmh">http://localhost:8080/site/pmh</a>
           </p>
-          <p>Automatically the oai-pmh project will set pmh mount on the hst:root mount</p>
-          <p>try out the identify verb e.g.
+          <p>Automatically the oai-pmh project will set PMH mount on the hst:root mount</p>
+          <p>Try out the identify verb e.g.
             <a href="http://localhost:8080/site/pmh/oai?verb=Identify">http://localhost:8080/site/pmh/oai?verb=Identify</a>
           </p>
-          <p>You can configure metadata from the Identify by looking at the mount for the identify.path property. Which points to an Identify document</p>
-        </li>
+          <p>You can configure metadata from the Identify by looking at the mount for the identify.path property
+            which points to an Identify document.</p>
       </subsection>
       <subsection name="Test">
         <li>
