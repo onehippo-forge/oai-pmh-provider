@@ -1,5 +1,5 @@
 /*
-* Copyright 2011 Hippo.
+* Copyright 2011-2020 Bloomreach (http://www.bloomreach.com)
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.

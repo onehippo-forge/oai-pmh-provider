@@ -7,8 +7,8 @@
     <version>5.0.0-SNAPSHOT</version>
   </parent>
 
-  <name>Hippo OAI-PMH Provider HST</name>
-  <description>Hippo OAI-PMH Provider HST</description>
+  <name>Bloomreach OAI-PMH Provider HST</name>
+  <description>Bloomreach OAI-PMH Provider HST</description>
   <artifactId>oai-pmh-provider-hst</artifactId>
   <packaging>jar</packaging>
 
