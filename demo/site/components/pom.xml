@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.onehippo.forge</groupId>
     <artifactId>oai-pmh-demo-site</artifactId>
-    <version>4.1.3-SNAPSHOT</version>
+    <version>5.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>oai-pmh-demo-components</artifactId>
   <packaging>jar</packaging>
@@ -49,7 +49,6 @@
       <groupId>org.onehippo.forge</groupId>
       <artifactId>oai-pmh-provider-hst</artifactId>
     </dependency>
-
   </dependencies>
   <build>
     <resources>
